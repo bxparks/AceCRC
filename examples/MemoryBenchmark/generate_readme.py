@@ -86,21 +86,17 @@ $ make README.md
 
 ## Library Size Changes
 
--The size of the `crc_table` lookup table is:
--
--* 16 * 2 = 32 bytes CRC16 using 'nibble' variant
--* 256 * 2 = 512 bytes for CRC16 using 'byte' variant
--* 16 * 4 = 64 bytes for CRC32  using 'nibble' variant
--* 256 * 4 = 1024 bytes for CRC32 using 'byte' variant
--
--All of that extra RAM consumption goes away after we move the `crc_table` into
--flash memory using `PROGMEM`. The processors where `PROGMEM` makes a difference
--are:
--    * AVR (Nano, Pro Micro)
--    * ESP8266
--
--For the other processors, either the `crc_table` is already in flash memory, or
--the `PROGMEM` attribute does not do anything.
+The size of the `crc_table` lookup table is:
+
+* CRC16 using 'nibble' variant: 16 * 2 = 32 bytes
+* CRC16 using 'byte' variant: 256 * 2 = 512 bytes
+* CRC32  using 'nibble' variant: 16 * 4 = 64 bytes
+* CRC32 using 'byte' variant: 256 * 4 = 1024 bytes
+
+These are moved from static RAM to flash memory with the `PROGMEM` directive on
+certain microcontrollers (e.g. AVR, ESP8266), For the other processors, either
+the `crc_table` is already in flash memory, or the `PROGMEM` attribute does not
+do anything.
 
 ## Arduino Nano
 
