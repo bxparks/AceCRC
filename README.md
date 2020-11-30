@@ -56,6 +56,7 @@ Additional algorithms from `pycrc` can be generated if needed.
 * [Usage](#Usage)
     * [Headers and Namespaces](#Headers)
     * [Core CRC Functions](#CoreFunctions)
+* [Resource Consumption](#ResourceConsumption)
 * [System Requirements](#SystemRequirements)
     * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
@@ -186,6 +187,31 @@ crc_t calculateCRC(const char* str) {
   return crc;
 }
 ```
+
+<a name="ResourceConsumption"></a>
+## Resource Consumption
+
+I wrote a bunch of scripts in
+[examples/MemoryBenchmark](examples/MemoryBenchmark) to automatically gather the
+flash and static RAM consumption of various CRC algorithms on various
+microcontrollers. The results are summarized in the `README.md` in that
+directory. None of the algorithms consumed any static RAM, because all their
+lookup tables are located in flash using `PROGMEM`.
+
+Roughtly speaking here are the numbers for each algorithm:
+
+* `crc16ccitt_bit`: 90-150 bytes of flash
+* `crc16ccitt_nibble`: 140-230 bytes of flash
+* `crc16ccitt_byte`: 560-1100 bytes of flash
+* `crc32_bit`: 110-200 bytes of flash
+* `crc32_nibble`: 140-220 bytes of flash
+* `crc32_byte`: 1100-1200 bytes of flash
+
+These numbers seem to confirm the assumption that `nibble` variant of the
+algorithms (4-bit lookup table) would be a nice compromise between size and
+speed.
+
+(TODO: Perform CPU benchmarks of each algorithm.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements
