@@ -64,6 +64,22 @@ $ make README.md
 
 ## Library Size Changes
 
+The size of the `crc_table` lookup table is:
+
+* 16 * 2 = 32 bytes CRC16 using 'nibble' variant
+* 256 * 2 = 512 bytes for CRC16 using 'byte' variant
+* 16 * 4 = 64 bytes for CRC32  using 'nibble' variant
+* 256 * 4 = 1024 bytes for CRC32 using 'byte' variant
+
+All of that extra RAM consumption goes away after we move the `crc_table` into
+flash memory using `PROGMEM`. The processors where `PROGMEM` makes a difference
+are:
+    * AVR (Nano, Pro Micro)
+    * ESP8266
+
+For the other processors, either the `crc_table` is already in flash memory, or
+the `PROGMEM` attribute does not do anything.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -77,11 +93,11 @@ $ make README.md
 | Baseline                        |    684/   21 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | crc16ccitt::bit                 |    774/   21 |    90/    0 |
-| crc16ccitt::nibble              |    848/   53 |   164/   32 |
-| crc16ccitt::byte                |   1248/  533 |   564/  512 |
+| crc16ccitt::nibble              |    842/   21 |   158/    0 |
+| crc16ccitt::byte                |   1248/   21 |   564/    0 |
 | crc32::bit                      |    876/   21 |   192/    0 |
-| crc32::nibble                   |    902/   85 |   218/   64 |
-| crc32::byte                     |   1796/ 1045 |  1112/ 1024 |
+| crc32::nibble                   |    904/   21 |   220/    0 |
+| crc32::byte                     |   1790/   21 |  1106/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -99,11 +115,11 @@ $ make README.md
 | Baseline                        |   3610/  161 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | crc16ccitt::bit                 |   3700/  161 |    90/    0 |
-| crc16ccitt::nibble              |   3774/  193 |   164/   32 |
-| crc16ccitt::byte                |   4174/  673 |   564/  512 |
+| crc16ccitt::nibble              |   3768/  161 |   158/    0 |
+| crc16ccitt::byte                |   4174/  161 |   564/    0 |
 | crc32::bit                      |   3802/  161 |   192/    0 |
-| crc32::nibble                   |   3828/  225 |   218/   64 |
-| crc32::byte                     |   4722/ 1185 |  1112/ 1024 |
+| crc32::nibble                   |   3830/  161 |   220/    0 |
+| crc32::byte                     |   4716/  161 |  1106/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -143,11 +159,11 @@ $ make README.md
 | Baseline                        | 256984/26812 |     0/    0 |
 |---------------------------------+--------------+-------------|
 | crc16ccitt::bit                 | 257096/26812 |   112/    0 |
-| crc16ccitt::nibble              | 257160/26876 |   176/   64 |
-| crc16ccitt::byte                | 258104/27836 |  1120/ 1024 |
+| crc16ccitt::nibble              | 257208/26812 |   224/    0 |
+| crc16ccitt::byte                | 258120/26812 |  1136/    0 |
 | crc32::bit                      | 257128/26812 |   144/    0 |
-| crc32::nibble                   | 257144/26876 |   160/   64 |
-| crc32::byte                     | 258088/27836 |  1104/ 1024 |
+| crc32::nibble                   | 257192/26812 |   208/    0 |
+| crc32::byte                     | 258120/26812 |  1136/    0 |
 +--------------------------------------------------------------+
 
 ```
