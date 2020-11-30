@@ -1,0 +1,30 @@
+#######################################
+# Syntax Coloring Map for AceCRC library
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+crc_t	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+# public methods from various *.hpp files
+crc_init	KEYWORD2
+crc_update	KEYWORD2
+crc_finalize	KEYWORD2
+
+#######################################
+# Instances (KEYWORD2)
+#######################################
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+# public constants from *.hpp
+CRC_ALGO_BIT_BY_BIT_FAST	LITERAL1
+CRC_ALGO_TABLE_DRIVEN	LITERAL1
