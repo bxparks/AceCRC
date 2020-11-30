@@ -6,7 +6,7 @@
 # The 3 supported algorithms from pycrc are:
 #
 #   * bit: --algorithm bit-by-bit-fast
-#   * nibble: --algorithm table-driven table-idx-width 4
+#   * nibble: --algorithm table-driven --table-idx-width 4
 #   * byte: --algorithm table-driven --table-idx-width 8
 
 set -eu
@@ -21,7 +21,7 @@ PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
-    [--model {crc32|crc16ccitt}] [--algotag {bit|nibble|byte}] \
+    --model {crc-32|crc-16-ccitt} --algotag {bit|nibble|byte} \
     {--header | --source}"
     exit 1
 }
