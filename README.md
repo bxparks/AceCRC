@@ -8,14 +8,38 @@ Currently supported algorithms are:
 * CRC-16-CCITT
 * CRC-32
 
-The following namespaces are defined:
+For each algorithm, 3 different implementations were generated:
 
-* `ace_crc::crc16ccitt_bit`
-* `ace_crc::crc16ccitt_nibble`
-* `ace_crc::crc16ccitt_byte`
-* `ace_crc::crc32_bit`
-* `ace_crc::crc32_nibble`
-* `ace_crc::crc32_byte`
+* bit-by-bit (bit)
+    * brute-force loops to calculate the polynomial divisions
+    * smallest code, slowest
+* table lookup using 4-bits (nibble)
+    * generates a lookup table of 16 elements
+    * larger code, but faster
+* table lookup using 8-bits (byte)
+    * generates a lookup table of 256 elements
+    * largest amount of code, but fastest
+
+The `pycrc` program generates `*.h` and `*.c` files containing C99 code with the
+following definitions:
+
+* `crc_t crc_init(void);`
+* `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
+* `crc_t crc_finalize(crc_t crc);`
+
+This library converts the C99 code in the following way:
+
+* each algorithm and variant is wrapped its own C++ namespace to avoid name
+  collision
+    * `ace_crc::crc16ccitt_bit`
+    * `ace_crc::crc16ccitt_nibble`
+    * `ace_crc::crc16ccitt_byte`
+    * `ace_crc::crc32_bit`
+    * `ace_crc::crc32_nibble`
+    * `ace_crc::crc32_byte`
+* the `crc_table` lookup table is moved into flash memory using `PROGMEM`
+    * the static RAM usage of all CRC routines becomes zero (other than a few
+      stack variables)
 
 Additional algorithms from `pycrc` can be generated if needed.
 
@@ -187,11 +211,45 @@ The generator script in `./tools/generate.sh` has only been tested under Ubuntu
 
 [MIT License](https://opensource.org/licenses/MIT)
 
+<a name="Motivation"></a>
+## Background and Motiviation
+
+Before writing this library, I did not understand how CRC algorithms worked and
+how they were implemented. I just knew that they calculated a checksum. I had
+been using the `crc32()` algorithm from the FastCRC library
+(https://github.com/FrankBoesing/FastCRC) but when I dug in a little deeper, I
+discovered that it was configurd to use "large tables" by default, which meant
+that the `crc32()` algorithm was pulling in a table of 1024 elements
+of 4 bytes each, for a total of 4kB.
+
+The `crc32()` function was being called in my `CrcEeprom` class
+(https://github.com/bxparks/AceUtils), which I had included in various
+applications running on an Arduino Nano or Sparkfun Pro Micro with only 32kB of
+flash. Due to my ignorance, I was using at least 1/8 of my flash memory budget
+just to calculate the CRC32!
+
+I decided to figure out how to write my own CRC routines. The best reference I
+found was [A Painless Guide to CRC Error Detection
+Algorithms](http://ross.net/crc/download/crc_v3.txt) by Ross Williams written in
+1993. Once I read that, I could understand how a code generator such as `pycrc`
+(https://pycrc.org/) worked. For each algorithm type (with a given polynomial
+generator), the `pycrc` code can generate multiple implementations. The 3 that
+seemed most useful in the context of small memory Arduino microcontrollers were:
+
+* bit-by-bit brute force algorithm
+* 4-bit lookup table using 16 elements
+* 8-bit lookup table using 256 elements
+
+I calculated the flash and static memory consumption of each algorithm using
+[examples/MemoryBenchmark](examples/MemoryBenchmark). From those benchmarks, I
+can see that I am able to reduce the flash memory usage of the `CrcEeprom` class
+by a least 4kB by using a CRC algorithm that consumes only about 150-250 bytes
+(either the CRC16CCITT or CRC32 algorithm using a 4-bit lookup table).
+
 <a name="Bugs"></a>
 ## Bugs and Limitations
 
-* v0.1 places the lookup table for the `nibble` and `byte` variants in static
-  RAM instead of `PROGMEM`. This will be fixed soon.
+None that I know of right now.
 
 <a name="Feedback"></a>
 ## Feedback and Support
