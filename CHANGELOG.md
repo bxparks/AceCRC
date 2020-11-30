@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 0.1 (2020-11-29)
     * Move `crc_table` lookup table to flash using `PROGMEM`.
     * Add `MemoryBenchmark` to determine flash and static RAM consumption of
       each algorithm.
