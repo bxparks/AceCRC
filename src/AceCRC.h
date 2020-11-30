@@ -26,7 +26,7 @@
 #include "ace_crc/crc32_nibble.hpp"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_TIME_VERSION 100
-#define ACE_TIME_VERSION_STRING "0.1.0"
+#define ACE_TIME_VERSION 101
+#define ACE_TIME_VERSION_STRING "0.1.1"
 
 #endif

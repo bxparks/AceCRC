@@ -36,7 +36,7 @@ calculated flash size can jump around in unexpected ways.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
-**Version**: AceCRC v0.1
+**Version**: AceCRC v0.1.1
 
 ## How to Generate
 
@@ -85,6 +85,22 @@ $ make README.md
 * 6 crc32::byte
 
 ## Library Size Changes
+
+-The size of the `crc_table` lookup table is:
+-
+-* 16 * 2 = 32 bytes CRC16 using 'nibble' variant
+-* 256 * 2 = 512 bytes for CRC16 using 'byte' variant
+-* 16 * 4 = 64 bytes for CRC32  using 'nibble' variant
+-* 256 * 4 = 1024 bytes for CRC32 using 'byte' variant
+-
+-All of that extra RAM consumption goes away after we move the `crc_table` into
+-flash memory using `PROGMEM`. The processors where `PROGMEM` makes a difference
+-are:
+-    * AVR (Nano, Pro Micro)
+-    * ESP8266
+-
+-For the other processors, either the `crc_table` is already in flash memory, or
+-the `PROGMEM` attribute does not do anything.
 
 ## Arduino Nano
 
