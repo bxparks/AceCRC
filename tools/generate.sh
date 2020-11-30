@@ -83,7 +83,7 @@ s/#define/static const uint8_t/
 s/ \([0-9][0-9]*\)$/ = \1;/
 /#ifdef __cplusplus/
 .,+2c
-} // $modelroot
+} // $fileroot
 } // ace_crc
 .
 /#endif.*${old_header_guard}/
@@ -127,7 +127,7 @@ namespace $fileroot {
 .
 \$a
 
-} // $modelroot
+} // $fileroot
 } // ace_crc
 .
 w $fileroot.cpp
@@ -166,7 +166,7 @@ namespace $fileroot {
 g/crc_table\[\(tbl_idx.*\)\]/s//($pgm_read_func(crc_table + (\1)))/
 \$a
 
-} // $modelroot
+} // $fileroot
 } // ace_crc
 .
 w $fileroot.cpp
