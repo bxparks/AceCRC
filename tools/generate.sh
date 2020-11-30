@@ -181,7 +181,6 @@ EOF
 
 header=0
 source=0
-convert=0
 model=''
 algotag=''
 while [[ $# -gt 0 ]]; do
@@ -189,7 +188,6 @@ while [[ $# -gt 0 ]]; do
         --help|-h) usage ;;
         --header) header=1 ;;
         --source) source=1 ;;
-        --convert) convert=1 ;;
         --model) shift; model="$1" ;;
         --algotag) shift; algotag="$1" ;;
         --) shift; break ;;
