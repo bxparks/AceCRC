@@ -11,6 +11,9 @@
 
 set -eu
 
+# Set this to 0 to prevent conversion to PROGMEM and <pgmspace.h>
+CONVERT_TO_PROGMEM=1
+
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
     [--model {crc32|crc16ccitt}] [--algotag {bit|nibble|byte}] \
@@ -90,9 +93,13 @@ function convert_c_to_cpp() {
     local modelroot=$1
     local algotag=$2
     local model=$3
+    local pgm_read_func=$4
     local fileroot="${modelroot}_${algotag}"
 
-    ed $fileroot.c > /dev/null <<EOF
+    # The bit-by-bit algorithm does not use a crc_table, so we cannot attempt
+    # to convert it to PROGMEM. Otherwise ed(1) script fails with error.
+    if [[ $algotag == 'bit' || $CONVERT_TO_PROGMEM == 0 ]]; then
+        ed $fileroot.c > /dev/null <<EOF
 / \*\//
 i
  *
@@ -117,6 +124,46 @@ namespace $fileroot {
 w $fileroot.cpp
 q
 EOF
+
+    # These algorithms use the 'crc_table' so move that table into flash memory
+    # using PROGMEM, then convert the crc_table[i] expressions with the
+    # equivalent ones using pgm_read_word() or pgm_read_dword().
+    else
+        ed $fileroot.c > /dev/null <<EOF
+/ \*\//
+i
+ *
+ * Auto converted to Arduino C++ on $(date)
+ * by AceCRC (https://github.com/bxparks/AceCRC).
+ * DO NOT EDIT
+.
+/#include "$fileroot.h"/
+c
+#include "$fileroot.hpp" // header file converted by AceCRC
+.
+i
+#if defined(ARDUINO_ARCH_AVR) || defined(ARDUINO_ARCH_SAMD)
+  #include <avr/pgmspace.h>
+#else
+  #include <pgmspace.h>
+#endif
+.
+/^$/a
+namespace ace_crc {
+namespace $fileroot {
+
+.
+/crc_table/s/= {/PROGMEM &/
+g/crc_table\[\(tbl_idx.*\)\]/s//($pgm_read_func(crc_table + (\1)))/
+\$a
+
+} // $modelroot
+} // ace_crc
+.
+w $fileroot.cpp
+q
+EOF
+    fi
 }
 
 header=0
@@ -157,12 +204,19 @@ algotag_upper="$(echo $algotag | tr '[a-z]' '[A-Z]')"
 old_header_guard="${modelroot_upper}_${algotag_upper}_H"
 new_header_guard="ACE_CRC_${modelroot_upper}_${algotag_upper}_HPP"
 
-# Convert algotag to pycrc flags
+# Convert algotag to pycrc flags.
 case $algotag in
     bit) pycrc_flags='--algorithm bit-by-bit-fast' ;;
     nibble) pycrc_flags='--algorithm table-driven --table-idx-width 4' ;;
     byte) pycrc_flags='--algorithm table-driven --table-idx-width 8' ;;
     *) echo "Unknown --algotag '$algotag'"; usage ;;
+esac
+
+# Determine the <progmem.h> function that extracts the lookup table.
+case $model in
+    crc-16-ccitt) pgm_read_func='pgm_read_word' ;;
+    crc-32) pgm_read_func='pgm_read_dword' ;;
+    *) echo 'Unknown --model '$model''; usage ;;
 esac
 
 # Finally, perform the action that was requested by --header, --source,
@@ -180,6 +234,6 @@ if [[ $source == 1 ]]; then
     if [[ $convert == 0 ]]; then
         generate_c $modelroot $model "$pycrc_flags"
     else
-        convert_c_to_cpp $modelroot $algotag $model
+        convert_c_to_cpp $modelroot $algotag $model $pgm_read_func
     fi
 fi
