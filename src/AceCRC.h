@@ -1,6 +1,6 @@
 /*
  * MIT License
- * Copyright (c) 2018 Brian T. Park
+ * Copyright (c) 2020 Brian T. Park
  */
 
 /**
