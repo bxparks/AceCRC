@@ -117,15 +117,22 @@ To use the 8-bit table: use:
 using namespace ace_crc::crc32_byte;
 ```
 
-### CRC Functions and Variants
+<a name="CoreFunctions"></a>
+### Core CRC Functions
 
-The function names of the underlying code from `pycrc` remain unchanged. The
-main functions are:
-    * `crc_init()`
-    * `crc_update()`
-    * `crc_finalize()`
+All algorithms and their variants are placed in separate C++ namespaces so they
+do not collide, and you can use multiple CRC algorithms in a single program
+without worrying about name collision.
 
-Here is a sample code:
+The `crc_t` typedef, the function names, and their signatures from the
+underlying generated code from `pycrc` remain unchanged. For reference, the
+principle functions are:
+
+* `crc_t crc_init(void);`
+* `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
+* `crc_t crc_finalize(crc_t crc);`
+
+Here is a sample code that shows how to use these functions:
 
 ```C++
 crc_t calculateCRC(const char* str) {
@@ -135,10 +142,6 @@ crc_t calculateCRC(const char* str) {
   return crc;
 }
 ```
-
-All algorithms and theirs variants are placed in separate C++ namespaces so they
-do not collide, and you can use multiple CRC algorithms in a single program
-without worrying about name collision.
 
 <a name="SystemRequirements"></a>
 ## System Requirements
