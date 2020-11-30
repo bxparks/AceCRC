@@ -24,6 +24,39 @@ Additional algorithms from `pycrc` can be generated if needed.
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
 <a name="Installation"></a>
+## HelloCrc
+
+Here is the sample program from [examples/HelloCrc](examples/HelloCrc) that uses
+the `CRC-16-CCITT` algorithm using a 4-bit lookup table (16 elements):
+
+```C++
+#include <Arduino.h>
+#include <AceCRC.h>
+
+using namespace ace_crc::crc16ccitt::nibble;
+
+static const char CHECK_STRING[] = "123456789";
+static const size_t LENGTH = sizeof(CHECK_STRING) - 1;
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial); // Wait - Leonardo/Micro
+
+  crc_t crc = crc_init();
+  crc = crc_update(crc, CHECK_STRING, LENGTH);
+  crc = crc_finalize(crc);
+
+  Serial.print("0x");
+  Serial.println((unsigned long) crc, 16);
+}
+
+void loop() {
+}
+```
+
+This prints the hexadecimal number `0xE5CC` as expected.
+
+<a name="Installation"></a>
 ## Installation
 
 The latest stable release is (will be) available in the Arduino IDE Library
