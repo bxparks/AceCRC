@@ -47,10 +47,30 @@ Additional algorithms from `pycrc` can be generated if needed.
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-<a name="Installation"></a>
-## HelloCrc
+**Table of Contents**:
 
-Here is the sample program from [examples/HelloCrc](examples/HelloCrc) that uses
+* [HelloCRC](#HelloCRC)
+* [Installation](#Installation)
+    * [Dependencies](#Dependencies)
+* [Documentation](#Documentation)
+* [Usage](#Usage)
+    * [Headers and Namespaces](#Headers)
+    * [Core CRC Functions](#CoreFunctions)
+* [System Requirements](#SystemRequirements)
+    * [Tool Chain](#ToolChain)
+    * [Hardware](#Hardware)
+    * [Operating System](#OperatingSystem)
+* [License](#License)
+* [Background and Motivation](#Motivation)
+* [Bugs and Limitations](#Bugs)
+* [Feedback and Support](#Feedback)
+* [Authors](#Authors)
+
+
+<a name="HelloCRC"></a>
+## HelloCRC
+
+Here is the sample program from [examples/HelloCRC](examples/HelloCRC) that uses
 the `CRC-16-CCITT` algorithm using a 4-bit lookup table (16 elements):
 
 ```C++
@@ -170,6 +190,7 @@ crc_t calculateCRC(const char* str) {
 <a name="SystemRequirements"></a>
 ## System Requirements
 
+<a name="ToolChain"></a>
 ### Tool Chain
 
 * [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
@@ -181,6 +202,7 @@ crc_t calculateCRC(const char* str) {
 * [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
 * [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
+<a name="Hardware"></a>
 ### Hardware
 
 The library is extensively tested on the following boards:
@@ -189,14 +211,14 @@ The library is extensively tested on the following boards:
 * SparkFun Pro Micro clone (16 MHz ATmega32U4)
 * WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
 * ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero) (See
-  notes in the [USER_GUIDE.md](USER_GUIDE.md) for some potential issues.)
 
 I will occasionally test on the following hardware as a sanity check:
 
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 
+<a name="OperatingSystem"></a>
 ### Operating System
 
 I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
@@ -218,11 +240,11 @@ Before writing this library, I did not understand how CRC algorithms worked and
 how they were implemented. I just knew that they calculated a checksum. I had
 been using the `crc32()` algorithm from the FastCRC library
 (https://github.com/FrankBoesing/FastCRC) but when I dug in a little deeper, I
-discovered that it was configurd to use "large tables" by default, which meant
-that the `crc32()` algorithm was pulling in a table of 1024 elements
-of 4 bytes each, for a total of 4kB.
+discovered that it was configured to use "large tables" by default, which is
+why it is "fast". But that meant that the `crc32()` algorithm was pulling in a
+table of 1024 elements of 4 bytes each, for a total of 4kB.
 
-The `crc32()` function was being called in my `CrcEeprom` class
+The `crc32()` function was being called from my `CrcEeprom` class
 (https://github.com/bxparks/AceUtils), which I had included in various
 applications running on an Arduino Nano or Sparkfun Pro Micro with only 32kB of
 flash. Due to my ignorance, I was using at least 1/8 of my flash memory budget
