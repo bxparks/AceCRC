@@ -11,13 +11,18 @@
 
 set -eu
 
-# Set this to 0 to prevent conversion to PROGMEM and <pgmspace.h>
+# Set this to 0 to prevent conversion to PROGMEM and <pgmspace.h>.
+# Might be useful to turn it off for debugging.
 CONVERT_TO_PROGMEM=1
+
+# Set this to 1 to preserve a copy of the original *.c and *.h files from pycrc.
+# Useful for debugging purposes.
+PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
     [--model {crc32|crc16ccitt}] [--algotag {bit|nibble|byte}] \
-    {--header | --source | --convert}"
+    {--header | --source}"
     exit 1
 }
 
@@ -86,6 +91,10 @@ s/$old_header_guard/$new_header_guard/
 w $fileroot.hpp
 q
 EOF
+
+    if [[ $PRESERVE_C_FILES == 0 ]]; then
+        rm $fileroot.h
+    fi
 }
 
 # Convert C-style *.c file to Arduino C++ *.cpp file
@@ -164,6 +173,10 @@ w $fileroot.cpp
 q
 EOF
     fi
+
+    if [[ $PRESERVE_C_FILES == 0 ]]; then
+        rm $fileroot.c
+    fi
 }
 
 header=0
@@ -219,21 +232,14 @@ case $model in
     *) echo 'Unknown --model '$model''; usage ;;
 esac
 
-# Finally, perform the action that was requested by --header, --source,
-# --convert flags.
+# Perform the action that was requested by --header or --source.
 if [[ $header == 1 ]]; then
-    if [[ $convert == 0 ]]; then
-        generate_h $modelroot $model "$pycrc_flags"
-    else
-        convert_h_to_hpp $modelroot $algotag $model \
-            $old_header_guard $new_header_guard
-    fi
+    generate_h $modelroot $model "$pycrc_flags"
+    convert_h_to_hpp $modelroot $algotag $model \
+        $old_header_guard $new_header_guard
 fi
 
 if [[ $source == 1 ]]; then
-    if [[ $convert == 0 ]]; then
-        generate_c $modelroot $model "$pycrc_flags"
-    else
-        convert_c_to_cpp $modelroot $algotag $model $pgm_read_func
-    fi
+    generate_c $modelroot $model "$pycrc_flags"
+    convert_c_to_cpp $modelroot $algotag $model $pgm_read_func
 fi
