@@ -68,15 +68,13 @@ i
 /#ifdef __cplusplus/
 .,+2c
 namespace ace_crc {
-namespace $modelroot {
-namespace $algotag {
+namespace $fileroot {
 .
 /#define CRC_ALGO/
 s/#define/static const uint8_t/
 s/ \([0-9][0-9]*\)$/ = \1;/
 /#ifdef __cplusplus/
 .,+2c
-} // $algotag
 } // $modelroot
 } // ace_crc
 .
@@ -108,13 +106,11 @@ c
 .
 /^$/a
 namespace ace_crc {
-namespace $modelroot {
-namespace $algotag {
+namespace $fileroot {
 
 .
 \$a
 
-} // $algotag
 } // $modelroot
 } // ace_crc
 .

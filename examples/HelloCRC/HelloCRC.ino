@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <AceCRC.h>
 
-using namespace ace_crc::crc16ccitt::bit;
+using namespace ace_crc::crc16ccitt_bit;
 
 static const char CHECK_STRING[] = "123456789";
 static const size_t LENGTH = sizeof(CHECK_STRING) - 1; // ignore NUL char

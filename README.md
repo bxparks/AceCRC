@@ -10,12 +10,12 @@ Currently supported algorithms are:
 
 The following namespaces are defined:
 
-* `ace_crc::crc16ccitt::bit`
-* `ace_crc::crc16ccitt::nibble`
-* `ace_crc::crc16ccitt::byte`
-* `ace_crc::crc32::bit`
-* `ace_crc::crc32::nibble`
-* `ace_crc::crc32::byte`
+* `ace_crc::crc16ccitt_bit`
+* `ace_crc::crc16ccitt_nibble`
+* `ace_crc::crc16ccitt_byte`
+* `ace_crc::crc32_bit`
+* `ace_crc::crc32_nibble`
+* `ace_crc::crc32_byte`
 
 Additional algorithms from `pycrc` can be generated if needed.
 
@@ -33,7 +33,7 @@ the `CRC-16-CCITT` algorithm using a 4-bit lookup table (16 elements):
 #include <Arduino.h>
 #include <AceCRC.h>
 
-using namespace ace_crc::crc16ccitt::nibble;
+using namespace ace_crc::crc16ccitt_nibble;
 
 static const char CHECK_STRING[] = "123456789";
 static const size_t LENGTH = sizeof(CHECK_STRING) - 1;
@@ -108,13 +108,13 @@ to use the version of `crc32` which uses a 4-bit table (16 entries), use the
 following:
 
 ```C++
-using namespace ace_crc::crc32::nibble;
+using namespace ace_crc::crc32_nibble;
 ```
 
 To use the 8-bit table: use:
 
 ```C++
-using namespace ace_crc::crc32::byte;
+using namespace ace_crc::crc32_byte;
 ```
 
 ### CRC Functions and Variants

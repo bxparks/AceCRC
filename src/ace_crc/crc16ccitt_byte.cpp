@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Sun Nov 29 14:25:49 2020
+ * Generated on Sun Nov 29 17:07:28 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 16
@@ -13,7 +13,7 @@
  *  - ReflectOut    = False
  *  - Algorithm     = table-driven
  *
- * Auto converted to Arduino C++ on Sun Nov 29 14:25:49 PST 2020
+ * Auto converted to Arduino C++ on Sun Nov 29 17:07:28 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -22,8 +22,7 @@
 #include <stdint.h>
 
 namespace ace_crc {
-namespace crc16ccitt {
-namespace byte {
+namespace crc16ccitt_byte {
 
 
 
@@ -79,6 +78,5 @@ crc_t crc_update(crc_t crc, const void *data, size_t data_len)
     return crc & 0xffff;
 }
 
-} // byte
 } // crc16ccitt
 } // ace_crc

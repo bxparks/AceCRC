@@ -5,7 +5,7 @@
 #include <AceCRC.h>
 
 using aunit::TestRunner;
-using namespace ace_crc::crc32;
+using namespace ace_crc;
 
 static const char CHECK_STRING[] = "123456789";
 static const size_t LENGTH = sizeof(CHECK_STRING) - 1;
@@ -15,24 +15,24 @@ static uint32_t EXPECTED_CRC = 0xcbf43926;
 // crc32
 // --------------------------------------------------------------------------
 
-test(crc32, bit) {
-  uint32_t crc = bit::crc_init();
-  crc = bit::crc_update(crc, CHECK_STRING, LENGTH);
-  crc = bit::crc_finalize(crc);
+test(crc32_bit, check) {
+  uint32_t crc = crc32_bit::crc_init();
+  crc = crc32_bit::crc_update(crc, CHECK_STRING, LENGTH);
+  crc = crc32_bit::crc_finalize(crc);
   assertEqual(EXPECTED_CRC, crc);
 }
 
-test(crc32, nibble) {
-  uint32_t crc = nibble::crc_init();
-  crc = nibble::crc_update(crc, CHECK_STRING, LENGTH);
-  crc = nibble::crc_finalize(crc);
+test(crc32_nibble, check) {
+  uint32_t crc = crc32_nibble::crc_init();
+  crc = crc32_nibble::crc_update(crc, CHECK_STRING, LENGTH);
+  crc = crc32_nibble::crc_finalize(crc);
   assertEqual(EXPECTED_CRC, crc);
 }
 
-test(crc32, byte) {
-  uint32_t crc = byte::crc_init();
-  crc = byte::crc_update(crc, CHECK_STRING, LENGTH);
-  crc = byte::crc_finalize(crc);
+test(crc32_byte, check) {
+  uint32_t crc = crc32_byte::crc_init();
+  crc = crc32_byte::crc_update(crc, CHECK_STRING, LENGTH);
+  crc = crc32_byte::crc_finalize(crc);
   assertEqual(EXPECTED_CRC, crc);
 }
 

@@ -27,17 +27,17 @@ volatile int disableCompilerOptimization = 0;
 #if FEATURE == 0
   // nothing
 #elif FEATURE == 1
-  using namespace ace_crc::crc16ccitt::bit;
+  using namespace ace_crc::crc16ccitt_bit;
 #elif FEATURE == 2
-  using namespace ace_crc::crc16ccitt::nibble;
+  using namespace ace_crc::crc16ccitt_nibble;
 #elif FEATURE == 3
-  using namespace ace_crc::crc16ccitt::byte;
+  using namespace ace_crc::crc16ccitt_byte;
 #elif FEATURE == 4
-  using namespace ace_crc::crc32::bit;
+  using namespace ace_crc::crc32_bit;
 #elif FEATURE == 5
-  using namespace ace_crc::crc32::nibble;
+  using namespace ace_crc::crc32_nibble;
 #elif FEATURE == 6
-  using namespace ace_crc::crc32::byte;
+  using namespace ace_crc::crc32_byte;
 #else
   #error Unknown FEATURE
 #endif
