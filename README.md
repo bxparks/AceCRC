@@ -57,6 +57,9 @@ Additional algorithms from `pycrc` can be generated if needed.
     * [Headers and Namespaces](#Headers)
     * [Core CRC Functions](#CoreFunctions)
 * [Resource Consumption](#ResourceConsumption)
+    * [Memory Benchmarks](#MemoryBenchmarks)
+    * [CPU Benchmarks](#CpuBenchmarks)
+    * [Recommendations](#Recommendations)
 * [System Requirements](#SystemRequirements)
     * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
@@ -191,6 +194,9 @@ crc_t calculateCRC(const char* str) {
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 
+<a name="MemoryBenchmarks"></a>
+### Memory Benchmarks
+
 I wrote a bunch of scripts in
 [examples/MemoryBenchmark](examples/MemoryBenchmark) to automatically gather the
 flash and static RAM consumption of various CRC algorithms on various
@@ -207,11 +213,40 @@ Roughtly speaking here are the numbers for each algorithm:
 * `crc32_nibble`: 140-220 bytes of flash
 * `crc32_byte`: 1100-1200 bytes of flash
 
-These numbers seem to confirm the assumption that `nibble` variant of the
-algorithms (4-bit lookup table) would be a nice compromise between size and
-speed.
+<a name="CpuBenchmarks"></a>
+### CPU Benchmarks
 
-(TODO: Perform CPU benchmarks of each algorithm.)
+The CPU performance of each CRC algorithm and variant is given in
+[examples/CpuBenchmark](examples/CpuBenchmark) as units of microseconds per kiB
+(1024 bytes).
+
+For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
+* "bit": 12-13000 micros/kiB
+* "nibble": 7000 micros/kiB
+* "byte": 1500 micros/kiB
+
+For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
+of:
+* "bit": 500-3000 micros/kiB
+* "nibble": 100-700 micros/kiB
+* "byte": 70-400 micros/kiB
+
+<a name="Recommendations"></a>
+### Recommendations
+
+Looking at the Memory and CPU consumption numbers, the "nibble" variants
+(4-bit lookup table) seem to offer a good tradeoff between flash memory
+consumption and CPU speed:
+
+* Compared to the "bit" versions, the "nibble" variants are about the same size
+  but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
+* Compared to the "byte" versions, the "nibble" variants can be 4X to 10X
+  smaller in flash size, but about 3-4X (8-bit) to 50% (32-bit) slower.
+
+The AceCRC library allows you to choose exactly how to implement the space
+versus time tradeoff for your specific application.
+
+(TODO: Combine the Memory and CPU benchmarks into a single table.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements
