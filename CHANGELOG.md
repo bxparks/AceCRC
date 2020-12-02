@@ -1,6 +1,8 @@
 # Changelog
 
 * Unreleased
+    * Generate CPU times of each CRC algorithm and variant using
+      [examples/CpuBenchmark](examples/CpuBenchmark).
 * 0.1.1 (2020-11-29)
     * Fix embarrassing typos in library.properties.
 * 0.1 (2020-11-29)
