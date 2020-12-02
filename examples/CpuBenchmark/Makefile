@@ -15,7 +15,7 @@ TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 # It is not possible to auto-generate the $(TARGETS) because the USB ports are
 # dynamic. The dependency to $(TARGETS) must be commented out to avoid
 # triggering those rules automatically.
-README.md: generate_readme.py # $(TARGETS)
+README.md: generate_readme.py generate_table.awk # $(TARGETS)
 	./generate_readme.py > $@
 
 benchmarks: $(TARGETS)
