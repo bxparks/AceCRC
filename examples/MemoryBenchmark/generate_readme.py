@@ -77,12 +77,12 @@ $ make README.md
 ## Functionality
 
 * 0 Baseline: A program that does (almost) nothing
-* 1 crc16ccitt::bit
-* 2 crc16ccitt::nibble
-* 3 crc16ccitt::byte
-* 4 crc32::bit
-* 5 crc32::nibble
-* 6 crc32::byte
+* 1 `crc16ccitt_bit`
+* 2 `crc16ccitt_nibble`
+* 3 `crc16ccitt_byte`
+* 4 `crc32_bit`
+* 5 `crc32_nibble`
+* 6 `crc32_byte`
 
 ## Library Size Changes
 
