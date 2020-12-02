@@ -35,19 +35,19 @@ static void setupString() {
 
 /** Print the result for each CRC algorithm. */
 static void printStats(const char* name, TimingStats& stats) {
-  Serial.print(name);
-  Serial.print(' ');
-  Serial.print(STRING_SIZE);
-  Serial.print(' ');
-  Serial.print(stats.getMin());
-  Serial.print(' ');
-  Serial.print(stats.getAvg());
-  Serial.print(' ');
-  Serial.print(stats.getMax());
+  SERIAL_PORT_MONITOR.print(name);
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(STRING_SIZE);
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getMin());
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getAvg());
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.print(stats.getMax());
 
   uint16_t perKiB = stats.getAvg() / STRING_SIZE_KIB;
-  Serial.print(' ');
-  Serial.println(perKiB);
+  SERIAL_PORT_MONITOR.print(' ');
+  SERIAL_PORT_MONITOR.println(perKiB);
 }
 
 /**
