@@ -7,14 +7,15 @@ using namespace ace_common;
 
 const int NUM_SAMPLES = 100;
 const uint16_t SIZE = 1024;
-char string[SIZE];
+char string[SIZE + 1];
 
 volatile uint8_t disableCompilerOptimization;
 
 void setupString() {
   for (uint16_t i = 0; i < SIZE; i++) {
-    string[i] = random(256);
+    string[i] = random(32, 128); // printable ASCII
   }
+  string[SIZE] = '\0'; // In case we want to examine the string
 }
 
 void printStats(const char* name, TimingStats& stats) {
@@ -27,14 +28,20 @@ void printStats(const char* name, TimingStats& stats) {
   Serial.println(stats.getMax());
 }
 
+// Convert lambda expressions to function pointer, to avoid templatizing
+// the runLambda() function.
+typedef uint16_t (*Lambda)();
+
 /**
  * Run the given lambda function for 'count' many times, recording the elapsed
  * microseconds for each iteration. Then print the TimingStats (min, avg, max).
  */
-template <typename F>
-void runLambda(const char* name, uint16_t count, F&& lambda) {
+void runLambda(const char* name, uint16_t count, Lambda lambda) {
   TimingStats stats;
+
   while (count--) {
+    // Use a different string each iteration, to prevent the compiler from
+    // optimizing out this loop into a single iteration.
     setupString();
     yield();
 
