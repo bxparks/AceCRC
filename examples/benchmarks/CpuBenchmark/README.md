@@ -3,9 +3,9 @@
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**Version**: AceCRC v0.2
 
-**Version**: AceCRC v0.1.1
+**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
 ## How to Generate
 
