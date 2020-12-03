@@ -4,7 +4,7 @@
 APP_NAME := MemoryBenchmark
 ARDUINO_LIBS := AceCRC
 MORE_CLEAN := more_clean
-include ../../../UnixHostDuino/UnixHostDuino.mk
+include ../../../../UnixHostDuino/UnixHostDuino.mk
 
 .PHONY: benchmarks
 

@@ -1,6 +1,6 @@
 # Benchmarks
 
-Two benchmark programs are available in this directory:
+Two benchmark programs are available here:
 
 * MemoryBenchmark: Determines the flash and static memory usage of each CRC
   algorithm
@@ -8,7 +8,7 @@ Two benchmark programs are available in this directory:
   1 kiB (1024) string.
 
 The `*.txt` output of these benchmarks are combined in this README.md into a
-single benchmark table for each microcontroller type below.
+single table for each microcontroller type below.
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
