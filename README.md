@@ -37,15 +37,17 @@ This library converts the C99 code in the following way:
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
     * `ace_crc::crc32_byte`
-* a new function `crc_t crc_calculate(const void *data, size_t
-  data_len);` is inserted into the header file of each namespace
-    * this is a convenience function that calculates the CRC in one-shot
+* a convenience function `crc_t crc_calculate(const void *data, size_t
+  data_len)` is inserted into the header file of each namespace
+    * calculates the CRC in one-shot
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
 * the `static` keyword is removed 
     * not needed in C++ 
     * prevents generation of doxygen docs for those functions
+* the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
+    * becomes part of its enclosing namespace, preventing name collision
 
 Additional algorithms from `pycrc` can be generated if needed.
 
