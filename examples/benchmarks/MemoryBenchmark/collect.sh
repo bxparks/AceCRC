@@ -19,7 +19,7 @@ PROGRAM_NAME='MemoryBenchmark.ino'
 
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceCRC.
-AUNITER_CMD='../../../AUniter/tools/auniter.sh'
+AUNITER_CMD='../../../../AUniter/tools/auniter.sh'
 auniter_out_file=
 
 function usage() {

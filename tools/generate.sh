@@ -6,7 +6,7 @@
 # The 3 supported algorithms from pycrc are:
 #
 #   * bit: --algorithm bit-by-bit-fast
-#   * nibble: --algorithm table-driven table-idx-width 4
+#   * nibble: --algorithm table-driven --table-idx-width 4
 #   * byte: --algorithm table-driven --table-idx-width 8
 
 set -eu
@@ -21,7 +21,7 @@ PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
-    [--model {crc32|crc16ccitt}] [--algotag {bit|nibble|byte}] \
+    --model {crc-32|crc-16-ccitt} --algotag {bit|nibble|byte} \
     {--header | --source}"
     exit 1
 }
@@ -83,11 +83,25 @@ s/#define/static const uint8_t/
 s/ \([0-9][0-9]*\)$/ = \1;/
 /#ifdef __cplusplus/
 .,+2c
+/**
+ * Calculate the crc in one-shot.
+ * This is a convenience function added by AceCRC.
+ *
+ * \param[in] data     Pointer to a buffer of \a data_len bytes.
+ * \param[in] data_len Number of bytes in the \a data buffer.
+ */
+inline crc_t crc_calculate(const void *data, size_t data_len) {
+  crc_t crc = crc_init();
+  crc = crc_update(crc, data, data_len);
+  return crc_finalize(crc);
+}
+
 } // $fileroot
 } // ace_crc
 .
 /#endif.*${old_header_guard}/
 s/$old_header_guard/$new_header_guard/
+1,\$s/^static //
 w $fileroot.hpp
 q
 EOF
@@ -181,7 +195,6 @@ EOF
 
 header=0
 source=0
-convert=0
 model=''
 algotag=''
 while [[ $# -gt 0 ]]; do
@@ -189,7 +202,6 @@ while [[ $# -gt 0 ]]; do
         --help|-h) usage ;;
         --header) header=1 ;;
         --source) source=1 ;;
-        --convert) convert=1 ;;
         --model) shift; model="$1" ;;
         --algotag) shift; algotag="$1" ;;
         --) shift; break ;;

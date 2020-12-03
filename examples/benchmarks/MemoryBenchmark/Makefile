@@ -4,13 +4,13 @@
 APP_NAME := MemoryBenchmark
 ARDUINO_LIBS := AceCRC
 MORE_CLEAN := more_clean
-include ../../../UnixHostDuino/UnixHostDuino.mk
+include ../../../../UnixHostDuino/UnixHostDuino.mk
 
 .PHONY: benchmarks
 
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
-README.md: $(TARGETS) generate_readme.py
+README.md: $(TARGETS) generate_readme.py generate_table.awk
 	./generate_readme.py > $@
 
 benchmarks: $(TARGETS)

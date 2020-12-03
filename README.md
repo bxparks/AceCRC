@@ -37,13 +37,19 @@ This library converts the C99 code in the following way:
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
     * `ace_crc::crc32_byte`
+* a new function `crc_t crc_calculate(const void *data, size_t
+  data_len);` is inserted into the header file of each namespace
+    * this is a convenience function that calculates the CRC in one-shot
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
+* the `static` keyword is removed 
+    * not needed in C++ 
+    * prevents generation of doxygen docs for those functions
 
 Additional algorithms from `pycrc` can be generated if needed.
 
-**Version**: 0.1.1 (2020-11-29)
+**Version**: 0.2 (2020-12-03)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -57,6 +63,9 @@ Additional algorithms from `pycrc` can be generated if needed.
     * [Headers and Namespaces](#Headers)
     * [Core CRC Functions](#CoreFunctions)
 * [Resource Consumption](#ResourceConsumption)
+    * [Memory Benchmarks](#MemoryBenchmarks)
+    * [CPU Benchmarks](#CpuBenchmarks)
+    * [Recommendations](#Recommendations)
 * [System Requirements](#SystemRequirements)
     * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
@@ -90,7 +99,10 @@ void setup() {
   crc_t crc = crc_init();
   crc = crc_update(crc, CHECK_STRING, LENGTH);
   crc = crc_finalize(crc);
+  Serial.print("0x");
+  Serial.println((unsigned long) crc, 16);
 
+  crc = crc_calculate(CHECK_STRING, LENGTH);
   Serial.print("0x");
   Serial.println((unsigned long) crc, 16);
 }
@@ -99,7 +111,12 @@ void loop() {
 }
 ```
 
-This prints the hexadecimal number `0xE5CC` as expected.
+This prints the hexadecimal numbers
+```
+0xE5CC
+0xE5CC
+```
+as expected.
 
 <a name="Installation"></a>
 ## Installation
@@ -135,6 +152,8 @@ This library has no external dependencies to use.
 
 * [README.md](README.md) - this file
 * [Doxygen docs](https://bxparks.github.io/AceCRC/html) hosted on GitHub Pages
+* [examples/benchmarks](examples/benchmarks) - for memory and CPU consumption
+  number for each algorithm on various microcontrollers.
 
 <a name="Usage"></a>
 ## Usage
@@ -177,26 +196,30 @@ principle functions are:
 * `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
 * `crc_t crc_finalize(crc_t crc);`
 
-Here is a sample code that shows how to use these functions:
+This library adds the following convenience function to each header file in each
+namespace:
 
-```C++
-crc_t calculateCRC(const char* str) {
-  crc_t crc = crc_init();
-  crc = crc_update(crc, str, strlen(str));
-  crc = crc_finalize(crc);
-  return crc;
-}
-```
+* `crc_t crc_calculate(const void *data, size_t data_len);`
+
+See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
+functions are used. The `crc_update()` function can be called multiple times
+with additional data, before calling `crc_finalize()`.
+
+The `crc_calculate()` convenience function replaces the three separate calls to
+`crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 
+<a name="MemoryBenchmarks"></a>
+### Memory Benchmarks
+
 I wrote a bunch of scripts in
-[examples/MemoryBenchmark](examples/MemoryBenchmark) to automatically gather the
-flash and static RAM consumption of various CRC algorithms on various
-microcontrollers. The results are summarized in the `README.md` in that
-directory. None of the algorithms consumed any static RAM, because all their
-lookup tables are located in flash using `PROGMEM`.
+[examples/benchmarks/MemoryBenchmark](examples/benchmarks/MemoryBenchmark) to
+automatically gather the flash and static RAM consumption of various CRC
+algorithms on various microcontrollers. The results are summarized in the
+`README.md` in that directory. None of the algorithms consumed any static RAM,
+because all their lookup tables are located in flash using `PROGMEM`.
 
 Roughtly speaking here are the numbers for each algorithm:
 
@@ -207,11 +230,39 @@ Roughtly speaking here are the numbers for each algorithm:
 * `crc32_nibble`: 140-220 bytes of flash
 * `crc32_byte`: 1100-1200 bytes of flash
 
-These numbers seem to confirm the assumption that `nibble` variant of the
-algorithms (4-bit lookup table) would be a nice compromise between size and
-speed.
+<a name="CpuBenchmarks"></a>
+### CPU Benchmarks
 
-(TODO: Perform CPU benchmarks of each algorithm.)
+The CPU performance of each CRC algorithm and variant is given in
+[examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark) as units of
+microseconds per kiB (1024 bytes).
+
+For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
+* "bit": 12-13000 micros/kiB
+* "nibble": 7000 micros/kiB
+* "byte": 1500 micros/kiB
+
+For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
+of:
+* "bit": 500-3000 micros/kiB
+* "nibble": 100-700 micros/kiB
+* "byte": 70-400 micros/kiB
+
+<a name="Recommendations"></a>
+### Recommendations
+
+The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
+into a single place in [examples/benchmarks](examples/benchmarks) for
+convenience. It seems that the "nibble" variants (4-bit lookup table) seem to
+offer a good tradeoff between flash memory consumption and CPU speed:
+
+* Compared to the "bit" versions, the "nibble" variants are about the same size
+  but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
+* Compared to the "byte" versions, the "nibble" variants can be 4X to 10X
+  smaller in flash size, but about 3-4X (8-bit) to 50% (32-bit) slower.
+
+The AceCRC library allows you to choose exactly how to implement the space
+versus time tradeoff for your specific application.
 
 <a name="SystemRequirements"></a>
 ## System Requirements
@@ -289,10 +340,11 @@ seemed most useful in the context of small memory Arduino microcontrollers were:
 * 8-bit lookup table using 256 elements
 
 I calculated the flash and static memory consumption of each algorithm using
-[examples/MemoryBenchmark](examples/MemoryBenchmark). From those benchmarks, I
-can see that I am able to reduce the flash memory usage of the `CrcEeprom` class
-by a least 4kB by using a CRC algorithm that consumes only about 150-250 bytes
-(either the CRC16CCITT or CRC32 algorithm using a 4-bit lookup table).
+[examples/benchmarks/MemoryBenchmark](examples/benchmarks/MemoryBenchmark). From
+those benchmarks, I can see that I am able to reduce the flash memory usage of
+the `CrcEeprom` class by a least 4kB by using a CRC algorithm that consumes only
+about 150-250 bytes (either the CRC16CCITT or CRC32 algorithm using a 4-bit
+lookup table).
 
 <a name="Bugs"></a>
 ## Bugs and Limitations

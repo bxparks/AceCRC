@@ -16,48 +16,38 @@ esp8266_results = check_output(
     "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
     "./generate_table.awk < esp32.txt", shell=True, text=True)
-teensy32_results = check_output(
-    "./generate_table.awk < teensy32.txt", shell=True, text=True)
+#teensy32_results = check_output(
+#    "./generate_table.awk < teensy32.txt", shell=True, text=True)
+teensy32_results = 'TBD'
 
 print(f"""\
-# Memory Benchmark
+# CPU Benchmark
 
-The `MemoryBenchmark.ino` compiles example code snippets using the various
-CRC algorithms. The `FEATURE` macro flag controls which feature is
-compiled. The `collect.sh` edits this `FEATURE` flag programmatically, then runs
-the Arduino IDE compiler on the program, and extracts the flash and static
-memory usage into a text file (e.g. `nano.txt`).
+The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
+algorithms.
 
-The numbers shown below should be considered to be rough estimates. It is often
-difficult to separate out the code size of the library from the overhead imposed
-by the runtime environment of the processor. For example, it often seems like
-the ESP8266 allocates flash memory in blocks of a certain quantity, so the
-calculated flash size can jump around in unexpected ways.
+**Version**: AceCRC v0.2
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
-
-**Version**: AceCRC v0.1.1
 
 ## How to Generate
 
 This requires the [AUniter](https://github.com/bxparks/AUniter) script
 to execute the Arduino IDE programmatically.
 
-The `Makefile` has rules for several microcontrollers:
+The `Makefile` has rules to generate the `*.txt` results file for several
+microcontrollers that I usually support, but the `$ make benchmarks` command
+does not work very well because the USB port of the microcontroller is a
+dynamically changing parameter. I created a semi-automated way of collect the
+`*.txt` files:
 
-```
-$ make benchmarks
-```
-produces the following files:
-
-```
-nano.txt
-micro.txt
-samd.txt
-esp8266.txt
-esp32.txt
-teensy32.txt
-```
+1. Connect the microcontroller to the serial port. I usually do this through a
+USB hub with individually controlled switch.
+2. Type `$ auniter ports` to determine its `/dev/ttyXXX` port number (e.g.
+`/dev/ttyUSB0` or `/dev/ttyACM0`).
+3. If the port is `USB0` or `ACM0`, type `$ make nano.txt`, etc.
+4. Switch off the old microontroller.
+5. Go to Step 1 and repeat for each microcontroller.
 
 The `generate_table.awk` program reads one of `*.txt` files and prints out an
 ASCII table that can be directly embedded into this README.md file. For example
@@ -74,33 +64,10 @@ will be invoked by the following command:
 $ make README.md
 ```
 
-## Functionality
+The CPU times below are given in microseconds to compute the CRC of a string of
+1024 characters (i.e. micros/kiB).
 
-* 0 Baseline: A program that does (almost) nothing
-* 1 crc16ccitt::bit
-* 2 crc16ccitt::nibble
-* 3 crc16ccitt::byte
-* 4 crc32::bit
-* 5 crc32::nibble
-* 6 crc32::byte
-
-## Library Size Changes
-
--The size of the `crc_table` lookup table is:
--
--* 16 * 2 = 32 bytes CRC16 using 'nibble' variant
--* 256 * 2 = 512 bytes for CRC16 using 'byte' variant
--* 16 * 4 = 64 bytes for CRC32  using 'nibble' variant
--* 256 * 4 = 1024 bytes for CRC32 using 'byte' variant
--
--All of that extra RAM consumption goes away after we move the `crc_table` into
--flash memory using `PROGMEM`. The processors where `PROGMEM` makes a difference
--are:
--    * AVR (Nano, Pro Micro)
--    * ESP8266
--
--For the other processors, either the `crc_table` is already in flash memory, or
--the `PROGMEM` attribute does not do anything.
+## CPU Time Changes
 
 ## Arduino Nano
 
