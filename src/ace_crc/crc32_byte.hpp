@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Sun Nov 29 20:58:51 2020
+ * Generated on Wed Dec  2 22:03:39 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 32
@@ -37,7 +37,7 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Sun Nov 29 20:58:51 PST 2020
+ * Auto converted to Arduino C++ on Wed Dec  2 22:03:39 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -101,6 +101,19 @@ static inline crc_t crc_finalize(crc_t crc)
     return crc ^ 0xffffffff;
 }
 
+
+/**
+ * Calculate the crc in one-shot.
+ * This is a convenience function added by AceCRC.
+ *
+ * \param[in] data     Pointer to a buffer of \a data_len bytes.
+ * \param[in] data_len Number of bytes in the \a data buffer.
+ */
+inline crc_t crc_calculate(const void *data, size_t data_len) {
+  crc_t crc = crc_init();
+  crc = crc_update(crc, data, data_len);
+  return crc_finalize(crc);
+}
 
 } // crc32_byte
 } // ace_crc

@@ -83,6 +83,19 @@ s/#define/static const uint8_t/
 s/ \([0-9][0-9]*\)$/ = \1;/
 /#ifdef __cplusplus/
 .,+2c
+/**
+ * Calculate the crc in one-shot.
+ * This is a convenience function added by AceCRC.
+ *
+ * \param[in] data     Pointer to a buffer of \a data_len bytes.
+ * \param[in] data_len Number of bytes in the \a data buffer.
+ */
+inline crc_t crc_calculate(const void *data, size_t data_len) {
+  crc_t crc = crc_init();
+  crc = crc_update(crc, data, data_len);
+  return crc_finalize(crc);
+}
+
 } // $fileroot
 } // ace_crc
 .
