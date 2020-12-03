@@ -2,7 +2,9 @@
 
 * Unreleased
     * Generate CPU times of each CRC algorithm and variant using
-      [examples/CpuBenchmark](examples/CpuBenchmark).
+      [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark).
+    * Create combined CPU and Memory benchmark tables in
+      [examples/benchmarks](examples/benchmarks).
 * 0.1.1 (2020-11-29)
     * Fix embarrassing typos in library.properties.
 * 0.1 (2020-11-29)

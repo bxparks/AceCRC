@@ -138,6 +138,8 @@ This library has no external dependencies to use.
 
 * [README.md](README.md) - this file
 * [Doxygen docs](https://bxparks.github.io/AceCRC/html) hosted on GitHub Pages
+* [examples/benchmarks](examples/benchmarks) - for memory and CPU consumption
+  number for each algorithm on various microcontrollers.
 
 <a name="Usage"></a>
 ## Usage
@@ -198,11 +200,11 @@ crc_t calculateCRC(const char* str) {
 ### Memory Benchmarks
 
 I wrote a bunch of scripts in
-[examples/MemoryBenchmark](examples/MemoryBenchmark) to automatically gather the
-flash and static RAM consumption of various CRC algorithms on various
-microcontrollers. The results are summarized in the `README.md` in that
-directory. None of the algorithms consumed any static RAM, because all their
-lookup tables are located in flash using `PROGMEM`.
+[examples/benchmarks/MemoryBenchmark](examples/benchmarks/MemoryBenchmark) to
+automatically gather the flash and static RAM consumption of various CRC
+algorithms on various microcontrollers. The results are summarized in the
+`README.md` in that directory. None of the algorithms consumed any static RAM,
+because all their lookup tables are located in flash using `PROGMEM`.
 
 Roughtly speaking here are the numbers for each algorithm:
 
@@ -217,8 +219,8 @@ Roughtly speaking here are the numbers for each algorithm:
 ### CPU Benchmarks
 
 The CPU performance of each CRC algorithm and variant is given in
-[examples/CpuBenchmark](examples/CpuBenchmark) as units of microseconds per kiB
-(1024 bytes).
+[examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark) as units of
+microseconds per kiB (1024 bytes).
 
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
 * "bit": 12-13000 micros/kiB
@@ -234,9 +236,10 @@ of:
 <a name="Recommendations"></a>
 ### Recommendations
 
-Looking at the Memory and CPU consumption numbers, the "nibble" variants
-(4-bit lookup table) seem to offer a good tradeoff between flash memory
-consumption and CPU speed:
+The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
+into a single place in [examples/benchmarks](examples/benchmarks) for
+convenience. It seems that the "nibble" variants (4-bit lookup table) seem to
+offer a good tradeoff between flash memory consumption and CPU speed:
 
 * Compared to the "bit" versions, the "nibble" variants are about the same size
   but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
@@ -245,8 +248,6 @@ consumption and CPU speed:
 
 The AceCRC library allows you to choose exactly how to implement the space
 versus time tradeoff for your specific application.
-
-(TODO: Combine the Memory and CPU benchmarks into a single table.)
 
 <a name="SystemRequirements"></a>
 ## System Requirements
@@ -324,10 +325,11 @@ seemed most useful in the context of small memory Arduino microcontrollers were:
 * 8-bit lookup table using 256 elements
 
 I calculated the flash and static memory consumption of each algorithm using
-[examples/MemoryBenchmark](examples/MemoryBenchmark). From those benchmarks, I
-can see that I am able to reduce the flash memory usage of the `CrcEeprom` class
-by a least 4kB by using a CRC algorithm that consumes only about 150-250 bytes
-(either the CRC16CCITT or CRC32 algorithm using a 4-bit lookup table).
+[examples/benchmarks/MemoryBenchmark](examples/benchmarks/MemoryBenchmark). From
+those benchmarks, I can see that I am able to reduce the flash memory usage of
+the `CrcEeprom` class by a least 4kB by using a CRC algorithm that consumes only
+about 150-250 bytes (either the CRC16CCITT or CRC32 algorithm using a 4-bit
+lookup table).
 
 <a name="Bugs"></a>
 ## Bugs and Limitations
