@@ -94,7 +94,7 @@ void setup() {
 #endif
 
   SERIAL_PORT_MONITOR.begin(115200);
-  while(!SERIAL_PORT_MONITOR); // needed for Leonardo/Micro
+  while (!SERIAL_PORT_MONITOR); // needed for Leonardo/Micro
 }
 
 void loop() {
