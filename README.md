@@ -37,6 +37,9 @@ This library converts the C99 code in the following way:
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
     * `ace_crc::crc32_byte`
+* a new function `crc_t crc_calculate(const void *data, size_t
+  data_len);` is inserted into the header file of each namespace
+    * this is a convenience function that calculates the CRC in one-shot
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
@@ -93,7 +96,10 @@ void setup() {
   crc_t crc = crc_init();
   crc = crc_update(crc, CHECK_STRING, LENGTH);
   crc = crc_finalize(crc);
+  Serial.print("0x");
+  Serial.println((unsigned long) crc, 16);
 
+  crc = crc_calculate(CHECK_STRING, LENGTH);
   Serial.print("0x");
   Serial.println((unsigned long) crc, 16);
 }
@@ -102,7 +108,12 @@ void loop() {
 }
 ```
 
-This prints the hexadecimal number `0xE5CC` as expected.
+This prints the hexadecimal numbers
+```
+0xE5CC
+0xE5CC
+```
+as expected.
 
 <a name="Installation"></a>
 ## Installation
@@ -182,16 +193,17 @@ principle functions are:
 * `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
 * `crc_t crc_finalize(crc_t crc);`
 
-Here is a sample code that shows how to use these functions:
+This library adds the following convenience function to each header file in each
+namespace:
 
-```C++
-crc_t calculateCRC(const char* str) {
-  crc_t crc = crc_init();
-  crc = crc_update(crc, str, strlen(str));
-  crc = crc_finalize(crc);
-  return crc;
-}
-```
+* `crc_t crc_calculate(const void *data, size_t data_len);`
+
+See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
+functions are used. The `crc_update()` function can be called multiple times
+with additional data, before calling `crc_finalize()`.
+
+The `crc_calculate()` convenience function replaces the three separate calls to
+`crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption

@@ -16,6 +16,7 @@ crc_t	KEYWORD1
 crc_init	KEYWORD2
 crc_update	KEYWORD2
 crc_finalize	KEYWORD2
+crc_calculate	KEYWORD2
 
 #######################################
 # Instances (KEYWORD2)

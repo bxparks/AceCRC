@@ -5,6 +5,9 @@
       [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark).
     * Create combined CPU and Memory benchmark tables in
       [examples/benchmarks](examples/benchmarks).
+    * Insert a `crc_calculate()` convenience function into the header files so
+      that the CRC can be calculated in one-shot, instead of forcing the user to
+      call `crc_init()`, `crc_update()` and `crc_finalize()`.
 * 0.1.1 (2020-11-29)
     * Fix embarrassing typos in library.properties.
 * 0.1 (2020-11-29)
