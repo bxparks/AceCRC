@@ -8,7 +8,7 @@ include ../../../../UnixHostDuino/UnixHostDuino.mk
 
 .PHONY: benchmarks
 
-AUNITER_DIR := ../../../AUniter/tools
+AUNITER_DIR := ../../../../AUniter/tools
 
 TARGETS := nano.txt micro.txt samd.txt esp8266.txt esp32.txt teensy32.txt
 
