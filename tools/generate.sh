@@ -101,6 +101,7 @@ inline crc_t crc_calculate(const void *data, size_t data_len) {
 .
 /#endif.*${old_header_guard}/
 s/$old_header_guard/$new_header_guard/
+1,\$s/^static //
 w $fileroot.hpp
 q
 EOF

@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Wed Dec  2 22:03:38 2020
+ * Generated on Thu Dec  3 12:33:17 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 16
@@ -37,7 +37,7 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Wed Dec  2 22:03:38 PST 2020
+ * Auto converted to Arduino C++ on Thu Dec  3 12:33:17 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -57,7 +57,7 @@ namespace crc16ccitt_bit {
  * This is not used anywhere in the generated code, but it may be used by the
  * application code to call algorithm-specific code, if desired.
  */
-static const uint8_t CRC_ALGO_BIT_BY_BIT_FAST = 1;
+const uint8_t CRC_ALGO_BIT_BY_BIT_FAST = 1;
 
 
 /**
@@ -73,7 +73,7 @@ typedef uint_fast16_t crc_t;
  *
  * \return     The initial crc value.
  */
-static inline crc_t crc_init(void)
+inline crc_t crc_init(void)
 {
     return 0x1d0f;
 }
@@ -96,7 +96,7 @@ crc_t crc_update(crc_t crc, const void *data, size_t data_len);
  * \param[in] crc  The current crc value.
  * \return     The final crc value.
  */
-static inline crc_t crc_finalize(crc_t crc)
+inline crc_t crc_finalize(crc_t crc)
 {
     return crc;
 }

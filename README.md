@@ -43,6 +43,9 @@ This library converts the C99 code in the following way:
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
+* the `static` keyword is removed 
+    * not needed in C++ 
+    * prevents generation of doxygen docs for those functions
 
 Additional algorithms from `pycrc` can be generated if needed.
 
