@@ -6,14 +6,17 @@
 # table that can be inserted into the README.md.
 
 BEGIN {
-  NUM_ALGORITHMS = 6
+  NUM_ALGORITHMS = 9
   labels[0] = "baseline"
-  labels[1] = "crc16ccitt_bit";
-  labels[2] = "crc16ccitt_nibble";
-  labels[3] = "crc16ccitt_byte";
-  labels[4] = "crc32_bit";
-  labels[5] = "crc32_nibble";
-  labels[6] = "crc32_byte";
+  labels[1] = "crc8_bit";
+  labels[2] = "crc8_nibble";
+  labels[3] = "crc8_byte";
+  labels[4] = "crc16ccitt_bit";
+  labels[5] = "crc16ccitt_nibble";
+  labels[6] = "crc16ccitt_byte";
+  labels[7] = "crc32_bit";
+  labels[8] = "crc32_nibble";
+  labels[9] = "crc32_byte";
   record_index = 0
 }
 {
