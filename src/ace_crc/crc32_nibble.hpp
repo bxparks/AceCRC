@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Thu Dec  3 12:33:18 2020
+ * Generated on Thu Dec  3 19:34:45 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 32
@@ -37,7 +37,7 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Thu Dec  3 12:33:18 PST 2020
+ * Auto converted to Arduino C++ on Thu Dec  3 19:34:45 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -65,7 +65,7 @@ const uint8_t CRC_ALGO_TABLE_DRIVEN = 1;
  *
  * This type must be big enough to contain at least 32 bits.
  */
-typedef uint_fast32_t crc_t;
+typedef uint32_t crc_t;
 
 
 /**
