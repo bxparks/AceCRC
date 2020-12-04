@@ -56,12 +56,12 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc16ccitt_bit                  |       12772 |
+| crc16ccitt_bit                  |       12774 |
 | crc16ccitt_nibble               |        7086 |
-| crc16ccitt_byte                 |        1549 |
-| crc32_bit                       |       18379 |
+| crc16ccitt_byte                 |        1550 |
+| crc32_bit                       |       18396 |
 | crc32_nibble                    |        8956 |
-| crc32_byte                      |        2388 |
+| crc32_byte                      |        2389 |
 +---------------------------------+-------------+
 
 ```
@@ -96,11 +96,11 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc16ccitt_bit                  |        2942 |
-| crc16ccitt_nibble               |         675 |
-| crc16ccitt_byte                 |         446 |
+| crc16ccitt_bit                  |        2831 |
+| crc16ccitt_nibble               |         687 |
+| crc16ccitt_byte                 |         403 |
 | crc32_bit                       |        2946 |
-| crc32_nibble                    |         637 |
+| crc32_nibble                    |         636 |
 | crc32_byte                      |         380 |
 +---------------------------------+-------------+
 
@@ -116,12 +116,12 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc16ccitt_bit                  |        1307 |
-| crc16ccitt_nibble               |         668 |
-| crc16ccitt_byte                 |         366 |
+| crc16ccitt_bit                  |        1499 |
+| crc16ccitt_nibble               |         681 |
+| crc16ccitt_byte                 |         363 |
 | crc32_bit                       |        1388 |
 | crc32_nibble                    |         617 |
-| crc32_byte                      |         342 |
+| crc32_byte                      |         340 |
 +---------------------------------+-------------+
 
 ```
@@ -136,11 +136,11 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc16ccitt_bit                  |         504 |
-| crc16ccitt_nibble               |         109 |
-| crc16ccitt_byte                 |          76 |
+| crc16ccitt_bit                  |         498 |
+| crc16ccitt_nibble               |         125 |
+| crc16ccitt_byte                 |          75 |
 | crc32_bit                       |         671 |
-| crc32_nibble                    |         109 |
+| crc32_nibble                    |         108 |
 | crc32_byte                      |          71 |
 +---------------------------------+-------------+
 

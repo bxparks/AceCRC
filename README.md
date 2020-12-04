@@ -48,6 +48,10 @@ This library converts the C99 code in the following way:
     * prevents generation of doxygen docs for those functions
 * the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
     * becomes part of its enclosing namespace, preventing name collision
+* convert typedef for `crc_t` from `uint_fast16_t` and `uint_fast32_t` to
+  `uint16_t` and `uint32_t`
+    * affects only 32-bit processors, and only the `crc16ccitt_*` algorithms
+    * see section [Integer Sizes](IntegerSizes) below
 
 Additional algorithms from `pycrc` can be generated if needed.
 
@@ -64,6 +68,7 @@ Additional algorithms from `pycrc` can be generated if needed.
 * [Usage](#Usage)
     * [Headers and Namespaces](#Headers)
     * [Core CRC Functions](#CoreFunctions)
+    * [Integer Sizes](#IntegerSizes)
 * [Resource Consumption](#ResourceConsumption)
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
@@ -209,6 +214,37 @@ with additional data, before calling `crc_finalize()`.
 
 The `crc_calculate()` convenience function replaces the three separate calls to
 `crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
+
+<a name="IntegerSizes"></a>
+### Integer Sizes
+
+By default, the `pycrc` program generates C99 code which contains one of the
+following definitions of the `crc_t` type:
+
+```C++
+typedef uint_fast16_t crc_t;
+typedef uint_fast32_t crc_t;
+```
+
+On 8-bit processors, `uint_fast16_t` is identical to `uint16_t`, and
+`uint_fast32_t` is identical to `uint32_t`.
+
+On 32-bit processors (e.g. SAMD, ESP8266, ESP32), `uint_fast16_t` is defined to
+be `uint32_t`, presumably because a 32-bit integer type is faster for most
+operations (but not always). The main effect of this definition, though, is that
+the `crc_table` of `crc16ccitt_nibble` and `crc16ccitt_byte` algorithms become
+twice as large as they need to be, because each element consumes 4 bytes instead
+of 2 bytes.
+
+After regenerating the CPU and memory consumption tables of
+[examples/benchmarks](examples/benchmarks), I found that using a `uint16_t`
+affected the speed of the algorithms only a little (2-14%). Some were got
+slightly slower, but some actually got slightly faster using the supposedly
+slower `uint16_t` type.
+
+The speed difference was minor, but the flash size difference was large, so I
+made the choice of generating these algorithms using the deterministic sizes of
+`uint16_t` and `uint32_t`.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption

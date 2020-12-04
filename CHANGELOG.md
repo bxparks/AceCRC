@@ -1,6 +1,13 @@
 # Changelog
 
 * Unreleased
+    * Use exact sized `uint16_t` and `uint32_t` as the typedef for `crc_t`,
+      instead of the default `uint_fast16_t` and `uint_fast32_t` produced by
+      pycrc. This change affects only the 32-bit processors where
+      `uint_fast16_t` is defined to be 32 bits instead of 16 bits. Some of the
+      `crc16ccitt` algorithms become slightly slower but some become slightly
+      faster. The biggest difference is that the `crc_table` sizes for the
+      `cc16ccitt` algorithms all become 1/2 the size, which is a big win.
 * 0.2 (2020-12-03)
     * Generate CPU times of each CRC algorithm and variant using
       [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark).
