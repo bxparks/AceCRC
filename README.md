@@ -48,6 +48,9 @@ This library converts the C99 code in the following way:
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
+    * (Note that on platforms that do not support flash memory storage of
+      data, `PROGMEM` is a no-op, and the various `pgm_read_{xxx}()` routines
+      become just normal memory accessors.)
 * the `static` keyword is removed from header files
     * not needed in C++ 
     * prevents generation of doxygen docs for those functions
@@ -83,6 +86,7 @@ This library converts the C99 code in the following way:
     * [Operating System](#OperatingSystem)
 * [License](#License)
 * [Background and Motivation](#Motivation)
+    * [Other CRC Libraries](#OtherLibraries)
 * [Bugs and Limitations](#Bugs)
 * [Feedback and Support](#Feedback)
 * [Authors](#Authors)
@@ -441,6 +445,62 @@ those benchmarks, I can see that I am able to reduce the flash memory usage of
 the `CrcEeprom` class by a least 4kB by using a CRC algorithm that consumes only
 about 150-250 bytes (either the CRC16CCITT or CRC32 algorithm using a 4-bit
 lookup table).
+
+<a name="OtherLibraries"></a>
+### Other CRC Libraries
+
+I did a quick survey of existing CRC libraries for Arduino, before deciding to
+write my own. Part of the motiation was that I wanted to learn this stuff. The
+other part was that the existing libraries did not offer me enough control over
+space and time tradeoffs.
+
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses pycrc to generate the CRC-32 with 8-bit lookup table
+    * equivalent to `crc32_byte` algorithm in the AceCRC library
+    * does **not** use `PROGMEM`, so the lookup table consumes 1024 bytes of
+      static RAM
+* CRCx (https://github.com/hideakitai/CRCx)
+    * a thin abstraction layer on top of FastCRC
+      (https://github.com/FrankBoesing/FastCRC) and
+      CRCpp (https://github.com/d-bahr/CRCpp)
+    * FastCRC is used for Arduino
+    * FastCRC and CRCpp are *vendored* (copied) into that library
+    * FastCRC uses extra large tables by default and does not use `PROGMEM`, as
+      described above
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table
+    * equivalent to `crc32_nibble` algorithm in the AceCRC library
+    * uses `PROGMEM` if available
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses extra large lookup tables (1024 elements, instead of usual 256
+      elements) by default
+    * does **not** use `PROGMEM` so lookup tables consume static RAM on AVR
+      processors and ESP8266
+    * no longer availabe on Arduino Library Manager
+      (see https://github.com/FrankBoesing/FastCRC/issues/25)
+* uCRC16BPBLib (https://github.com/Naguissa/uCRC16BPBLib)
+    * calculates CRC-16-CCITT using bit-by-bit loop
+    * allows incremental CRC16 to be updated bit-by-bit
+    * does not use lookup table
+* uCRC16Lib (https://github.com/Naguissa/uCRC16Lib)
+    * I think the same bit-by-bit internal loop as above
+    * but exposes only byte-by-byte API
+* uCRC16XModemLib (https://github.com/Naguissa/uCRC16XModemLib)
+    * calculates CRC-16-XMODEM using bit-by-bit loop
+
+Some platforms include an implementation of a CRC algorithm in a core header
+or an example file:
+
+    * ESP8266
+        * `#include <coredecls.h>`
+        * `uint32_t crc32 (const void* data, size_t length,
+          uint32_t crc = 0xffffffff);`
+        * performs a bit-by-bit loop with no lookup table
+        * equivalent to `crc32_bit` in the AceCRC library
+    * AVR
+        * `arduino/hardware/avr/1.8.3/libraries/EEPROM/examples/eeprom_crc/eeprom_crc.ino`
+        * contains a CRC-32 implementation using a 4-bit lookup table
+        * equivalent to `crc32_nibble` in AceCRC
 
 <a name="Bugs"></a>
 ## Bugs and Limitations
