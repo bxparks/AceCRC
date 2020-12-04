@@ -320,8 +320,8 @@ flash memory consumption and CPU speed in the following ways:
 
 * Compared to the "bit" versions, the "nibble" variants are about the same size
   but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
-* Compared to the "byte" versions, the "nibble" variants can be 4X to 10X
-  smaller in flash size, but about 3-4X (8-bit) to 50% (32-bit) slower.
+* Compared to the "byte" versions, the "nibble" variants can be 4-5X
+  smaller in flash size, but only about 3-4X (8-bit) to 1.5-2X (32-bit) slower.
 
 The CRC-8 algorithm has the unfortunate property that arrays of zeros of
 different lengths (e.g. 1 zero or 2 zeros) have the exact same CRC (0). The
