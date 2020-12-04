@@ -268,6 +268,15 @@ I concluded that it was better in the Arduino microcontroller environments to
 make the `crc_t` type correspond to the exact sized integer types (`uint8_t`,
 `uint16_t`, `uint32_t`).
 
+The `size_t` is used as the type of the `data_len` parameter of the
+`crc_update()` or the `crc_calculate()` function. On 8-bit processors `size_t`
+is 2 bytes, and on 32-bit processors `size_t` is 4 bytes. To calculate the CRC
+of an array that's longer than 64 kiB long on 8-bit processors, it must be
+broken down into chunks smaller than 64 kiB and processed through the
+`crc_update()` function multiple times. I suspect that this situation will
+happen only rarely on 8-bit processors which tend to deal with fairly small
+amounts of data.
+
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 

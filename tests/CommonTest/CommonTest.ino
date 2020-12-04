@@ -21,11 +21,22 @@ using namespace ace_crc;
 // verifies that change.
 // --------------------------------------------------------------------------
 
+
+#if defined(ARDUINO_ARCH_AVR)
+  static size_t SIZE_T_SIZE = 2;
+#elif defined(UNIX_HOST_DUINO)
+  static size_t SIZE_T_SIZE = 8;
+#else
+  static size_t SIZE_T_SIZE = 4;
+#endif
+
 static size_t CRC8_CRC_T_SIZE = 1;
 static size_t CRC16_CRC_T_SIZE = 2;
 static size_t CRC32_CRC_T_SIZE = 4;
 
 test(CommonTest, sizeof) {
+  assertEqual(sizeof(size_t), SIZE_T_SIZE);
+
   assertEqual(sizeof(crc8_bit::crc_t), CRC8_CRC_T_SIZE);
   assertEqual(sizeof(crc8_nibble::crc_t), CRC8_CRC_T_SIZE);
   assertEqual(sizeof(crc8_byte::crc_t), CRC8_CRC_T_SIZE);
