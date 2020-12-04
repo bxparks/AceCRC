@@ -21,7 +21,7 @@ PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
-    --model {crc-32|crc-16-ccitt} --algotag {bit|nibble|byte} \
+    --model {crc-8|crc-16-ccitt|crc-32} --algotag {bit|nibble|byte} \
     {--header | --source}"
     exit 1
 }
@@ -102,6 +102,7 @@ inline crc_t crc_calculate(const void *data, size_t data_len) {
 /#endif.*${old_header_guard}/
 s/$old_header_guard/$new_header_guard/
 1,\$s/^static //
+/typedef uint_fast/s//typedef uint/
 w $fileroot.hpp
 q
 EOF
@@ -239,6 +240,7 @@ esac
 
 # Determine the <progmem.h> function that extracts the lookup table.
 case $model in
+    crc-8) pgm_read_func='pgm_read_byte' ;;
     crc-16-ccitt) pgm_read_func='pgm_read_word' ;;
     crc-32) pgm_read_func='pgm_read_dword' ;;
     *) echo 'Unknown --model '$model''; usage ;;

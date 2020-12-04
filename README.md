@@ -3,8 +3,10 @@
 Various CRC algorithms generated from `pycrc` (https://pycrc.org), then
 auto-converted to Arduino C++ format, and exported as an Arduino library.
 
-Currently supported algorithms are:
+Currently supported algorithms are (see [list of pycrc supported
+algorithms](https://pycrc.org/models.html)):
 
+* CRC-8
 * CRC-16-CCITT
 * CRC-32
 
@@ -31,25 +33,34 @@ This library converts the C99 code in the following way:
 
 * each algorithm and variant is wrapped its own C++ namespace to avoid name
   collision
+    * `ace_crc::crc8_bit`
+    * `ace_crc::crc8_nibble`
+    * `ace_crc::crc8_byte`
     * `ace_crc::crc16ccitt_bit`
     * `ace_crc::crc16ccitt_nibble`
     * `ace_crc::crc16ccitt_byte`
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
     * `ace_crc::crc32_byte`
-* a new function `crc_t crc_calculate(const void *data, size_t
-  data_len);` is inserted into the header file of each namespace
-    * this is a convenience function that calculates the CRC in one-shot
+* a convenience function `crc_t crc_calculate(const void *data, size_t
+  data_len)` is inserted into the header file of each namespace
+    * calculates the CRC in one-shot
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
 * the `static` keyword is removed 
     * not needed in C++ 
     * prevents generation of doxygen docs for those functions
+* the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
+    * becomes part of its enclosing namespace, preventing name collision
+* convert typedef for `crc_t` from `uint_fast16_t` and `uint_fast32_t` to
+  `uint16_t` and `uint32_t`
+    * affects only 32-bit processors, and only the `crc16ccitt_*` algorithms
+    * see section [Integer Sizes](#IntegerSizes) below
 
 Additional algorithms from `pycrc` can be generated if needed.
 
-**Version**: 0.2 (2020-12-03)
+**Version**: 0.3 (2020-12-03)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -62,6 +73,7 @@ Additional algorithms from `pycrc` can be generated if needed.
 * [Usage](#Usage)
     * [Headers and Namespaces](#Headers)
     * [Core CRC Functions](#CoreFunctions)
+    * [Integer Sizes](#IntegerSizes)
 * [Resource Consumption](#ResourceConsumption)
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
@@ -208,6 +220,44 @@ with additional data, before calling `crc_finalize()`.
 The `crc_calculate()` convenience function replaces the three separate calls to
 `crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
 
+<a name="IntegerSizes"></a>
+### Integer Sizes
+
+By default, the `pycrc` program generates C99 code which contains one of the
+following definitions of the `crc_t` type:
+
+```C++
+typedef uint_fast8_t crc_t;
+typedef uint_fast16_t crc_t;
+typedef uint_fast32_t crc_t;
+```
+
+These are converted by this library to these instead:
+```C++
+typedef uint8_t crc_t;
+typedef uint16_t crc_t;
+typedef uint32_t crc_t;
+```
+
+On 8-bit processors, `uint_fast8_t` is identical to `uint8_t`, `uint_fast16_t`
+is identical to `uint16_t`, and `uint_fast32_t` is identical to `uint32_t`.
+
+On 32-bit processors (e.g. SAMD, ESP8266, ESP32), `uint_fast8_t` and
+`uint_fast16_t` are both defined to be `uint32_t`, presumably because the 32-bit
+integer type is faster for most operations (but not always). The main effect of
+these definitions is to increase the size of the `crc_table` for the CRC-8 and
+CRC-16-CCITT algorithms by a factor of 4x or 2x, compared to what they could be.
+
+After regenerating the CPU and memory consumption tables of
+[examples/benchmarks](examples/benchmarks), I found that using a `uint16_t`
+affected the speed of the algorithms only a little (2-14%). Some were got
+slightly slower, but some actually got slightly faster using the supposedly
+slower `uint16_t` type.
+
+The speed difference was minor, but the flash size difference was large, so I
+made the choice of generating these algorithms using the deterministic sizes of
+`uint8_t`, `uint16_t` and `uint32_t`.
+
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
 
@@ -223,10 +273,10 @@ because all their lookup tables are located in flash using `PROGMEM`.
 
 Roughtly speaking here are the numbers for each algorithm:
 
-* `crc16ccitt_bit`: 90-150 bytes of flash
-* `crc16ccitt_nibble`: 140-230 bytes of flash
-* `crc16ccitt_byte`: 560-1100 bytes of flash
-* `crc32_bit`: 110-200 bytes of flash
+* `crc16ccitt_bit`: 90-140 bytes of flash
+* `crc16ccitt_nibble`: 100-190 bytes of flash
+* `crc16ccitt_byte`: 560-630 bytes of flash
+* `crc32_bit`: 110-190 bytes of flash
 * `crc32_nibble`: 140-220 bytes of flash
 * `crc32_byte`: 1100-1200 bytes of flash
 
@@ -238,9 +288,9 @@ The CPU performance of each CRC algorithm and variant is given in
 microseconds per kiB (1024 bytes).
 
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
-* "bit": 12-13000 micros/kiB
-* "nibble": 7000 micros/kiB
-* "byte": 1500 micros/kiB
+* "bit": 13000-18000 micros/kiB
+* "nibble": 7000-9000 micros/kiB
+* "byte": 1500-2400 micros/kiB
 
 For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
 of:
@@ -253,16 +303,47 @@ of:
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
-convenience. It seems that the "nibble" variants (4-bit lookup table) seem to
-offer a good tradeoff between flash memory consumption and CPU speed:
+convenience.
+
+Comparing the different variants ("bit", "nibble" and "byte"), it seems that the
+"nibble" variants (4-bit lookup table) seem to offer a good tradeoff between
+flash memory consumption and CPU speed:
 
 * Compared to the "bit" versions, the "nibble" variants are about the same size
   but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
 * Compared to the "byte" versions, the "nibble" variants can be 4X to 10X
   smaller in flash size, but about 3-4X (8-bit) to 50% (32-bit) slower.
 
-The AceCRC library allows you to choose exactly how to implement the space
-versus time tradeoff for your specific application.
+The CRC-8 algorithm has the unfortunate property that arrays of zeros of
+different lengths (e.g. 1 zero or 2 zeros) have the exact same CRC (0). The
+other two (CRC-16-CCITT and CRC32) are able to distinguish strings of zeroes of
+different lengths. In terms of flash size and performance, the CRC-8 algorithm
+is not all that much faster than the CRC-16-CCITT, even on 8-bit processors. For
+these reasons, the CRc-8 algorithm is not recommended, unless you are really
+strapped for flash bytes.
+
+Between the CRC-16-CCITT and CRC-32 algorithms, if we look at the `_nibble`
+variants, there is very little difference in flash size and CPU speed, even on
+8-bit processors. On 32-bit processors, the CRC-32 is actually faster. The
+CRC-32 will be able to detected far more errors than the CRC-16-CCITT.
+
+Putting all these together, here are my recommended algorithms, in decreasing
+order of preference:
+1. `crc32_nibble` in most situtations for a balance of flash size (~200 bytes)
+   and speed
+2. `crc16ccitt_nibble` to save 60 bytes of flash on 8-bit AVR processors, with
+   a reasonable amount of error detection
+3. `crc32_byte` if you need the fastest algorithm and you have 1100 bytes of
+   flash to spare
+4. `crc16ccitt_bit` if you need to implement a very tiny CRC algorithm (90 bytes
+   on an 8-bit AVR processor), and you are not worried about speed
+5. `crc8_bit` if you need to implement the absolute smallest CRC algorithm (80
+   bytes on an 8-bit AVR processor), and you are not worried about speed, and
+   you can tolerate high chances of corruption
+
+You can consult the results in [examples/benchmarks](examples/benchmarks) to
+determine exactly you want to make the space versus time tradeoff for your
+specific application.
 
 <a name="SystemRequirements"></a>
 ## System Requirements

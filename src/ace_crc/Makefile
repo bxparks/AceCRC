@@ -1,4 +1,7 @@
 TARGETS := \
+	crc8_bit.hpp crc8_bit.cpp \
+	crc8_nibble.hpp crc8_nibble.cpp \
+	crc8_byte.hpp crc8_byte.cpp \
 	crc16ccitt_bit.hpp crc16ccitt_bit.cpp \
 	crc16ccitt_nibble.hpp crc16ccitt_nibble.cpp \
 	crc16ccitt_byte.hpp crc16ccitt_byte.cpp \
@@ -9,6 +12,31 @@ TARGETS := \
 GENERATOR := ../../tools/generate.sh
 
 all: $(TARGETS)
+
+#-----------------------------------------------------------------------------
+# CRC-8
+#-----------------------------------------------------------------------------
+
+# bit by bit
+crc8_bit.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag bit --header
+
+crc8_bit.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag bit --source
+
+# 4-bit table
+crc8_nibble.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag nibble --header
+
+crc8_nibble.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag nibble --source
+
+# 8-bit table
+crc8_byte.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag byte --header
+
+crc8_byte.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-8 --algotag byte --source
 
 #-----------------------------------------------------------------------------
 # CRC-16-CCITT

@@ -17,6 +17,10 @@
 #ifndef ACE_CRC_ACE_CRC_H
 #define ACE_CRC_ACE_CRC_H
 
+#include "ace_crc/crc8_bit.hpp"
+#include "ace_crc/crc8_byte.hpp"
+#include "ace_crc/crc8_nibble.hpp"
+
 #include "ace_crc/crc16ccitt_bit.hpp"
 #include "ace_crc/crc16ccitt_byte.hpp"
 #include "ace_crc/crc16ccitt_nibble.hpp"
@@ -26,7 +30,7 @@
 #include "ace_crc/crc32_nibble.hpp"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_TIME_VERSION 200
-#define ACE_TIME_VERSION_STRING "0.2"
+#define ACE_TIME_VERSION 300
+#define ACE_TIME_VERSION_STRING "0.3"
 
 #endif
