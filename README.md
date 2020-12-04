@@ -60,7 +60,7 @@ This library converts the C99 code in the following way:
 
 Additional algorithms from `pycrc` can be generated if needed.
 
-**Version**: 0.3 (2020-12-03)
+**Version**: 0.3.1 (2020-12-03)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 

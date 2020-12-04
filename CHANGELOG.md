@@ -1,7 +1,7 @@
 # Changelog
 
 * Unreleased
-* 0.3 (2020-12-03)
+* 0.3.1 (2020-12-03)
     * Use exact sized `uint16_t` and `uint32_t` as the typedef for `crc_t`,
       instead of the default `uint_fast16_t` and `uint_fast32_t` produced by
       pycrc. This change affects only the 32-bit processors where
@@ -12,6 +12,8 @@
     * Add CRC-8 algorithms in `crc8_bit`, `crc8_nibble`, and `crc8_byte`
       namespaces. Update MemoryBenchmark and CpuBenchmark numbers.
     * Add recommendation list of various algorithms in README.md.
+* 0.3 (2020-12-03)
+    * Botched release, deleted.
 * 0.2 (2020-12-03)
     * Generate CPU times of each CRC algorithm and variant using
       [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark).
