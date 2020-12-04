@@ -454,16 +454,16 @@ space and time tradeoffs.
 Some platforms include an implementation of a CRC algorithm in a core header
 or an example file:
 
-    * ESP8266
-        * `#include <coredecls.h>`
-        * `uint32_t crc32 (const void* data, size_t length,
-          uint32_t crc = 0xffffffff);`
-        * performs a bit-by-bit loop with no lookup table
-        * equivalent to `crc32_bit` in the AceCRC library
-    * AVR
-        * `arduino/hardware/avr/1.8.3/libraries/EEPROM/examples/eeprom_crc/eeprom_crc.ino`
-        * contains a CRC-32 implementation using a 4-bit lookup table
-        * equivalent to `crc32_nibble` in AceCRC
+* ESP8266
+    * `#include <coredecls.h>`
+    * `uint32_t crc32 (const void* data, size_t length,
+        uint32_t crc = 0xffffffff);`
+    * performs a bit-by-bit loop with no lookup table
+    * equivalent to `crc32_bit` in the AceCRC library
+* AVR
+    * `arduino/hardware/avr/1.8.3/libraries/EEPROM/examples/eeprom_crc/eeprom_crc.ino`
+    * contains a CRC-32 implementation using a 4-bit lookup table
+    * equivalent to `crc32_nibble` in AceCRC
 
 <a name="Bugs"></a>
 ## Bugs and Limitations
