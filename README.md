@@ -51,7 +51,7 @@ This library converts the C99 code in the following way:
 * convert typedef for `crc_t` from `uint_fast16_t` and `uint_fast32_t` to
   `uint16_t` and `uint32_t`
     * affects only 32-bit processors, and only the `crc16ccitt_*` algorithms
-    * see section [Integer Sizes](IntegerSizes) below
+    * see section [Integer Sizes](#IntegerSizes) below
 
 Additional algorithms from `pycrc` can be generated if needed.
 
@@ -226,6 +226,12 @@ typedef uint_fast16_t crc_t;
 typedef uint_fast32_t crc_t;
 ```
 
+These are converted by this library to these instead:
+```C++
+typedef uint16_t crc_t;
+typedef uint32_t crc_t;
+```
+
 On 8-bit processors, `uint_fast16_t` is identical to `uint16_t`, and
 `uint_fast32_t` is identical to `uint32_t`.
 
@@ -261,10 +267,10 @@ because all their lookup tables are located in flash using `PROGMEM`.
 
 Roughtly speaking here are the numbers for each algorithm:
 
-* `crc16ccitt_bit`: 90-150 bytes of flash
-* `crc16ccitt_nibble`: 140-230 bytes of flash
-* `crc16ccitt_byte`: 560-1100 bytes of flash
-* `crc32_bit`: 110-200 bytes of flash
+* `crc16ccitt_bit`: 90-140 bytes of flash
+* `crc16ccitt_nibble`: 100-190 bytes of flash
+* `crc16ccitt_byte`: 560-630 bytes of flash
+* `crc32_bit`: 110-190 bytes of flash
 * `crc32_nibble`: 140-220 bytes of flash
 * `crc32_byte`: 1100-1200 bytes of flash
 
@@ -276,9 +282,9 @@ The CPU performance of each CRC algorithm and variant is given in
 microseconds per kiB (1024 bytes).
 
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
-* "bit": 12-13000 micros/kiB
-* "nibble": 7000 micros/kiB
-* "byte": 1500 micros/kiB
+* "bit": 13000-18000 micros/kiB
+* "nibble": 7000-9000 micros/kiB
+* "byte": 1500-2400 micros/kiB
 
 For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
 of:
