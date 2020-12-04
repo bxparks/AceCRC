@@ -227,25 +227,26 @@ By default, the `pycrc` program generates C99 code which contains one of the
 following definitions of the `crc_t` type:
 
 ```C++
+typedef uint_fast8_t crc_t;
 typedef uint_fast16_t crc_t;
 typedef uint_fast32_t crc_t;
 ```
 
 These are converted by this library to these instead:
 ```C++
+typedef uint8_t crc_t;
 typedef uint16_t crc_t;
 typedef uint32_t crc_t;
 ```
 
-On 8-bit processors, `uint_fast16_t` is identical to `uint16_t`, and
-`uint_fast32_t` is identical to `uint32_t`.
+On 8-bit processors, `uint_fast8_t` is identical to `uint8_t`, `uint_fast16_t`
+is identical to `uint16_t`, and `uint_fast32_t` is identical to `uint32_t`.
 
-On 32-bit processors (e.g. SAMD, ESP8266, ESP32), `uint_fast16_t` is defined to
-be `uint32_t`, presumably because a 32-bit integer type is faster for most
-operations (but not always). The main effect of this definition, though, is that
-the `crc_table` of `crc16ccitt_nibble` and `crc16ccitt_byte` algorithms become
-twice as large as they need to be, because each element consumes 4 bytes instead
-of 2 bytes.
+On 32-bit processors (e.g. SAMD, ESP8266, ESP32), `uint_fast8_t` and
+`uint_fast16_t` are both defined to be `uint32_t`, presumably because the 32-bit
+integer type is faster for most operations (but not always). The main effect of
+these definitions is to increase the size of the `crc_table` for the CRC-8 and
+CRC-16-CCITT algorithms by a factor of 4x or 2x, compared to what they could be.
 
 After regenerating the CPU and memory consumption tables of
 [examples/benchmarks](examples/benchmarks), I found that using a `uint16_t`
@@ -255,7 +256,7 @@ slower `uint16_t` type.
 
 The speed difference was minor, but the flash size difference was large, so I
 made the choice of generating these algorithms using the deterministic sizes of
-`uint16_t` and `uint32_t`.
+`uint8_t`, `uint16_t` and `uint32_t`.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
