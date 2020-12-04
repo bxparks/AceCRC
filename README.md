@@ -80,14 +80,14 @@ This library converts the C99 code in the following way:
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
     * [Recommendations](#Recommendations)
+* [Background and Motivation](#Motivation)
+    * [Other CRC Libraries](#OtherLibraries)
+* [Bugs and Limitations](#Bugs)
 * [System Requirements](#SystemRequirements)
     * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
     * [Operating System](#OperatingSystem)
 * [License](#License)
-* [Background and Motivation](#Motivation)
-    * [Other CRC Libraries](#OtherLibraries)
-* [Bugs and Limitations](#Bugs)
 * [Feedback and Support](#Feedback)
 * [Authors](#Authors)
 
@@ -373,52 +373,6 @@ You can consult the results in [examples/benchmarks](examples/benchmarks) to
 determine exactly you want to make the space versus time tradeoff for your
 specific application.
 
-<a name="SystemRequirements"></a>
-## System Requirements
-
-<a name="ToolChain"></a>
-### Tool Chain
-
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
-* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
-
-<a name="Hardware"></a>
-### Hardware
-
-The library is extensively tested on the following boards:
-
-* Arduino Nano clone (16 MHz ATmega328P)
-* SparkFun Pro Micro clone (16 MHz ATmega32U4)
-* WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
-* ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
-
-I will occasionally test on the following hardware as a sanity check:
-
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
-* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
-
-<a name="OperatingSystem"></a>
-### Operating System
-
-I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
-that the library will work fine under MacOS and Windows, but I have not tested
-them.
-
-The generator script in `./tools/generate.sh` has only been tested under Ubuntu
-20.04.
-
-<a name="License"></a>
-## License
-
-[MIT License](https://opensource.org/licenses/MIT)
-
 <a name="Motivation"></a>
 ## Background and Motiviation
 
@@ -515,6 +469,52 @@ or an example file:
 ## Bugs and Limitations
 
 None that I know of right now.
+
+<a name="SystemRequirements"></a>
+## System Requirements
+
+<a name="ToolChain"></a>
+### Tool Chain
+
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
+* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
+
+<a name="Hardware"></a>
+### Hardware
+
+The library is extensively tested on the following boards:
+
+* Arduino Nano clone (16 MHz ATmega328P)
+* SparkFun Pro Micro clone (16 MHz ATmega32U4)
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
+* WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
+* ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
+
+I will occasionally test on the following hardware as a sanity check:
+
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+
+<a name="OperatingSystem"></a>
+### Operating System
+
+I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
+that the library will work fine under MacOS and Windows, but I have not tested
+them.
+
+The generator script in `./tools/generate.sh` has only been tested under Ubuntu
+20.04.
+
+<a name="License"></a>
+## License
+
+[MIT License](https://opensource.org/licenses/MIT)
 
 <a name="Feedback"></a>
 ## Feedback and Support
