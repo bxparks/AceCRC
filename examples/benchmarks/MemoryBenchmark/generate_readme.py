@@ -77,17 +77,22 @@ $ make README.md
 ## Functionality
 
 * 0 Baseline: A program that does (almost) nothing
-* 1 `crc16ccitt_bit`
-* 2 `crc16ccitt_nibble`
-* 3 `crc16ccitt_byte`
-* 4 `crc32_bit`
-* 5 `crc32_nibble`
-* 6 `crc32_byte`
+* 1 `crc8_bit`
+* 2 `crc8_nibble`
+* 3 `crc8_byte`
+* 4 `crc16ccitt_bit`
+* 5 `crc16ccitt_nibble`
+* 6 `crc16ccitt_byte`
+* 7 `crc32_bit`
+* 8 `crc32_nibble`
+* 9 `crc32_byte`
 
 ## Library Size Changes
 
 The size of the `crc_table` lookup table is:
 
+* CRC8 using 'nibble' variant: 16 * 1 = 16 bytes
+* CRC8 using 'byte' variant: 256 * 1 = 256 bytes
 * CRC16 using 'nibble' variant: 16 * 2 = 32 bytes
 * CRC16 using 'byte' variant: 256 * 2 = 512 bytes
 * CRC32  using 'nibble' variant: 16 * 4 = 64 bytes

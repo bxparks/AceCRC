@@ -21,10 +21,15 @@ using namespace ace_crc;
 // verifies that change.
 // --------------------------------------------------------------------------
 
+static size_t CRC8_CRC_T_SIZE = 1;
 static size_t CRC16_CRC_T_SIZE = 2;
 static size_t CRC32_CRC_T_SIZE = 4;
 
 test(CommonTest, sizeof) {
+  assertEqual(sizeof(crc8_bit::crc_t), CRC8_CRC_T_SIZE);
+  assertEqual(sizeof(crc8_nibble::crc_t), CRC8_CRC_T_SIZE);
+  assertEqual(sizeof(crc8_byte::crc_t), CRC8_CRC_T_SIZE);
+
   assertEqual(sizeof(crc16ccitt_bit::crc_t), CRC16_CRC_T_SIZE);
   assertEqual(sizeof(crc16ccitt_nibble::crc_t), CRC16_CRC_T_SIZE);
   assertEqual(sizeof(crc16ccitt_byte::crc_t), CRC16_CRC_T_SIZE);

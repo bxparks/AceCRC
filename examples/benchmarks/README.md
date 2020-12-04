@@ -41,12 +41,15 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc16ccitt_bit                  |     90/    0 |       12772 |
+| crc8_bit                        |     80/    0 |       10974 |
+| crc8_nibble                     |    126/    0 |        7216 |
+| crc8_byte                       |    292/    0 |         907 |
+| crc16ccitt_bit                  |     90/    0 |       12776 |
 | crc16ccitt_nibble               |    158/    0 |        7086 |
 | crc16ccitt_byte                 |    564/    0 |        1549 |
-| crc32_bit                       |    192/    0 |       18379 |
-| crc32_nibble                    |    220/    0 |        8956 |
-| crc32_byte                      |   1106/    0 |        2388 |
+| crc32_bit                       |    192/    0 |       18382 |
+| crc32_nibble                    |    220/    0 |        8957 |
+| crc32_byte                      |   1106/    0 |        2389 |
 +--------------------------------------------------------------+
 
 ```
@@ -61,11 +64,14 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc16ccitt_bit                  |     90/    0 |       12839 |
+| crc8_bit                        |     80/    0 |       11031 |
+| crc8_nibble                     |    126/    0 |        7252 |
+| crc8_byte                       |    292/    0 |         910 |
+| crc16ccitt_bit                  |     90/    0 |       12843 |
 | crc16ccitt_nibble               |    158/    0 |        7124 |
-| crc16ccitt_byte                 |    564/    0 |        1557 |
-| crc32_bit                       |    192/    0 |       18489 |
-| crc32_nibble                    |    220/    0 |        9003 |
+| crc16ccitt_byte                 |    564/    0 |        1560 |
+| crc32_bit                       |    192/    0 |       18480 |
+| crc32_nibble                    |    220/    0 |        9002 |
 | crc32_byte                      |   1106/    0 |        2401 |
 +--------------------------------------------------------------+
 
@@ -81,10 +87,13 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
+| crc8_bit                        |     64/    0 |        2744 |
+| crc8_nibble                     |     80/    0 |         579 |
+| crc8_byte                       |    296/    0 |         295 |
 | crc16ccitt_bit                  |     72/    0 |        2831 |
-| crc16ccitt_nibble               |    104/    0 |         687 |
+| crc16ccitt_nibble               |    104/    0 |         682 |
 | crc16ccitt_byte                 |    568/    0 |         403 |
-| crc32_bit                       |    112/    0 |        2946 |
+| crc32_bit                       |    112/    0 |        2945 |
 | crc32_nibble                    |    136/    0 |         636 |
 | crc32_byte                      |   1080/    0 |         380 |
 +--------------------------------------------------------------+
@@ -101,11 +110,14 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
+| crc8_bit                        |     96/    0 |        1500 |
+| crc8_nibble                     |    144/    0 |         489 |
+| crc8_byte                       |    336/    0 |         233 |
 | crc16ccitt_bit                  |    112/    0 |        1499 |
 | crc16ccitt_nibble               |    192/    0 |         681 |
 | crc16ccitt_byte                 |    624/    0 |         363 |
-| crc32_bit                       |    144/    0 |        1388 |
-| crc32_nibble                    |    208/    0 |         617 |
+| crc32_bit                       |    144/    0 |        1389 |
+| crc32_nibble                    |    208/    0 |         616 |
 | crc32_byte                      |   1136/    0 |         340 |
 +--------------------------------------------------------------+
 
@@ -121,6 +133,9 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
+| crc8_bit                        |    132/    0 |         498 |
+| crc8_nibble                     |    152/    0 |         118 |
+| crc8_byte                       |    356/    0 |          53 |
 | crc16ccitt_bit                  |    140/    0 |         498 |
 | crc16ccitt_nibble               |    176/    0 |         125 |
 | crc16ccitt_byte                 |    632/    0 |          75 |

@@ -16,10 +16,19 @@ using namespace ace_common;
 char* string;
 
 /**
+ * Return type of the Lambda test function. This return type does not really
+ * matter because we are just going to ignore it. It needs to be identical
+ * for all Lambdas because we converting them to function pointers, instead of
+ * templatizing the runLambda() function. Select uint16_t as a compromise
+ * between 8 bit and 32 bit integers.
+ */
+typedef uint16_t LambdaReturnType;
+
+/**
  * Convert lambda expressions to function pointer, to avoid templatizing
  * the runLambda() function.
  */
-typedef uint16_t (*Lambda)();
+typedef LambdaReturnType (*Lambda)();
 
 // Volatile to prevent the compiler from deciding that the entire program does
 // nothing, causing it to opimize the whole program to nothing.
@@ -65,7 +74,7 @@ static void runLambda(const char* name, Lambda lambda) {
     yield();
 
     uint16_t startMicros = micros();
-    uint16_t crc = lambda();
+    LambdaReturnType crc = lambda();
     uint16_t elapsed = micros() - startMicros;
     disableCompilerOptimization = crc;
     stats.update(elapsed);
@@ -75,42 +84,63 @@ static void runLambda(const char* name, Lambda lambda) {
 }
 
 void runBenchmarks() {
-  runLambda("crc16ccitt_bit", []() -> uint16_t {
+  runLambda("crc8_bit", []() -> LambdaReturnType {
+    uint8_t crc = crc8_bit::crc_init();
+    crc = crc8_bit::crc_update(crc, string, STRING_SIZE);
+    crc = crc8_bit::crc_finalize(crc);
+    return crc;
+  });
+
+  runLambda("crc8_nibble", []() -> LambdaReturnType {
+    uint8_t crc = crc8_nibble::crc_init();
+    crc = crc8_nibble::crc_update(crc, string, STRING_SIZE);
+    crc = crc8_nibble::crc_finalize(crc);
+    return crc;
+  });
+
+  runLambda("crc8_byte", []() -> LambdaReturnType {
+    uint8_t crc = crc8_byte::crc_init();
+    crc = crc8_byte::crc_update(crc, string, STRING_SIZE);
+    crc = crc8_byte::crc_finalize(crc);
+    return crc;
+  });
+
+  runLambda("crc16ccitt_bit", []() -> LambdaReturnType {
     uint16_t crc = crc16ccitt_bit::crc_init();
     crc = crc16ccitt_bit::crc_update(crc, string, STRING_SIZE);
     crc = crc16ccitt_bit::crc_finalize(crc);
     return crc;
   });
 
-  runLambda("crc16ccitt_nibble", []() -> uint16_t {
+  runLambda("crc16ccitt_nibble", []() -> LambdaReturnType {
     uint16_t crc = crc16ccitt_nibble::crc_init();
     crc = crc16ccitt_nibble::crc_update(crc, string, STRING_SIZE);
     crc = crc16ccitt_nibble::crc_finalize(crc);
     return crc;
   });
 
-  runLambda("crc16ccitt_byte", []() -> uint16_t {
+  runLambda("crc16ccitt_byte", []() -> LambdaReturnType {
     uint16_t crc = crc16ccitt_byte::crc_init();
     crc = crc16ccitt_byte::crc_update(crc, string, STRING_SIZE);
     crc = crc16ccitt_byte::crc_finalize(crc);
     return crc;
   });
 
-  runLambda("crc32_bit", []() -> uint16_t {
+  runLambda("crc32_bit", []() -> LambdaReturnType {
     uint16_t crc = crc32_bit::crc_init();
     crc = crc32_bit::crc_update(crc, string, STRING_SIZE);
     crc = crc32_bit::crc_finalize(crc);
     return crc;
   });
 
-  runLambda("crc32_nibble", []() -> uint16_t {
+  runLambda("crc32_nibble", []() -> LambdaReturnType {
     uint16_t crc = crc32_nibble::crc_init();
     crc = crc32_nibble::crc_update(crc, string, STRING_SIZE);
     crc = crc32_nibble::crc_finalize(crc);
     return crc;
   });
 
-  runLambda("crc32_byte", []() -> uint16_t {
+  runLambda("crc32_byte", []() -> LambdaReturnType {
     uint16_t crc = crc32_byte::crc_init();
     crc = crc32_byte::crc_update(crc, string, STRING_SIZE);
     crc = crc32_byte::crc_finalize(crc);

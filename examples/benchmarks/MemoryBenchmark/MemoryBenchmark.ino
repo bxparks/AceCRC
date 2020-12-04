@@ -8,12 +8,15 @@
 
 // Set this to [0..n] to extract the flash and static memory usage.
 // 0 - baseline
-// 1 - crc16ccitt_bit
-// 2 - crc16ccitt_nibble
-// 3 - crc16ccitt_byte
-// 4 - crc32_bit
-// 5 - crc32_nibble
-// 6 - crc32_byte
+// 1 - crc8_bit
+// 2 - crc8_nibble
+// 3 - crc8_byte
+// 4 - crc16ccitt_bit
+// 5 - crc16ccitt_nibble
+// 6 - crc16ccitt_byte
+// 7 - crc32_bit
+// 8 - crc32_nibble
+// 9 - crc32_byte
 #define FEATURE 0
 
 // A volatile integer to prevent the compiler from optimizing away the entire
@@ -27,16 +30,22 @@ volatile int disableCompilerOptimization = 0;
 #if FEATURE == 0
   // nothing
 #elif FEATURE == 1
-  using namespace ace_crc::crc16ccitt_bit;
+  using namespace ace_crc::crc8_bit;
 #elif FEATURE == 2
-  using namespace ace_crc::crc16ccitt_nibble;
+  using namespace ace_crc::crc8_nibble;
 #elif FEATURE == 3
-  using namespace ace_crc::crc16ccitt_byte;
+  using namespace ace_crc::crc8_byte;
 #elif FEATURE == 4
-  using namespace ace_crc::crc32_bit;
+  using namespace ace_crc::crc16ccitt_bit;
 #elif FEATURE == 5
-  using namespace ace_crc::crc32_nibble;
+  using namespace ace_crc::crc16ccitt_nibble;
 #elif FEATURE == 6
+  using namespace ace_crc::crc16ccitt_byte;
+#elif FEATURE == 7
+  using namespace ace_crc::crc32_bit;
+#elif FEATURE == 8
+  using namespace ace_crc::crc32_nibble;
+#elif FEATURE == 9
   using namespace ace_crc::crc32_byte;
 #else
   #error Unknown FEATURE

@@ -8,6 +8,9 @@
       `crc16ccitt` algorithms become slightly slower but some become slightly
       faster. The biggest difference is that the `crc_table` sizes for the
       `cc16ccitt` algorithms all become 1/2 the size, which is a big win.
+    * Add CRC-8 algorithms in `crc8_bit`, `crc8_nibble`, and `crc8_byte`
+      namespaces. Update MemoryBenchmark and CpuBenchmark numbers.
+    * Add recommendation list of various algorithms in README.md.
 * 0.2 (2020-12-03)
     * Generate CPU times of each CRC algorithm and variant using
       [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark).
