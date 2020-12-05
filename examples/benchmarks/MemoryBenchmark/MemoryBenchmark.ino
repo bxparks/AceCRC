@@ -62,9 +62,7 @@ void calculateCRC() {
   disableCompilerOptimization = CHECK_STRING[index];
 
 #if FEATURE != 0
-  crc_t crc = crc_init();
-  crc = crc_update(crc, CHECK_STRING, LENGTH);
-  crc = crc_finalize(crc);
+  crc_t crc = crc_calculate(CHECK_STRING, LENGTH);
   disableCompilerOptimization = crc;
 #endif
 }
