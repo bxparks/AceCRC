@@ -1,5 +1,7 @@
 # AceCRC
 
+![AUnit Tests](https://github.com/bxparks/AceCRC/workflows/AUnit%20Tests/badge.svg)
+
 This library contains a number of CRC algorithms that were generated from
 `pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
 use C++ namespaces to avoid name collisions and `PROGMEM` flash memory for
@@ -66,7 +68,7 @@ This library converts the C99 code in the following way:
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-**Table of Contents**:
+## Table of Contents
 
 * [HelloCRC](#HelloCRC)
 * [Installation](#Installation)
