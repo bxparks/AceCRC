@@ -1,6 +1,10 @@
 # Changelog
 
 * Unreleased
+* 0.3.2 (2020-12-09)
+    * Add CpuBenchmark numbers for some third-party CRC libraries for curiosity.
+    * Rewrite README.md for clarity.
+    * Use Arduino-CLI to gather MemoryBenchmark results faster.
 * 0.3.1 (2020-12-03)
     * Use exact sized `uint16_t` and `uint32_t` as the typedef for `crc_t`,
       instead of the default `uint_fast16_t` and `uint_fast32_t` produced by
