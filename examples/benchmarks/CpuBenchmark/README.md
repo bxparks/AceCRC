@@ -42,9 +42,26 @@ $ make README.md
 ```
 
 The CPU times below are given in microseconds to compute the CRC of a string of
-1024 characters (i.e. micros/kiB).
+characters between 0.5 kiB to 10 kiB long (depending on the speed of the
+processor), normalized to 1 kiB, so has the units of `micros/kiB`.
+
 
 ## CPU Time Changes
+
+I included the performance benchmarks for a number of third-party CRC libraries
+just out of curiosity:
+
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM
+    * comparable to `crc32_byte` but probably faster because accessing RAM is
+      often faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
 
 ## Arduino Nano
 
@@ -56,15 +73,19 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |       10974 |
+| crc8_bit                        |       10980 |
 | crc8_nibble                     |        7216 |
-| crc8_byte                       |         907 |
-| crc16ccitt_bit                  |       12776 |
-| crc16ccitt_nibble               |        7086 |
-| crc16ccitt_byte                 |        1549 |
-| crc32_bit                       |       18382 |
-| crc32_nibble                    |        8957 |
-| crc32_byte                      |        2389 |
+| crc8_byte                       |         910 |
+| crc16ccitt_bit                  |       12778 |
+| crc16ccitt_nibble               |        7088 |
+| crc16ccitt_byte                 |        1552 |
+| crc32_bit                       |       18446 |
+| crc32_nibble                    |        8964 |
+| crc32_byte                      |        2394 |
+|---------------------------------+-------------|
+| CRC32                           |        7672 |
+| Arduino_CRC32                   |        2134 |
+| FastCRC32                       |        2130 |
 +---------------------------------+-------------+
 
 ```
@@ -79,15 +100,19 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |       11031 |
-| crc8_nibble                     |        7252 |
-| crc8_byte                       |         910 |
-| crc16ccitt_bit                  |       12843 |
-| crc16ccitt_nibble               |        7124 |
-| crc16ccitt_byte                 |        1560 |
-| crc32_bit                       |       18480 |
-| crc32_nibble                    |        9002 |
-| crc32_byte                      |        2401 |
+| crc8_bit                        |       11034 |
+| crc8_nibble                     |        7260 |
+| crc8_byte                       |         914 |
+| crc16ccitt_bit                  |       12848 |
+| crc16ccitt_nibble               |        7126 |
+| crc16ccitt_byte                 |        1564 |
+| crc32_bit                       |       18540 |
+| crc32_nibble                    |        9008 |
+| crc32_byte                      |        2408 |
+|---------------------------------+-------------|
+| CRC32                           |        7712 |
+| Arduino_CRC32                   |        2144 |
+| FastCRC32                       |        2130 |
 +---------------------------------+-------------+
 
 ```
@@ -102,15 +127,19 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        2744 |
-| crc8_nibble                     |         579 |
-| crc8_byte                       |         295 |
+| crc8_bit                        |        2742 |
+| crc8_nibble                     |         630 |
+| crc8_byte                       |         286 |
 | crc16ccitt_bit                  |        2831 |
-| crc16ccitt_nibble               |         682 |
-| crc16ccitt_byte                 |         403 |
+| crc16ccitt_nibble               |         702 |
+| crc16ccitt_byte                 |         399 |
 | crc32_bit                       |        2945 |
-| crc32_nibble                    |         636 |
+| crc32_nibble                    |         652 |
 | crc32_byte                      |         380 |
+|---------------------------------+-------------|
+| CRC32                           |        1269 |
+| Arduino_CRC32                   |         380 |
+| FastCRC32                       |         347 |
 +---------------------------------+-------------+
 
 ```
@@ -130,10 +159,14 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 | crc8_byte                       |         233 |
 | crc16ccitt_bit                  |        1499 |
 | crc16ccitt_nibble               |         681 |
-| crc16ccitt_byte                 |         363 |
-| crc32_bit                       |        1389 |
-| crc32_nibble                    |         616 |
-| crc32_byte                      |         340 |
+| crc16ccitt_byte                 |         364 |
+| crc32_bit                       |        1388 |
+| crc32_nibble                    |         617 |
+| crc32_byte                      |         342 |
+|---------------------------------+-------------|
+| CRC32                           |         940 |
+| Arduino_CRC32                   |         142 |
+| FastCRC32                       |         489 |
 +---------------------------------+-------------+
 
 ```
@@ -149,14 +182,18 @@ The CPU times below are given in microseconds to compute the CRC of a string of
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
 | crc8_bit                        |         498 |
-| crc8_nibble                     |         118 |
+| crc8_nibble                     |         117 |
 | crc8_byte                       |          53 |
 | crc16ccitt_bit                  |         498 |
 | crc16ccitt_nibble               |         125 |
 | crc16ccitt_byte                 |          75 |
 | crc32_bit                       |         671 |
-| crc32_nibble                    |         108 |
+| crc32_nibble                    |         109 |
 | crc32_byte                      |          71 |
+|---------------------------------+-------------|
+| CRC32                           |         190 |
+| Arduino_CRC32                   |          71 |
+| FastCRC32                       |          40 |
 +---------------------------------+-------------+
 
 ```

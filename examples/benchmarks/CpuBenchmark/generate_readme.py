@@ -65,9 +65,26 @@ $ make README.md
 ```
 
 The CPU times below are given in microseconds to compute the CRC of a string of
-1024 characters (i.e. micros/kiB).
+characters between 0.5 kiB to 10 kiB long (depending on the speed of the
+processor), normalized to 1 kiB, so has the units of `micros/kiB`.
+
 
 ## CPU Time Changes
+
+I included the performance benchmarks for a number of third-party CRC libraries
+just out of curiosity:
+
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM
+    * comparable to `crc32_byte` but probably faster because accessing RAM is
+      often faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
 
 ## Arduino Nano
 

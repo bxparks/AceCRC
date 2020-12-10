@@ -4,6 +4,23 @@
  * lambda expressions.
  */
 
+// similar to crc_nibble
+#define ENABLE_CRC32 1
+// similar to crc_byte
+#define ENABLE_ARDUINO_CRC32 1
+// Equilvalent crc_byte using 4x the table size. Require
+#define ENABLE_FAST_CRC 1
+
+#if ENABLE_CRC32
+  #include <CRC32.h>
+#endif
+#if ENABLE_ARDUINO_CRC32
+  #include <Arduino_CRC32.h>
+#endif
+#if ENABLE_FAST_CRC
+  #include <FastCRC.h>
+#endif
+
 #include <AceCRC.h>
 #include <AceCommon.h> // TimingStats
 #include <stdint.h>
@@ -54,7 +71,7 @@ static void printStats(const char* name, TimingStats& stats) {
   SERIAL_PORT_MONITOR.print(' ');
   SERIAL_PORT_MONITOR.print(stats.getMax());
 
-  uint16_t perKiB = stats.getAvg() / STRING_SIZE_KIB;
+  uint16_t perKiB = stats.getAvg() * 4 / STRING_SIZE_PAGE;
   SERIAL_PORT_MONITOR.print(' ');
   SERIAL_PORT_MONITOR.println(perKiB);
 }
@@ -119,4 +136,22 @@ void runBenchmarks() {
   runLambda("crc32_byte", []() -> LambdaReturnType {
     return crc32_byte::crc_calculate(string, STRING_SIZE);
   });
+
+#if ENABLE_CRC32
+  runLambda("CRC32", []() -> LambdaReturnType {
+    return CRC32::calculate(string, STRING_SIZE);
+  });
+#endif
+
+#if ENABLE_ARDUINO_CRC32
+  runLambda("Arduino_CRC32", []() -> LambdaReturnType {
+    return Arduino_CRC32().calc((const uint8_t*) string, STRING_SIZE);
+  });
+#endif
+
+#if ENABLE_FAST_CRC
+  runLambda("FastCRC32", []() -> LambdaReturnType {
+    return FastCRC32().crc32((const uint8_t*) string, STRING_SIZE);
+  });
+#endif
 }
