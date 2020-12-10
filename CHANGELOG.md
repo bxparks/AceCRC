@@ -1,6 +1,13 @@
 # Changelog
 
 * Unreleased
+    * Convert internal loop or index variable inside `crc_update()` fgrom
+      `unsigned int` to a one-byte `uint8_t`. Improves CPU performance by 6%-34%
+      on 8-bit processors. See
+      [examples/benchmarks/CpuBenchmark](examples/benchmarks/CpuBenchmark). No
+      change in performance for 32-bit processors.
+    * Add MemoryBenchmark numbers for the same third-party CRC libraries as
+      CpuBenchmark.
 * 0.3.2 (2020-12-09)
     * Add CpuBenchmark numbers for some third-party CRC libraries for curiosity.
     * Rewrite README.md for clarity.

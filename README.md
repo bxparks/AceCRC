@@ -297,12 +297,12 @@ Here are rough flash memory consumption for each algorithm:
 * `crc8_bit`: 64-130 bytes
 * `crc8_nibble`: 80-150 bytes
 * `crc8_byte`: 290-360 bytes
-* `crc16ccitt_bit`: 90-140 bytes
+* `crc16ccitt_bit`: 80-140 bytes
 * `crc16ccitt_nibble`: 100-190 bytes
 * `crc16ccitt_byte`: 560-630 bytes
-* `crc32_bit`: 110-190 bytes
-* `crc32_nibble`: 140-220 bytes
-* `crc32_byte`: 1100-1200 bytes
+* `crc32_bit`: 110-180 bytes
+* `crc32_nibble`: 140-210 bytes
+* `crc32_byte`: 1080-1140 bytes
 
 <a name="CpuBenchmarks"></a>
 ### CPU Benchmarks
@@ -312,15 +312,15 @@ The CPU performance of each CRC algorithm and variant is given in
 microseconds per kiB (1024 bytes).
 
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
-* "bit": 13000-18000 micros/kiB
-* "nibble": 7000-9000 micros/kiB
-* "byte": 1500-2400 micros/kiB
+* "bit": 9300-16000 micros/kiB
+* "nibble": 5300-7600 micros/kiB
+* "byte": 900-2200 micros/kiB
 
 For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
 of:
-* "bit": 500-3000 micros/kiB
-* "nibble": 100-700 micros/kiB
-* "byte": 70-400 micros/kiB
+* "bit": 400-2800 micros/kiB
+* "nibble": 110-700 micros/kiB
+* "byte": 50-400 micros/kiB
 
 <a name="Recommendations"></a>
 ### Recommendations
