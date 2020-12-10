@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Thu Dec  3 19:34:44 2020
+ * Generated on Thu Dec 10 09:53:46 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 16
@@ -13,7 +13,7 @@
  *  - ReflectOut    = False
  *  - Algorithm     = table-driven
  *
- * Auto converted to Arduino C++ on Thu Dec  3 19:34:44 PST 2020
+ * Auto converted to Arduino C++ on Thu Dec 10 09:53:46 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -73,7 +73,7 @@ static const crc_t crc_table[256] PROGMEM = {
 crc_t crc_update(crc_t crc, const void *data, size_t data_len)
 {
     const unsigned char *d = (const unsigned char *)data;
-    unsigned int tbl_idx;
+    uint8_t tbl_idx;
 
     while (data_len--) {
         tbl_idx = ((crc >> 8) ^ *d) & 0xff;

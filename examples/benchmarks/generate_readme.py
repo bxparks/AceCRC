@@ -43,7 +43,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.3.2
+**Version**: AceCRC v0.4
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
@@ -63,6 +63,19 @@ $ make README.md
 
 in this directory. The various `*.txt` files will be piped through the
 `generate_combined.awk` program to generate the ASCII tables below.
+
+## Changes
+
+### v0.4
+
+* Updated `tools/generate.py` to convert an internal loop or index variable
+  inside `crc_update()` from an `unsigned int` to `uint8_t`.
+    * Reduced memory consumption by a 0-10 bytes.
+    * Reduced CPU time by 6%-34% on 8-bit processors.
+    * No algorithm got slower by using a `uint8_t` variable, even on 32-bit
+      processors.
+* Added benchmarks for a handful of third-party CRC libraries
+  (CRC32, Arduino_CRC32, FastCRC) out of curiosity.
 
 ## Arduino Nano
 

@@ -2,7 +2,7 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Thu Dec  3 21:05:47 2020
+ * Generated on Thu Dec 10 09:53:46 2020
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
  *  - Width         = 8
@@ -37,7 +37,7 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Thu Dec  3 21:05:47 PST 2020
+ * Auto converted to Arduino C++ on Thu Dec 10 09:53:46 PST 2020
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
