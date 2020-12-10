@@ -7,6 +7,17 @@
   #define SERIAL_PORT_MONITOR Serial
 #endif
 
+// Enable benchmarking of some third-party CRC libraries for curiosity.
+#if defined(UNIX_HOST_DUINO)
+  #define ENABLE_CRC32 0
+  #define ENABLE_ARDUINO_CRC32 0
+  #define ENABLE_FAST_CRC 0
+#else
+  #define ENABLE_CRC32 1
+  #define ENABLE_ARDUINO_CRC32 1
+  #define ENABLE_FAST_CRC 1
+#endif
+
 // Define the size of the string (in units of one page, 256 bytes), dependent
 // on the speed of the microcontroller. We use PAGE size because
 // <Arduino_CRC32.h> places its 1kB lookup table into RAM, so we can only

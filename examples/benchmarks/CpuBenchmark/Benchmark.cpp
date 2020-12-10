@@ -4,20 +4,17 @@
  * lambda expressions.
  */
 
-// similar to crc_nibble
-#define ENABLE_CRC32 1
-// similar to crc_byte
-#define ENABLE_ARDUINO_CRC32 1
-// Equilvalent crc_byte using 4x the table size. Require
-#define ENABLE_FAST_CRC 1
-
 #if ENABLE_CRC32
+  // similar to crc_nibble::
   #include <CRC32.h>
 #endif
 #if ENABLE_ARDUINO_CRC32
+  // similar to crc_byte::
   #include <Arduino_CRC32.h>
 #endif
 #if ENABLE_FAST_CRC
+  // Equilvalent to crc_byte::, but using a lookup table of 1024 elements
+  // instead of 256. Requires fixing a header file on SAMD21.
   #include <FastCRC.h>
 #endif
 
