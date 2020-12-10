@@ -71,18 +71,45 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-I included the performance benchmarks for a number of third-party CRC libraries
+### v0.4
+
+I converted an internal loop variable in `crc_update()` (named `i` in the `bit`
+variant and `tbl_idx` in `nibble` and `byte` variants) from an `unsigned int` to
+a `uint8_t`. This variable counts from 0-7 in the `bit` variant, 0-15 in the
+`nibble` variant, and 0-255 in the `byte` variant.
+
+When I profiled these changes, it made *no difference* on the 32-bit processors
+on any algorithm, except for one peculiar results on the ESP32:
+
+* ESP32
+    * crc32_bit: 70% faster
+
+But on the 8-bit processors, there was significant performance improvements
+across many algorithms, with *no decrease* in performance for the other
+algorithms:
+
+* Nano and Pro Micro
+    * crc8_bit: 18% faster
+    * crc16ccitt_bit: 15% faster
+    * crc16ccitt_nibble: 34% faster
+    * crc32_bit: 15% faster
+    * crc32_nibble: 18% faster
+    * crc32_byte: 6% faster
+
+### v0.3.2
+
+I added the performance benchmarks for a number of third-party CRC libraries
 just out of curiosity:
 
 * CRC32 (https://github.com/bakercp/CRC32)
     * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
 * Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
-    * uses an 8-bit lookup table in RAM
-    * comparable to `crc32_byte` but probably faster because accessing RAM is
-      often faster than `PROGMEM` on most processors
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
 * FastCRC (https://github.com/FrankBoesing/FastCRC)
     * uses a 10-bit lookup table (1024 elements)
-    * should be faster than `crc32_byte` in theory, is actually slower than
+    * should be faster than `crc32_byte` in theory, but is actually slower than
       `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
       data is extra slow on an ESP8266)
 

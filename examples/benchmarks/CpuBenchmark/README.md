@@ -48,18 +48,45 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-I included the performance benchmarks for a number of third-party CRC libraries
+### v0.4
+
+I converted an internal loop variable in `crc_update()` (named `i` in the `bit`
+variant and `tbl_idx` in `nibble` and `byte` variants) from an `unsigned int` to
+a `uint8_t`. This variable counts from 0-7 in the `bit` variant, 0-15 in the
+`nibble` variant, and 0-255 in the `byte` variant.
+
+When I profiled these changes, it made *no difference* on the 32-bit processors
+on any algorithm, except for one peculiar results on the ESP32:
+
+* ESP32
+    * crc32_bit: 70% faster
+
+But on the 8-bit processors, there was significant performance improvements
+across many algorithms, with *no decrease* in performance for the other
+algorithms:
+
+* Nano and Pro Micro
+    * crc8_bit: 18% faster
+    * crc16ccitt_bit: 15% faster
+    * crc16ccitt_nibble: 34% faster
+    * crc32_bit: 15% faster
+    * crc32_nibble: 18% faster
+    * crc32_byte: 6% faster
+
+### v0.3.2
+
+I added the performance benchmarks for a number of third-party CRC libraries
 just out of curiosity:
 
 * CRC32 (https://github.com/bakercp/CRC32)
     * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
 * Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
-    * uses an 8-bit lookup table in RAM
-    * comparable to `crc32_byte` but probably faster because accessing RAM is
-      often faster than `PROGMEM` on most processors
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
 * FastCRC (https://github.com/FrankBoesing/FastCRC)
     * uses a 10-bit lookup table (1024 elements)
-    * should be faster than `crc32_byte` in theory, is actually slower than
+    * should be faster than `crc32_byte` in theory, but is actually slower than
       `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
       data is extra slow on an ESP8266)
 
@@ -73,17 +100,17 @@ just out of curiosity:
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |       10980 |
-| crc8_nibble                     |        7216 |
-| crc8_byte                       |         910 |
-| crc16ccitt_bit                  |       12778 |
-| crc16ccitt_nibble               |        7088 |
-| crc16ccitt_byte                 |        1552 |
-| crc32_bit                       |       18446 |
-| crc32_nibble                    |        8964 |
-| crc32_byte                      |        2394 |
+| crc8_bit                        |        9306 |
+| crc8_nibble                     |        7346 |
+| crc8_byte                       |         908 |
+| crc16ccitt_bit                  |       11106 |
+| crc16ccitt_nibble               |        5290 |
+| crc16ccitt_byte                 |        1490 |
+| crc32_bit                       |       16062 |
+| crc32_nibble                    |        7610 |
+| crc32_byte                      |        2262 |
 |---------------------------------+-------------|
-| CRC32                           |        7672 |
+| CRC32                           |        7674 |
 | Arduino_CRC32                   |        2134 |
 | FastCRC32                       |        2130 |
 +---------------------------------+-------------+
@@ -100,18 +127,18 @@ just out of curiosity:
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |       11034 |
-| crc8_nibble                     |        7260 |
+| crc8_bit                        |        9352 |
+| crc8_nibble                     |        7388 |
 | crc8_byte                       |         914 |
-| crc16ccitt_bit                  |       12848 |
-| crc16ccitt_nibble               |        7126 |
-| crc16ccitt_byte                 |        1564 |
-| crc32_bit                       |       18540 |
-| crc32_nibble                    |        9008 |
-| crc32_byte                      |        2408 |
+| crc16ccitt_bit                  |       11164 |
+| crc16ccitt_nibble               |        5316 |
+| crc16ccitt_byte                 |        1500 |
+| crc32_bit                       |       16148 |
+| crc32_nibble                    |        7648 |
+| crc32_byte                      |        2272 |
 |---------------------------------+-------------|
-| CRC32                           |        7712 |
-| Arduino_CRC32                   |        2144 |
+| CRC32                           |        7716 |
+| Arduino_CRC32                   |        2148 |
 | FastCRC32                       |        2130 |
 +---------------------------------+-------------+
 
@@ -127,13 +154,13 @@ just out of curiosity:
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        2742 |
+| crc8_bit                        |        2744 |
 | crc8_nibble                     |         630 |
 | crc8_byte                       |         286 |
 | crc16ccitt_bit                  |        2831 |
 | crc16ccitt_nibble               |         702 |
 | crc16ccitt_byte                 |         399 |
-| crc32_bit                       |        2945 |
+| crc32_bit                       |        2837 |
 | crc32_nibble                    |         652 |
 | crc32_byte                      |         380 |
 |---------------------------------+-------------|
@@ -154,19 +181,19 @@ just out of curiosity:
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        1500 |
-| crc8_nibble                     |         489 |
+| crc8_bit                        |        1499 |
+| crc8_nibble                     |         488 |
 | crc8_byte                       |         233 |
-| crc16ccitt_bit                  |        1499 |
+| crc16ccitt_bit                  |        1501 |
 | crc16ccitt_nibble               |         681 |
 | crc16ccitt_byte                 |         364 |
-| crc32_bit                       |        1388 |
+| crc32_bit                       |        1401 |
 | crc32_nibble                    |         617 |
 | crc32_byte                      |         342 |
 |---------------------------------+-------------|
-| CRC32                           |         940 |
-| Arduino_CRC32                   |         142 |
-| FastCRC32                       |         489 |
+| CRC32                           |         937 |
+| Arduino_CRC32                   |         143 |
+| FastCRC32                       |         486 |
 +---------------------------------+-------------+
 
 ```
@@ -182,17 +209,17 @@ just out of curiosity:
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
 | crc8_bit                        |         498 |
-| crc8_nibble                     |         117 |
+| crc8_nibble                     |         118 |
 | crc8_byte                       |          53 |
 | crc16ccitt_bit                  |         498 |
 | crc16ccitt_nibble               |         125 |
 | crc16ccitt_byte                 |          75 |
-| crc32_bit                       |         671 |
-| crc32_nibble                    |         109 |
+| crc32_bit                       |         396 |
+| crc32_nibble                    |         108 |
 | crc32_byte                      |          71 |
 |---------------------------------+-------------|
-| CRC32                           |         190 |
-| Arduino_CRC32                   |          71 |
+| CRC32                           |         189 |
+| Arduino_CRC32                   |          72 |
 | FastCRC32                       |          40 |
 +---------------------------------+-------------+
 
