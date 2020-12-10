@@ -1,10 +1,12 @@
 # AceCRC
 
-Various CRC algorithms generated from `pycrc` (https://pycrc.org), then
-auto-converted to Arduino C++ format, and exported as an Arduino library.
+![AUnit Tests](https://github.com/bxparks/AceCRC/workflows/AUnit%20Tests/badge.svg)
 
-Currently supported algorithms are (see [list of pycrc supported
-algorithms](https://pycrc.org/models.html)):
+This library contains a number of CRC algorithms that were generated from
+`pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
+use C++ namespaces to avoid name collisions and `PROGMEM` flash memory for
+lookup tables to save static RAM. From the [list of pycrc supported
+algorithms](https://pycrc.org/models.html), this library supports:
 
 * CRC-8
 * CRC-16-CCITT
@@ -14,13 +16,13 @@ For each algorithm, 3 different implementations were generated:
 
 * bit-by-bit (bit)
     * brute-force loops to calculate the polynomial divisions
-    * smallest code, slowest
+    * smallest code size, but slowest
 * table lookup using 4-bits (nibble)
     * generates a lookup table of 16 elements
-    * larger code, but faster
+    * larger code size, but faster
 * table lookup using 8-bits (byte)
     * generates a lookup table of 256 elements
-    * largest amount of code, but fastest
+    * largest code size, but fastest
 
 The `pycrc` program generates `*.h` and `*.c` files containing C99 code with the
 following definitions:
@@ -48,23 +50,25 @@ This library converts the C99 code in the following way:
 * the `crc_table` lookup table is moved into flash memory using `PROGMEM`
     * the static RAM usage of all CRC routines becomes zero (other than a few
       stack variables)
-* the `static` keyword is removed 
+    * (Note that on platforms that do not support flash memory storage of
+      data, `PROGMEM` is a no-op, and the various `pgm_read_{xxx}()` routines
+      become just normal memory accessors.)
+* the `static` keyword is removed from header files
     * not needed in C++ 
     * prevents generation of doxygen docs for those functions
 * the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
     * becomes part of its enclosing namespace, preventing name collision
-* convert typedef for `crc_t` from `uint_fast16_t` and `uint_fast32_t` to
-  `uint16_t` and `uint32_t`
-    * affects only 32-bit processors, and only the `crc16ccitt_*` algorithms
-    * see section [Integer Sizes](#IntegerSizes) below
+* the typedef for `crc_t` is changed from `uint_fast8_t`, `uint_fast16_t`, and
+  `uint_fast32_t` to `uint8_t`, `uint16_t`, and `uint32_t` respectively
+    * affects only 32-bit processors, and only the `crc8` and `crc16ccitt_*`
+      algorithms
+    * see section [Integer Sizes](#IntegerSizes) below for more information
 
-Additional algorithms from `pycrc` can be generated if needed.
-
-**Version**: 0.3.1 (2020-12-03)
+**Version**: 0.3.2 (2020-12-09)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
-**Table of Contents**:
+## Table of Contents
 
 * [HelloCRC](#HelloCRC)
 * [Installation](#Installation)
@@ -78,13 +82,14 @@ Additional algorithms from `pycrc` can be generated if needed.
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
     * [Recommendations](#Recommendations)
+* [Background and Motivation](#Motivation)
+    * [Other CRC Libraries](#OtherLibraries)
+* [Bugs and Limitations](#Bugs)
 * [System Requirements](#SystemRequirements)
     * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
     * [Operating System](#OperatingSystem)
 * [License](#License)
-* [Background and Motivation](#Motivation)
-* [Bugs and Limitations](#Bugs)
 * [Feedback and Support](#Feedback)
 * [Authors](#Authors)
 
@@ -93,7 +98,7 @@ Additional algorithms from `pycrc` can be generated if needed.
 ## HelloCRC
 
 Here is the sample program from [examples/HelloCRC](examples/HelloCRC) that uses
-the `CRC-16-CCITT` algorithm using a 4-bit lookup table (16 elements):
+the CRC-16-CCITT algorithm using a 4-bit lookup table (16 elements):
 
 ```C++
 #include <Arduino.h>
@@ -133,8 +138,8 @@ as expected.
 <a name="Installation"></a>
 ## Installation
 
-The latest stable release is (will be) available in the Arduino IDE Library
-Manager.
+The latest stable release is available in the Arduino IDE Library Manager.
+Search for "AceCRC" and click install.
 
 The development version can be installed by cloning the git repo:
 
@@ -150,7 +155,8 @@ The `master` branch contains the stable releases.
 <a name="Dependencies"></a>
 ### Dependencies
 
-This library has no external dependencies to use.
+This library has no external dependencies for client use. But the following
+dependencies are required for development and testing purposes:
 
 * To regenerate and rebuild the source code, you need pycrc
   (https://pycrc.org/).
@@ -248,15 +254,30 @@ integer type is faster for most operations (but not always). The main effect of
 these definitions is to increase the size of the `crc_table` for the CRC-8 and
 CRC-16-CCITT algorithms by a factor of 4x or 2x, compared to what they could be.
 
-After regenerating the CPU and memory consumption tables of
-[examples/benchmarks](examples/benchmarks), I found that using a `uint16_t`
-affected the speed of the algorithms only a little (2-14%). Some were got
-slightly slower, but some actually got slightly faster using the supposedly
-slower `uint16_t` type.
+After collecting the CPU and memory consumption results of various algorithms on
+different microcontrollers in [examples/benchmarks](examples/benchmarks), I
+found that using the smaller `uint8_t` or `uint16_t` did not affect the speed of
+the algorithms very much (2-14%). Some were got slightly slower, but some
+actually got slightly faster using the exact `uint8_t` and `uint16_t` types,
+which are supposed to be slower.
 
-The speed difference was minor, but the flash size difference was large, so I
-made the choice of generating these algorithms using the deterministic sizes of
-`uint8_t`, `uint16_t` and `uint32_t`.
+The bigger difference is the sizes of the internal `crc_table` which become a
+lot smaller when the `crc_t` becomes smaller. It also seemed potentially
+confusing for the end user if `sizeof(crc_t)` returned 4 instead of 1 or 2 when
+using the CRC-8 or CRC-16-CCITT algorithms.
+
+I concluded that it was better in the Arduino microcontroller environments to
+make the `crc_t` type correspond to the exact sized integer types (`uint8_t`,
+`uint16_t`, `uint32_t`).
+
+The `size_t` is used as the type of the `data_len` parameter of the
+`crc_update()` or the `crc_calculate()` function. On 8-bit processors `size_t`
+is 2 bytes, and on 32-bit processors `size_t` is 4 bytes. To calculate the CRC
+of an array that's longer than 64 kiB long on 8-bit processors, it must be
+broken down into chunks smaller than 64 kiB and processed through the
+`crc_update()` function multiple times. I suspect that this situation will
+happen only rarely on 8-bit processors which tend to deal with fairly small
+amounts of data.
 
 <a name="ResourceConsumption"></a>
 ## Resource Consumption
@@ -271,14 +292,17 @@ algorithms on various microcontrollers. The results are summarized in the
 `README.md` in that directory. None of the algorithms consumed any static RAM,
 because all their lookup tables are located in flash using `PROGMEM`.
 
-Roughtly speaking here are the numbers for each algorithm:
+Here are rough flash memory consumption for each algorithm:
 
-* `crc16ccitt_bit`: 90-140 bytes of flash
-* `crc16ccitt_nibble`: 100-190 bytes of flash
-* `crc16ccitt_byte`: 560-630 bytes of flash
-* `crc32_bit`: 110-190 bytes of flash
-* `crc32_nibble`: 140-220 bytes of flash
-* `crc32_byte`: 1100-1200 bytes of flash
+* `crc8_bit`: 64-130 bytes
+* `crc8_nibble`: 80-150 bytes
+* `crc8_byte`: 290-360 bytes
+* `crc16ccitt_bit`: 90-140 bytes
+* `crc16ccitt_nibble`: 100-190 bytes
+* `crc16ccitt_byte`: 560-630 bytes
+* `crc32_bit`: 110-190 bytes
+* `crc32_nibble`: 140-220 bytes
+* `crc32_byte`: 1100-1200 bytes
 
 <a name="CpuBenchmarks"></a>
 ### CPU Benchmarks
@@ -306,28 +330,34 @@ into a single place in [examples/benchmarks](examples/benchmarks) for
 convenience.
 
 Comparing the different variants ("bit", "nibble" and "byte"), it seems that the
-"nibble" variants (4-bit lookup table) seem to offer a good tradeoff between
-flash memory consumption and CPU speed:
+"nibble" variants (4-bit lookup table) offer a good tradeoff between
+flash memory consumption and CPU speed in the following ways:
 
 * Compared to the "bit" versions, the "nibble" variants are about the same size
   but they can be up to ~2X (8-bit) to ~5X (32-bit) faster.
-* Compared to the "byte" versions, the "nibble" variants can be 4X to 10X
-  smaller in flash size, but about 3-4X (8-bit) to 50% (32-bit) slower.
+* Compared to the "byte" versions, the "nibble" variants can be 4-5X
+  smaller in flash size, but only about 3-4X (8-bit) to 1.5-2X (32-bit) slower.
 
 The CRC-8 algorithm has the unfortunate property that arrays of zeros of
 different lengths (e.g. 1 zero or 2 zeros) have the exact same CRC (0). The
 other two (CRC-16-CCITT and CRC32) are able to distinguish strings of zeroes of
 different lengths. In terms of flash size and performance, the CRC-8 algorithm
 is not all that much faster than the CRC-16-CCITT, even on 8-bit processors. For
-these reasons, the CRc-8 algorithm is not recommended, unless you are really
+these reasons, the CRC-8 algorithm is not recommended, unless you are really
 strapped for flash bytes.
+
+The CRC-16-CCITT was selected for this library over the CRC-16 algorithm because
+CRC-16 suffers the same problem as CRC-8 with regards to arrays of zeros of
+different lengths. The CRC-16-CCITT uses a non-zero XOR-input which allows it to
+distinguish different lengths of zeros.
 
 Between the CRC-16-CCITT and CRC-32 algorithms, if we look at the `_nibble`
 variants, there is very little difference in flash size and CPU speed, even on
 8-bit processors. On 32-bit processors, the CRC-32 is actually faster. The
-CRC-32 will be able to detected far more errors than the CRC-16-CCITT.
+advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detected
+far more errors than 16 bits.
 
-Putting all these together, here are my recommended algorithms, in decreasing
+Putting all these together, here are my recommended algorithms in decreasing
 order of preference:
 1. `crc32_nibble` in most situtations for a balance of flash size (~200 bytes)
    and speed
@@ -344,52 +374,6 @@ order of preference:
 You can consult the results in [examples/benchmarks](examples/benchmarks) to
 determine exactly you want to make the space versus time tradeoff for your
 specific application.
-
-<a name="SystemRequirements"></a>
-## System Requirements
-
-<a name="ToolChain"></a>
-### Tool Chain
-
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
-* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
-
-<a name="Hardware"></a>
-### Hardware
-
-The library is extensively tested on the following boards:
-
-* Arduino Nano clone (16 MHz ATmega328P)
-* SparkFun Pro Micro clone (16 MHz ATmega32U4)
-* WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
-* ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
-
-I will occasionally test on the following hardware as a sanity check:
-
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
-* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
-
-<a name="OperatingSystem"></a>
-### Operating System
-
-I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
-that the library will work fine under MacOS and Windows, but I have not tested
-them.
-
-The generator script in `./tools/generate.sh` has only been tested under Ubuntu
-20.04.
-
-<a name="License"></a>
-## License
-
-[MIT License](https://opensource.org/licenses/MIT)
 
 <a name="Motivation"></a>
 ## Background and Motiviation
@@ -427,10 +411,112 @@ the `CrcEeprom` class by a least 4kB by using a CRC algorithm that consumes only
 about 150-250 bytes (either the CRC16CCITT or CRC32 algorithm using a 4-bit
 lookup table).
 
+<a name="OtherLibraries"></a>
+### Other CRC Libraries
+
+I did a quick survey of existing CRC libraries for Arduino, before deciding to
+write my own. Part of the motiation was that I wanted to learn this stuff. The
+other part was that the existing libraries did not offer me enough control over
+space and time tradeoffs.
+
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses pycrc to generate the CRC-32 with 8-bit lookup table
+    * equivalent to `crc32_byte` algorithm in the AceCRC library
+    * does **not** use `PROGMEM`, so the lookup table consumes 1024 bytes of
+      static RAM
+* CRCx (https://github.com/hideakitai/CRCx)
+    * a thin abstraction layer on top of FastCRC
+      (https://github.com/FrankBoesing/FastCRC) and
+      CRCpp (https://github.com/d-bahr/CRCpp)
+    * FastCRC is used for Arduino
+    * FastCRC and CRCpp are *vendored* (copied) into that library
+    * FastCRC uses extra large tables by default and does not use `PROGMEM`, as
+      described above
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table
+    * equivalent to `crc32_nibble` algorithm in the AceCRC library
+    * uses `PROGMEM` if available
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses extra large lookup tables (1024 elements, instead of usual 256
+      elements) by default
+    * does **not** use `PROGMEM` so lookup tables consume static RAM on AVR
+      processors and ESP8266
+    * no longer availabe on Arduino Library Manager
+      (see https://github.com/FrankBoesing/FastCRC/issues/25)
+* uCRC16BPBLib (https://github.com/Naguissa/uCRC16BPBLib)
+    * calculates CRC-16-CCITT using bit-by-bit loop
+    * allows incremental CRC16 to be updated bit-by-bit
+    * does not use lookup table
+* uCRC16Lib (https://github.com/Naguissa/uCRC16Lib)
+    * I think the same bit-by-bit internal loop as above
+    * but exposes only byte-by-byte API
+* uCRC16XModemLib (https://github.com/Naguissa/uCRC16XModemLib)
+    * calculates CRC-16-XMODEM using bit-by-bit loop
+
+Some platforms include an implementation of a CRC algorithm in a core header
+or an example file:
+
+* ESP8266
+    * `#include <coredecls.h>`
+    * `uint32_t crc32 (const void* data, size_t length,
+        uint32_t crc = 0xffffffff);`
+    * performs a bit-by-bit loop with no lookup table
+    * equivalent to `crc32_bit` in the AceCRC library
+* AVR
+    * `arduino/hardware/avr/1.8.3/libraries/EEPROM/examples/eeprom_crc/eeprom_crc.ino`
+    * contains a CRC-32 implementation using a 4-bit lookup table
+    * equivalent to `crc32_nibble` in AceCRC
+
 <a name="Bugs"></a>
 ## Bugs and Limitations
 
 None that I know of right now.
+
+<a name="SystemRequirements"></a>
+## System Requirements
+
+<a name="ToolChain"></a>
+### Tool Chain
+
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
+* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
+
+<a name="Hardware"></a>
+### Hardware
+
+The library is extensively tested on the following boards:
+
+* Arduino Nano clone (16 MHz ATmega328P)
+* SparkFun Pro Micro clone (16 MHz ATmega32U4)
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
+* WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
+* ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
+
+I will occasionally test on the following hardware as a sanity check:
+
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+
+<a name="OperatingSystem"></a>
+### Operating System
+
+I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
+that the library will work fine under MacOS and Windows, but I have not tested
+them.
+
+The generator script in `./tools/generate.sh` has only been tested under Ubuntu
+20.04.
+
+<a name="License"></a>
+## License
+
+[MIT License](https://opensource.org/licenses/MIT)
 
 <a name="Feedback"></a>
 ## Feedback and Support

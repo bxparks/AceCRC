@@ -4,6 +4,20 @@
  * lambda expressions.
  */
 
+#if ENABLE_CRC32
+  // similar to crc_nibble::
+  #include <CRC32.h>
+#endif
+#if ENABLE_ARDUINO_CRC32
+  // similar to crc_byte::
+  #include <Arduino_CRC32.h>
+#endif
+#if ENABLE_FAST_CRC
+  // Equilvalent to crc_byte::, but using a lookup table of 1024 elements
+  // instead of 256. Requires fixing a header file on SAMD21.
+  #include <FastCRC.h>
+#endif
+
 #include <AceCRC.h>
 #include <AceCommon.h> // TimingStats
 #include <stdint.h>
@@ -54,7 +68,7 @@ static void printStats(const char* name, TimingStats& stats) {
   SERIAL_PORT_MONITOR.print(' ');
   SERIAL_PORT_MONITOR.print(stats.getMax());
 
-  uint16_t perKiB = stats.getAvg() / STRING_SIZE_KIB;
+  uint16_t perKiB = stats.getAvg() * 4 / STRING_SIZE_PAGE;
   SERIAL_PORT_MONITOR.print(' ');
   SERIAL_PORT_MONITOR.println(perKiB);
 }
@@ -85,66 +99,56 @@ static void runLambda(const char* name, Lambda lambda) {
 
 void runBenchmarks() {
   runLambda("crc8_bit", []() -> LambdaReturnType {
-    uint8_t crc = crc8_bit::crc_init();
-    crc = crc8_bit::crc_update(crc, string, STRING_SIZE);
-    crc = crc8_bit::crc_finalize(crc);
-    return crc;
+    return crc8_bit::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc8_nibble", []() -> LambdaReturnType {
-    uint8_t crc = crc8_nibble::crc_init();
-    crc = crc8_nibble::crc_update(crc, string, STRING_SIZE);
-    crc = crc8_nibble::crc_finalize(crc);
-    return crc;
+    return crc8_nibble::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc8_byte", []() -> LambdaReturnType {
-    uint8_t crc = crc8_byte::crc_init();
-    crc = crc8_byte::crc_update(crc, string, STRING_SIZE);
-    crc = crc8_byte::crc_finalize(crc);
-    return crc;
+    return crc8_byte::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc16ccitt_bit", []() -> LambdaReturnType {
-    uint16_t crc = crc16ccitt_bit::crc_init();
-    crc = crc16ccitt_bit::crc_update(crc, string, STRING_SIZE);
-    crc = crc16ccitt_bit::crc_finalize(crc);
-    return crc;
+    return crc16ccitt_bit::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc16ccitt_nibble", []() -> LambdaReturnType {
-    uint16_t crc = crc16ccitt_nibble::crc_init();
-    crc = crc16ccitt_nibble::crc_update(crc, string, STRING_SIZE);
-    crc = crc16ccitt_nibble::crc_finalize(crc);
-    return crc;
+    return crc16ccitt_nibble::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc16ccitt_byte", []() -> LambdaReturnType {
-    uint16_t crc = crc16ccitt_byte::crc_init();
-    crc = crc16ccitt_byte::crc_update(crc, string, STRING_SIZE);
-    crc = crc16ccitt_byte::crc_finalize(crc);
-    return crc;
+    return crc16ccitt_byte::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc32_bit", []() -> LambdaReturnType {
-    uint16_t crc = crc32_bit::crc_init();
-    crc = crc32_bit::crc_update(crc, string, STRING_SIZE);
-    crc = crc32_bit::crc_finalize(crc);
-    return crc;
+    return crc32_bit::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc32_nibble", []() -> LambdaReturnType {
-    uint16_t crc = crc32_nibble::crc_init();
-    crc = crc32_nibble::crc_update(crc, string, STRING_SIZE);
-    crc = crc32_nibble::crc_finalize(crc);
-    return crc;
+    return crc32_nibble::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc32_byte", []() -> LambdaReturnType {
-    uint16_t crc = crc32_byte::crc_init();
-    crc = crc32_byte::crc_update(crc, string, STRING_SIZE);
-    crc = crc32_byte::crc_finalize(crc);
-    return crc;
+    return crc32_byte::crc_calculate(string, STRING_SIZE);
   });
 
+#if ENABLE_CRC32
+  runLambda("CRC32", []() -> LambdaReturnType {
+    return CRC32::calculate(string, STRING_SIZE);
+  });
+#endif
+
+#if ENABLE_ARDUINO_CRC32
+  runLambda("Arduino_CRC32", []() -> LambdaReturnType {
+    return Arduino_CRC32().calc((const uint8_t*) string, STRING_SIZE);
+  });
+#endif
+
+#if ENABLE_FAST_CRC
+  runLambda("FastCRC32", []() -> LambdaReturnType {
+    return FastCRC32().crc32((const uint8_t*) string, STRING_SIZE);
+  });
+#endif
 }

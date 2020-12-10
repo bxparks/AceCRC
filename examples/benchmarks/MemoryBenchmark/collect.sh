@@ -21,6 +21,7 @@ NUM_FEATURES=9
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceCRC.
 AUNITER_CMD='../../../../AUniter/tools/auniter.sh'
+AUNITER_FLAG='--cli'
 auniter_out_file=
 
 function usage() {
@@ -54,7 +55,7 @@ function collect_for_board() {
         sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE $feature/" \
             $PROGRAM_NAME
 
-        if ! ($AUNITER_CMD verify $board $PROGRAM_NAME 2>&1) > \
+        if ! ($AUNITER_CMD $AUNITER_FLAG verify $board $PROGRAM_NAME 2>&1) > \
                 $auniter_out_file; then
             # Ignore 'Sketch too big' condition, since we just want to
             # collect the flash and ram usage numbers.
@@ -74,6 +75,17 @@ function collect_for_board() {
 
 trap "cleanup" EXIT
 
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --ide) AUNITER_FLAG='--ide' ;;
+        --cli) AUNITER_FLAG='--cli' ;;
+        --help|-h) usage ;;
+        --) shift; break ;;
+        -*) echo "Unknown flag '$1'" 1>&2; usage 1>&2 ;;
+        *) break ;;
+    esac
+    shift
+done
 if [[ $# < 2 ]]; then
     usage
 fi

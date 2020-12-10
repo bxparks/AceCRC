@@ -16,22 +16,23 @@ README.md: $(TARGETS) generate_readme.py generate_table.awk
 benchmarks: $(TARGETS)
 
 nano.txt:
-	./collect.sh nano $@
+	./collect.sh --cli nano $@
 
 micro.txt:
-	./collect.sh micro $@
+	./collect.sh --cli micro $@
 
 samd.txt:
-	./collect.sh samd $@
+	./collect.sh --cli samd $@
 
 esp8266.txt:
-	./collect.sh esp8266 $@
+	./collect.sh --cli esp8266 $@
 
 esp32.txt:
-	./collect.sh esp32 $@
+	./collect.sh --cli esp32 $@
 
+# Teensy does not support ArduinoCLI as far as I know.
 teensy32.txt:
-	./collect.sh teensy32 $@
+	./collect.sh --ide teensy32 $@
 
 more_clean:
 	echo "Use 'make clean_benchmarks' to remove *.txt files"

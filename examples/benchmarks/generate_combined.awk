@@ -20,12 +20,16 @@ BEGIN {
   labels[7] = "crc32_bit";
   labels[8] = "crc32_nibble";
   labels[9] = "crc32_byte";
+
+  # CpuBenchmark/*.txt don't have baseline, so map to labels[] starting with
+  # 1-index.
   mode = "cpu"
   record_index = 1
 }
 {
   # The CpuBenchmark/*.txt files terminate with an "END".
   if ($0 ~ /^END/) {
+    # MemoryBenchmark/*.txt map to labels[] starting with 0-index.
     mode = "memory"
     record_index = 0
   } else if (mode == "cpu") {
