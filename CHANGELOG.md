@@ -1,6 +1,7 @@
 # Changelog
 
 * Unreleased
+* 0.4 (2020-12-10)
     * Convert internal loop or index variable inside `crc_update()` fgrom
       `unsigned int` to a one-byte `uint8_t`. Improves CPU performance by 6%-34%
       on 8-bit processors. See

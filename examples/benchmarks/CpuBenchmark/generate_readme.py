@@ -26,7 +26,7 @@ print(f"""\
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v0.3.2
+**Version**: AceCRC v0.4
 
 **NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
 
