@@ -1,21 +1,18 @@
-#ifndef CPUB_BENCHMARK_BENCHMARK_H
-#define CPUB_BENCHMARK_BENCHMARK_H
+#ifndef CPU_BENCHMARK_BENCHMARK_H
+#define CPU_BENCHMARK_BENCHMARK_H
 
-// Mostly for ESP32 which does not define SERIAL_PORT_MONITOR
-#ifndef SERIAL_PORT_MONITOR
-  //#warning SERIAL_PORT_MONITOR not defined, assuming 'Serial'
-  #define SERIAL_PORT_MONITOR Serial
-#endif
+#include <Arduino.h>
+#include <stdint.h>
 
 // Enable benchmarking of some third-party CRC libraries for curiosity.
 #if defined(UNIX_HOST_DUINO)
-  #define ENABLE_CRC32 0
-  #define ENABLE_ARDUINO_CRC32 0
-  #define ENABLE_FAST_CRC 0
+  #define ENABLE_CRC32_LIBRARY 0
+  #define ENABLE_ARDUINO_CRC32_LIBRARY 0
+  #define ENABLE_FAST_CRC_LIBRARY 0
 #else
-  #define ENABLE_CRC32 1
-  #define ENABLE_ARDUINO_CRC32 1
-  #define ENABLE_FAST_CRC 1
+  #define ENABLE_CRC32_LIBRARY 1
+  #define ENABLE_ARDUINO_CRC32_LIBRARY 1
+  #define ENABLE_FAST_CRC_LIBRARY 1
 #endif
 
 // Define the size of the string (in units of one page, 256 bytes), dependent

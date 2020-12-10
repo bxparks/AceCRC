@@ -120,8 +120,17 @@ function convert_c_to_cpp() {
     local pgm_read_func=$4
     local fileroot="${modelroot}_${algotag}"
 
-    # The bit-by-bit algorithm does not use a crc_table, so we cannot attempt
-    # to convert it to PROGMEM. Otherwise ed(1) script fails with error.
+    # Determine the name of the loop or index variable to convert from
+    # 'unsigned in' to 'uint8_t'.
+    local loop_or_index_variable
+    case $algotag in
+        bit) loop_or_index_variable='i' ;;
+        nibble|byte) loop_or_index_variable='tbl_idx' ;;
+    esac
+
+    # The bit-by-bit algorithm does not use a crc_table, so we cannot attempt to
+    # convert it to PROGMEM, so needs a separate ed(1) script. Otherwise ed(1)
+    # script fails with error.
     if [[ $algotag == 'bit' || $CONVERT_TO_PROGMEM == 0 ]]; then
         ed $fileroot.c > /dev/null <<EOF
 / \*\//
@@ -139,6 +148,10 @@ c
 namespace ace_crc {
 namespace $fileroot {
 
+.
+/crc_update/
+/unsigned int $loop_or_index_variable;/c
+    uint8_t $loop_or_index_variable;
 .
 \$a
 
@@ -179,6 +192,10 @@ namespace $fileroot {
 .
 /crc_table/s/= {/PROGMEM &/
 g/crc_table\[\(tbl_idx.*\)\]/s//($pgm_read_func(crc_table + (\1)))/
+/crc_update/
+/unsigned int $loop_or_index_variable;/c
+    uint8_t $loop_or_index_variable;
+.
 \$a
 
 } // $fileroot

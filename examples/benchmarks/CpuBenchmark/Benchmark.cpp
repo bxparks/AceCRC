@@ -4,25 +4,31 @@
  * lambda expressions.
  */
 
-#if ENABLE_CRC32
+#include "Benchmark.h"
+
+#if ENABLE_CRC32_LIBRARY
   // similar to crc_nibble::
   #include <CRC32.h>
 #endif
-#if ENABLE_ARDUINO_CRC32
+#if ENABLE_ARDUINO_CRC32_LIBRARY
   // similar to crc_byte::
   #include <Arduino_CRC32.h>
 #endif
-#if ENABLE_FAST_CRC
+#if ENABLE_FAST_CRC_LIBRARY
   // Equilvalent to crc_byte::, but using a lookup table of 1024 elements
-  // instead of 256. Requires fixing a header file on SAMD21.
+  // instead of 256. Requires fixing one of its header files if running on
+  // SAMD21.
   #include <FastCRC.h>
 #endif
 
 #include <AceCRC.h>
 #include <AceCommon.h> // TimingStats
-#include <stdint.h>
-#include <Arduino.h>
-#include "Benchmark.h"
+
+// Mostly for ESP32 which does not define SERIAL_PORT_MONITOR
+#ifndef SERIAL_PORT_MONITOR
+  //#warning SERIAL_PORT_MONITOR not defined, assuming 'Serial'
+  #define SERIAL_PORT_MONITOR Serial
+#endif
 
 using namespace ace_crc;
 using namespace ace_common;
@@ -134,19 +140,19 @@ void runBenchmarks() {
     return crc32_byte::crc_calculate(string, STRING_SIZE);
   });
 
-#if ENABLE_CRC32
+#if ENABLE_CRC32_LIBRARY
   runLambda("CRC32", []() -> LambdaReturnType {
     return CRC32::calculate(string, STRING_SIZE);
   });
 #endif
 
-#if ENABLE_ARDUINO_CRC32
+#if ENABLE_ARDUINO_CRC32_LIBRARY
   runLambda("Arduino_CRC32", []() -> LambdaReturnType {
     return Arduino_CRC32().calc((const uint8_t*) string, STRING_SIZE);
   });
 #endif
 
-#if ENABLE_FAST_CRC
+#if ENABLE_FAST_CRC_LIBRARY
   runLambda("FastCRC32", []() -> LambdaReturnType {
     return FastCRC32().crc32((const uint8_t*) string, STRING_SIZE);
   });

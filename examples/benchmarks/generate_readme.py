@@ -64,6 +64,19 @@ $ make README.md
 in this directory. The various `*.txt` files will be piped through the
 `generate_combined.awk` program to generate the ASCII tables below.
 
+## Changes
+
+### v0.4
+
+* Updated `tools/generate.py` to convert an internal loop or index variable
+  inside `crc_update()` from an `unsigned int` to `uint8_t`.
+    * Reduced memory consumption by a 0-10 bytes.
+    * Reduced CPU time by 6%-34% on 8-bit processors.
+    * No algorithm got slower by using a `uint8_t` variable, even on 32-bit
+      processors.
+* Added benchmarks for a handful of third-party CRC libraries
+  (CRC32, Arduino_CRC32, FastCRC) out of curiosity.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
