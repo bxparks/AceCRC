@@ -206,25 +206,24 @@ All algorithms and their variants are placed in separate C++ namespaces so they
 do not collide, and you can use multiple CRC algorithms in a single program
 without worrying about name collision.
 
-The `crc_t` typedef, the function names, and their signatures from the
-underlying generated code from `pycrc` remain unchanged. For reference, the
-principle functions are:
+The function names and their signatures from the underlying generated code from
+`pycrc` remain unchanged. For reference, the principle functions are:
 
 * `crc_t crc_init(void);`
 * `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
 * `crc_t crc_finalize(crc_t crc);`
+
+See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
+functions are used. The `crc_update()` function can be called multiple times
+with additional data, before calling `crc_finalize()`.
 
 This library adds the following convenience function to each header file in each
 namespace:
 
 * `crc_t crc_calculate(const void *data, size_t data_len);`
 
-See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
-functions are used. The `crc_update()` function can be called multiple times
-with additional data, before calling `crc_finalize()`.
-
-The `crc_calculate()` convenience function replaces the three separate calls to
-`crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
+This function replaces the three separate calls to `crc_init()`, `crc_update()`,
+`crc_finalize()` with a single call.
 
 <a name="IntegerSizes"></a>
 ### Integer Sizes
@@ -372,7 +371,7 @@ order of preference:
    you can tolerate high chances of corruption
 
 You can consult the results in [examples/benchmarks](examples/benchmarks) to
-determine exactly you want to make the space versus time tradeoff for your
+determine exactly how you want to make the space versus time tradeoff for your
 specific application.
 
 <a name="Motivation"></a>
