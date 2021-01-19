@@ -12,7 +12,7 @@ single table for each microcontroller type below.
 
 **Version**: AceCRC v0.4
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -102,34 +102,61 @@ in this directory. The various `*.txt` files will be piped through the
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* Sparkfun SAMD Core 1.8.1
 
 ```
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     64/    0 |        2744 |
+| crc8_bit                        |     64/    0 |        2746 |
 | crc8_nibble                     |     80/    0 |         630 |
 | crc8_byte                       |    296/    0 |         286 |
 | crc16ccitt_bit                  |     72/    0 |        2831 |
-| crc16ccitt_nibble               |    104/    0 |         702 |
-| crc16ccitt_byte                 |    568/    0 |         399 |
+| crc16ccitt_nibble               |    104/    0 |         703 |
+| crc16ccitt_byte                 |    568/    0 |         398 |
 | crc32_bit                       |    112/    0 |        2837 |
 | crc32_nibble                    |    136/    0 |         652 |
 | crc32_byte                      |   1080/    0 |         380 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    168/    0 |        1269 |
-| Arduino_CRC32                   |   1088/    0 |         380 |
+| Arduino_CRC32                   |   1088/    0 |         381 |
 | FastCRC                         |   4536/    0 |         347 |
++--------------------------------------------------------------+
+
+```
+
+## STM32 Blue Pill
+
+* STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |     60/    0 |        2276 |
+| crc8_nibble                     |     80/    0 |         502 |
+| crc8_byte                       |    296/    0 |         259 |
+| crc16ccitt_bit                  |     68/    0 |        1989 |
+| crc16ccitt_nibble               |    104/    0 |         559 |
+| crc16ccitt_byte                 |    564/    0 |         259 |
+| crc32_bit                       |    108/    0 |        2245 |
+| crc32_nibble                    |    140/    0 |         559 |
+| crc32_byte                      |   1080/    0 |         245 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    172/    0 |         831 |
+| Arduino_CRC32                   |   1096/    0 |         316 |
+| FastCRC                         |   4492/    0 |         181 |
 +--------------------------------------------------------------+
 
 ```
 
 ## ESP8266
 
-* NodeMCU 1.0 clone, 80MHz ESP8266
+* NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 +--------------------------------------------------------------+
@@ -139,15 +166,15 @@ in this directory. The various `*.txt` files will be piped through the
 | crc8_nibble                     |    144/    0 |         488 |
 | crc8_byte                       |    336/    0 |         233 |
 | crc16ccitt_bit                  |    112/    0 |        1501 |
-| crc16ccitt_nibble               |    192/    0 |         681 |
+| crc16ccitt_nibble               |    176/    0 |         681 |
 | crc16ccitt_byte                 |    624/    0 |         364 |
 | crc32_bit                       |    144/    0 |        1401 |
 | crc32_nibble                    |    208/    0 |         617 |
-| crc32_byte                      |   1136/    0 |         342 |
+| crc32_byte                      |   1120/    0 |         342 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    240/    0 |         937 |
-| Arduino_CRC32                   |   1136/ 1024 |         143 |
-| FastCRC                         |   4720/    0 |         486 |
+| Arduino_CRC32                   |   1120/ 1024 |         143 |
+| FastCRC                         |   4704/    0 |         486 |
 +--------------------------------------------------------------+
 
 ```
@@ -183,10 +210,27 @@ in this directory. The various `*.txt` files will be piped through the
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```
-TBD
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |     68/    0 |        1134 |
+| crc8_nibble                     |     88/    0 |         194 |
+| crc8_byte                       |    300/    0 |          92 |
+| crc16ccitt_bit                  |     76/    0 |        1176 |
+| crc16ccitt_nibble               |    112/    0 |         193 |
+| crc16ccitt_byte                 |    572/    0 |         141 |
+| crc32_bit                       |    132/    0 |        1392 |
+| crc32_nibble                    |    140/    0 |         183 |
+| crc32_byte                      |   1080/    0 |         154 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    176/    0 |         429 |
+| Arduino_CRC32                   |   1096/    0 |         156 |
+| FastCRC                         |    172/    0 |          23 |
++--------------------------------------------------------------+
+
 ```
 
