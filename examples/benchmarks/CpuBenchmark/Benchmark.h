@@ -25,6 +25,9 @@
 #elif defined(ARDUINO_ARCH_SAMD)
   const uint16_t STRING_SIZE_PAGE = 4;
   const uint16_t NUM_SAMPLES = 20;
+#elif defined(ARDUINO_ARCH_STM32)
+  const uint16_t STRING_SIZE_PAGE = 4;
+  const uint16_t NUM_SAMPLES = 20;
 #elif defined(ESP8266)
   const uint16_t STRING_SIZE_PAGE = 4;
   const uint16_t NUM_SAMPLES = 20;

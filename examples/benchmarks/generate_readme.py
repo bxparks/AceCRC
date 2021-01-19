@@ -18,6 +18,10 @@ samd_results = check_output(
     "cat CpuBenchmark/samd.txt MemoryBenchmark/samd.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
+stm32_results = check_output(
+    "cat CpuBenchmark/stm32.txt MemoryBenchmark/stm32.txt"
+    "| ./generate_combined.awk",
+    shell=True, text=True)
 esp8266_results = check_output(
     "cat CpuBenchmark/esp8266.txt MemoryBenchmark/esp8266.txt"
     "| ./generate_combined.awk",
@@ -26,9 +30,11 @@ esp32_results = check_output(
     "cat CpuBenchmark/esp32.txt MemoryBenchmark/esp32.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
-#teensy32_results = check_output(
-#    "cat CpuBenchmark/nano.txt MemoryBenchmark/nano.txt | ./generate_table.awk < teensy32.txt", shell=True, text=True)
-teensy32_results = 'TBD'
+teensy32_results = check_output(
+    "cat CpuBenchmark/teensy32.txt MemoryBenchmark/teensy32.txt"
+    "| ./generate_combined.awk",
+    shell=True, text=True)
+#teensy32_results = 'TBD'
 
 print(f"""\
 # Benchmarks
@@ -43,9 +49,9 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.4
+**Version**: AceCRC v0.4.1
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -101,17 +107,27 @@ in this directory. The various `*.txt` files will be piped through the
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* Sparkfun SAMD Core 1.8.1
 
 ```
 {samd_results}
 ```
 
+## STM32 Blue Pill
+
+* STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
+{stm32_results}
+```
+
 ## ESP8266
 
-* NodeMCU 1.0 clone, 80MHz ESP8266
+* NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 {esp8266_results}
@@ -131,7 +147,7 @@ in this directory. The various `*.txt` files will be piped through the
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```

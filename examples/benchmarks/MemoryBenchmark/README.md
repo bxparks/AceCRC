@@ -12,9 +12,9 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceCRC v0.4
+**Version**: AceCRC v0.4.1
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -32,6 +32,7 @@ produces the following files:
 nano.txt
 micro.txt
 samd.txt
+stm32.txt
 esp8266.txt
 esp32.txt
 teensy32.txt
@@ -143,7 +144,7 @@ do anything.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* Sparkfun SAMD Core 1.8.1
 
 ```
 +--------------------------------------------------------------+
@@ -168,11 +169,40 @@ do anything.
 
 ```
 
+## STM32 Blue Pill
+
+* STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
++--------------------------------------------------------------+
+| functionality                   |  flash/  ram |       delta |
+|---------------------------------+--------------+-------------|
+| baseline                        |  19176/ 3788 |     0/    0 |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |  19236/ 3788 |    60/    0 |
+| crc8_nibble                     |  19256/ 3788 |    80/    0 |
+| crc8_byte                       |  19472/ 3788 |   296/    0 |
+| crc16ccitt_bit                  |  19244/ 3788 |    68/    0 |
+| crc16ccitt_nibble               |  19280/ 3788 |   104/    0 |
+| crc16ccitt_byte                 |  19740/ 3788 |   564/    0 |
+| crc32_bit                       |  19284/ 3788 |   108/    0 |
+| crc32_nibble                    |  19316/ 3788 |   140/    0 |
+| crc32_byte                      |  20256/ 3788 |  1080/    0 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |  19348/ 3788 |   172/    0 |
+| Arduino_CRC32                   |  20272/ 3788 |  1096/    0 |
+| FastCRC                         |  23668/ 3788 |  4492/    0 |
++--------------------------------------------------------------+
+
+```
+
 ## ESP8266
 
-* NodeMCU 1.0 clone, 80MHz ESP8266
+* NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 +--------------------------------------------------------------+
@@ -230,7 +260,7 @@ do anything.
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```

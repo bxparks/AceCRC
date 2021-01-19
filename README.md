@@ -64,7 +64,7 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
-**Version**: 0.4 (2020-12-10)
+**Version**: 0.4.1 (2021-01-19)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -86,8 +86,8 @@ This library converts the C99 code in the following way:
     * [Other CRC Libraries](#OtherLibraries)
 * [Bugs and Limitations](#Bugs)
 * [System Requirements](#SystemRequirements)
-    * [Tool Chain](#ToolChain)
     * [Hardware](#Hardware)
+    * [Tool Chain](#ToolChain)
     * [Operating System](#OperatingSystem)
 * [License](#License)
 * [Feedback and Support](#Feedback)
@@ -206,25 +206,24 @@ All algorithms and their variants are placed in separate C++ namespaces so they
 do not collide, and you can use multiple CRC algorithms in a single program
 without worrying about name collision.
 
-The `crc_t` typedef, the function names, and their signatures from the
-underlying generated code from `pycrc` remain unchanged. For reference, the
-principle functions are:
+The function names and their signatures from the underlying generated code from
+`pycrc` remain unchanged. For reference, the principle functions are:
 
 * `crc_t crc_init(void);`
 * `crc_t crc_update(crc_t crc, const void *data, size_t data_len);`
 * `crc_t crc_finalize(crc_t crc);`
+
+See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
+functions are used. The `crc_update()` function can be called multiple times
+with additional data, before calling `crc_finalize()`.
 
 This library adds the following convenience function to each header file in each
 namespace:
 
 * `crc_t crc_calculate(const void *data, size_t data_len);`
 
-See the [examples/HelloCRC](examples/HelloCRC) example code to see how these
-functions are used. The `crc_update()` function can be called multiple times
-with additional data, before calling `crc_finalize()`.
-
-The `crc_calculate()` convenience function replaces the three separate calls to
-`crc_init()`, `crc_update()`, `crc_finalize()` with a single call.
+This function replaces the three separate calls to `crc_init()`, `crc_update()`,
+`crc_finalize()` with a single call.
 
 <a name="IntegerSizes"></a>
 ### Integer Sizes
@@ -372,7 +371,7 @@ order of preference:
    you can tolerate high chances of corruption
 
 You can consult the results in [examples/benchmarks](examples/benchmarks) to
-determine exactly you want to make the space versus time tradeoff for your
+determine exactly how you want to make the space versus time tradeoff for your
 specific application.
 
 <a name="Motivation"></a>
@@ -475,18 +474,6 @@ None that I know of right now.
 <a name="SystemRequirements"></a>
 ## System Requirements
 
-<a name="ToolChain"></a>
-### Tool Chain
-
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
-* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
-* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
-* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
-
 <a name="Hardware"></a>
 ### Hardware
 
@@ -494,14 +481,31 @@ The library is extensively tested on the following boards:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * SparkFun Pro Micro clone (16 MHz ATmega32U4)
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+) (compatible with Arduino Zero)
-* WeMos D1 Mini clone (ESP-12E module, 80 MHz ESP8266)
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
+* STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
+* NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
+* WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
 
 I will occasionally test on the following hardware as a sanity check:
 
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
+* Teensy LC (48 MHz ARM Cortex-M0+)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+
+<a name="ToolChain"></a>
+### Tool Chain
+
+* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
+* [Arduino CLI 0.14.0](https://arduino.github.io/arduino-cli)
+* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
+* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
+* [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
+* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
 <a name="OperatingSystem"></a>
 ### Operating System
@@ -520,6 +524,10 @@ The generator script in `./tools/generate.sh` has only been tested under Ubuntu
 
 <a name="Feedback"></a>
 ## Feedback and Support
+
+If you find this library useful, consider starring this project on GitHub. The
+stars will let me prioritize the more popular libraries over the less popular
+ones.
 
 If you have any questions, comments, bug reports, or feature requests, please
 file a GitHub ticket instead of emailing me unless the content is sensitive.
