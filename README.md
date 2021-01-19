@@ -64,7 +64,7 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
-**Version**: 0.4 (2020-12-10)
+**Version**: 0.4.1 (2021-01-19)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 

@@ -49,7 +49,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.4
+**Version**: AceCRC v0.4.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 

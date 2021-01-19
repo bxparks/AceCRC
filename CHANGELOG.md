@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+* 0.4.1 (2021-01-19)
+    * Add official support for STM32 by validating against STM32 Blue Pill
+      board. Update CpuBenchmark and MemoryBenchmark numbers.
+    * Re-add benchmark numbers for Teensy 3.2. Able to upload to it again
+      after reinstalling Ubuntu 20.04.
+    * No functional change in this release.
 * 0.4 (2020-12-10)
     * Convert internal loop or index variable inside `crc_update()` fgrom
       `unsigned int` to a one-byte `uint8_t`. Improves CPU performance by 6%-34%
