@@ -12,6 +12,8 @@ micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
 samd_results = check_output(
     "./generate_table.awk < samd.txt", shell=True, text=True)
+stm32_results = check_output(
+    "./generate_table.awk < stm32.txt", shell=True, text=True)
 esp8266_results = check_output(
     "./generate_table.awk < esp8266.txt", shell=True, text=True)
 esp32_results = check_output(
@@ -36,7 +38,7 @@ calculated flash size can jump around in unexpected ways.
 
 **Version**: AceCRC v0.4
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -54,6 +56,7 @@ produces the following files:
 nano.txt
 micro.txt
 samd.txt
+stm32.txt
 esp8266.txt
 esp32.txt
 teensy32.txt
@@ -127,17 +130,27 @@ do anything.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* Sparkfun SAMD Core 1.8.1
 
 ```
 {samd_results}
 ```
 
+## STM32 Blue Pill
+
+* STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
+{stm32_results}
+```
+
 ## ESP8266
 
-* NodeMCU 1.0 clone, 80MHz ESP8266
+* NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 {esp8266_results}
@@ -157,7 +170,7 @@ do anything.
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```

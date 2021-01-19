@@ -24,8 +24,11 @@ micro.txt:
 samd.txt:
 	./collect.sh --cli samd $@
 
+stm32.txt:
+	./collect.sh --cli stm32 $@
+
 esp8266.txt:
-	./collect.sh --cli esp8266 $@
+	./collect.sh --cli nodemcu $@
 
 esp32.txt:
 	./collect.sh --cli esp32 $@
