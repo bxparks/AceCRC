@@ -5,7 +5,7 @@ algorithms.
 
 **Version**: AceCRC v0.4
 
-**NOTE**: This file was auto-generated using `make README.md`. DO NOT EDIT.
+**DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
 ## How to Generate
 
@@ -154,28 +154,55 @@ just out of curiosity:
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        2744 |
+| crc8_bit                        |        2746 |
 | crc8_nibble                     |         630 |
 | crc8_byte                       |         286 |
 | crc16ccitt_bit                  |        2831 |
-| crc16ccitt_nibble               |         702 |
-| crc16ccitt_byte                 |         399 |
+| crc16ccitt_nibble               |         703 |
+| crc16ccitt_byte                 |         398 |
 | crc32_bit                       |        2837 |
 | crc32_nibble                    |         652 |
 | crc32_byte                      |         380 |
 |---------------------------------+-------------|
 | CRC32                           |        1269 |
-| Arduino_CRC32                   |         380 |
+| Arduino_CRC32                   |         381 |
 | FastCRC32                       |         347 |
++---------------------------------+-------------+
+
+```
+
+## STM32 Blue Pill
+
+* STM32F103C8, 72 MHz ARM Cortex-M3
+* Arduino IDE 1.8.13
+* STM32duino 1.9.0
+
+```
++-----------------------------------------------+
+| CRC algorithm                   |  micros/kiB |
+|---------------------------------+-------------|
+| crc8_bit                        |        2276 |
+| crc8_nibble                     |         502 |
+| crc8_byte                       |         259 |
+| crc16ccitt_bit                  |        1989 |
+| crc16ccitt_nibble               |         559 |
+| crc16ccitt_byte                 |         259 |
+| crc32_bit                       |        2245 |
+| crc32_nibble                    |         559 |
+| crc32_byte                      |         245 |
+|---------------------------------+-------------|
+| CRC32                           |         831 |
+| Arduino_CRC32                   |         316 |
+| FastCRC32                       |         181 |
 +---------------------------------+-------------+
 
 ```
 
 ## ESP8266
 
-* NodeMCU 1.0 clone, 80MHz ESP8266
+* NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.1
+* ESP8266 Boards 2.7.4
 
 ```
 +-----------------------------------------------+
@@ -229,10 +256,27 @@ just out of curiosity:
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13
-* Teensyduino 1.53.beta
+* Teensyduino 1.53
 * Compiler options: "Faster"
 
 ```
-TBD
++-----------------------------------------------+
+| CRC algorithm                   |  micros/kiB |
+|---------------------------------+-------------|
+| crc8_bit                        |        1134 |
+| crc8_nibble                     |         194 |
+| crc8_byte                       |          92 |
+| crc16ccitt_bit                  |        1176 |
+| crc16ccitt_nibble               |         193 |
+| crc16ccitt_byte                 |         141 |
+| crc32_bit                       |        1392 |
+| crc32_nibble                    |         183 |
+| crc32_byte                      |         154 |
+|---------------------------------+-------------|
+| CRC32                           |         429 |
+| Arduino_CRC32                   |         156 |
+| FastCRC32                       |          23 |
++---------------------------------+-------------+
+
 ```
 
