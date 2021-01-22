@@ -64,7 +64,7 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
-**Version**: 0.4.1 (2021-01-19)
+**Version**: 0.4.2 (2021-01-22)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -162,8 +162,8 @@ dependencies are required for development and testing purposes:
   (https://pycrc.org/).
 * To run the unit tests under `tests`, you need AUnit
   (https://github.com/bxparks/AUnit)
-* To run the unit tests under Linux or MacOS, you need UnixHostDuino
-  (https://github.com/bxparks/UnixHostDuino)
+* To run the unit tests under Linux or MacOS, you need EpoxyDuino
+  (https://github.com/bxparks/EpoxyDuino)
 
 <a name="Documentation"></a>
 ## Documentation

@@ -1,6 +1,9 @@
 # Changelog
 
 * Unreleased
+* 0.4.2 (2021-01-22)
+    * Update UnixHostDuino 0.4 to EpoxyDuino 0.5
+    * No functional change in this release.
 * 0.4.1 (2021-01-19)
     * Add official support for STM32 by validating against STM32 Blue Pill
       board. Update CpuBenchmark and MemoryBenchmark numbers.

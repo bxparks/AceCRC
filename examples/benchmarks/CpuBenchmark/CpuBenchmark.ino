@@ -2,7 +2,7 @@
 #include "Benchmark.h"
 
 void setup() {
-#ifndef UNIX_HOST_DUINO
+#ifndef EPOXY_DUINO
   delay(1000);
 #endif
   SERIAL_PORT_MONITOR.begin(115200);
@@ -15,7 +15,7 @@ void setup() {
   runBenchmarks();
 
   SERIAL_PORT_MONITOR.println("END");
-#ifdef UNIX_HOST_DUINO
+#ifdef EPOXY_DUINO
   exit(0);
 #endif
 }
