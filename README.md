@@ -162,8 +162,8 @@ dependencies are required for development and testing purposes:
   (https://pycrc.org/).
 * To run the unit tests under `tests`, you need AUnit
   (https://github.com/bxparks/AUnit)
-* To run the unit tests under Linux or MacOS, you need UnixHostDuino
-  (https://github.com/bxparks/UnixHostDuino)
+* To run the unit tests under Linux or MacOS, you need EpoxyDuino
+  (https://github.com/bxparks/EpoxyDuino)
 
 <a name="Documentation"></a>
 ## Documentation

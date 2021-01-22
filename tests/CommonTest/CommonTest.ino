@@ -24,7 +24,7 @@ using namespace ace_crc;
 
 #if defined(ARDUINO_ARCH_AVR)
   static size_t SIZE_T_SIZE = 2;
-#elif defined(UNIX_HOST_DUINO)
+#elif defined(EPOXY_DUINO)
   static size_t SIZE_T_SIZE = 8;
 #else
   static size_t SIZE_T_SIZE = 4;
@@ -53,7 +53,7 @@ test(CommonTest, sizeof) {
 // --------------------------------------------------------------------------
 
 void setup() {
-#if ! defined(UNIX_HOST_DUINO)
+#if ! defined(EPOXY_DUINO)
   delay(1000); // wait to prevent garbage on SERIAL_PORT_MONITOR
 #endif
 

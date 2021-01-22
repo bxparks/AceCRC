@@ -5,7 +5,7 @@
 #include <stdint.h>
 
 // Enable benchmarking of some third-party CRC libraries for curiosity.
-#if defined(UNIX_HOST_DUINO)
+#if defined(EPOXY_DUINO)
   #define ENABLE_CRC32_LIBRARY 0
   #define ENABLE_ARDUINO_CRC32_LIBRARY 0
   #define ENABLE_FAST_CRC_LIBRARY 0
@@ -37,7 +37,7 @@
 #elif defined(TEENSYDUINO)
   const uint16_t STRING_SIZE_PAGE = 4;
   const uint16_t NUM_SAMPLES = 20;
-#elif defined(UNIX_HOST_DUINO)
+#elif defined(EPOXY_DUINO)
   const uint16_t STRING_SIZE_PAGE = 40;
   const uint16_t NUM_SAMPLES = 100;
 #else
