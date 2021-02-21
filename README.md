@@ -63,7 +63,7 @@ This library converts the C99 code in the following way:
       data, `PROGMEM` is a no-op, and the various `pgm_read_{xxx}()` routines
       become just normal memory accessors.)
 * the `static` keyword is removed from header files
-    * not needed in C++ 
+    * not needed in C++
     * prevents generation of doxygen docs for those functions
 * the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
     * becomes part of its enclosing namespace, preventing name collision
@@ -340,7 +340,31 @@ of:
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
-convenience.
+convenience. For example, here is the table for the ESP8266 processor:
+
+```
+ESP8266
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |     96/    0 |        1500 |
+| crc8_nibble                     |    144/    0 |         490 |
+| crc8_nibblem                    |    128/   16 |         257 |
+| crc8_byte                       |    336/    0 |         233 |
+| crc16ccitt_bit                  |    112/    0 |        1499 |
+| crc16ccitt_nibble               |    176/    0 |         681 |
+| crc16ccitt_nibblem              |    144/   32 |         270 |
+| crc16ccitt_byte                 |    624/    0 |         363 |
+| crc32_bit                       |    144/    0 |        1400 |
+| crc32_nibble                    |    208/    0 |         618 |
+| crc32_nibblem                   |    160/   64 |         232 |
+| crc32_byte                      |   1120/    0 |         345 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    240/    0 |         950 |
+| Arduino_CRC32                   |   1120/ 1024 |         142 |
+| FastCRC                         |   4704/    0 |         486 |
++--------------------------------------------------------------+
+```
 
 Comparing the different variants ("bit", "nibble" and "byte"), it seems that the
 "nibble" variants (4-bit lookup table) offer a good tradeoff between
@@ -404,31 +428,7 @@ static ram.
 
 You can consult the results in [examples/benchmarks](examples/benchmarks) to
 determine exactly how you want to make the space versus time tradeoff for your
-specific application. For example, here is the table for the ESP8266 processor:
-
-```
-ESP8266
-+--------------------------------------------------------------+
-| CRC algorithm                   |  flash/  ram |  micros/kiB |
-|---------------------------------+--------------+-------------|
-| crc8_bit                        |     96/    0 |        1500 |
-| crc8_nibble                     |    144/    0 |         490 |
-| crc8_nibblem                    |    128/   16 |         257 |
-| crc8_byte                       |    336/    0 |         233 |
-| crc16ccitt_bit                  |    112/    0 |        1499 |
-| crc16ccitt_nibble               |    176/    0 |         681 |
-| crc16ccitt_nibblem              |    144/   32 |         270 |
-| crc16ccitt_byte                 |    624/    0 |         363 |
-| crc32_bit                       |    144/    0 |        1400 |
-| crc32_nibble                    |    208/    0 |         618 |
-| crc32_nibblem                   |    160/   64 |         232 |
-| crc32_byte                      |   1120/    0 |         345 |
-|---------------------------------+--------------+-------------|
-| CRC32                           |    240/    0 |         950 |
-| Arduino_CRC32                   |   1120/ 1024 |         142 |
-| FastCRC                         |   4704/    0 |         486 |
-+--------------------------------------------------------------+
-```
+specific application.
 
 <a name="Motivation"></a>
 ## Background and Motiviation
