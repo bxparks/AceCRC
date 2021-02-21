@@ -1,6 +1,14 @@
 # Changelog
 
 * Unreleased
+* 1.0 (2021-02-21)
+    * Add `nibblem` variant.
+        * Same as `nibble` but the 16-element lookup table is stored in static
+          memory instead of flash memory.
+        * On ESP8266, this causes a **1.9X-2.7X** speed improvement because
+          accessing the flash memory access is much slower than static memory.
+        * Only a 2-7% speed improvement for AVR processors.
+    * Graduate to v1.0.
 * 0.4.2 (2021-01-22)
     * Update UnixHostDuino 0.4 to EpoxyDuino 0.5
     * No functional change in this release.

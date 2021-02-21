@@ -10,7 +10,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.5
+**Version**: AceCRC v1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -33,7 +33,7 @@ in this directory. The various `*.txt` files will be piped through the
 
 ## Changes
 
-### v0.5
+### v1.0
 
 Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
 placed in static ram, instead of flash RAM. For AVR processors, there is small

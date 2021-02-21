@@ -3,7 +3,7 @@
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v0.5
+**Version**: AceCRC v1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -48,7 +48,7 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-### v0.5
+### v1.0
 
 Added CPU benchmarks for the `nibblem` variant. On AVR there was a small
 performance increase compared to the `nibble` variant. But on the ESP8266, there
