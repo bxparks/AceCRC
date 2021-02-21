@@ -17,16 +17,16 @@ For each algorithm, 4 different implementations were generated:
 * bit: bit-by-bit
     * brute-force loops to calculate the polynomial divisions
     * smallest code size, but slowest
-* nibble: table lookup using 4-bits in flash memory (PROGMEM)
+* nibble: 4-bit lookup table in flash memory (PROGMEM)
     * generates a lookup table of 16 elements
     * larger code size, but faster
-* nibblem: table lookup using 4-bits in static memory
+* nibblem: 4-bit lookup table in static memory
     * same as nibble, but using static memory for lookup table
     * the "m" stands for "static memory" as opposed to "flash memory"
     * *2-7%* faster than `nibble` on AVR
     * **1.9X-2.7X** faster than `nibble` on ESP8266
     * no difference for all other processors
-* byte: table lookup using 8-bits (byte)
+* byte: 8-bit lookup table in flash memory
     * generates a lookup table of 256 elements
     * largest code size, but fastest
 
