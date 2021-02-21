@@ -28,7 +28,7 @@ print(f"""\
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v0.4.2
+**Version**: AceCRC v1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -72,6 +72,22 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 
 ## CPU Time Changes
+
+### v1.0
+
+Added CPU benchmarks for the `nibblem` variant. On AVR and ESP8266, there was
+some performance increase compared to the `nibble` variant, because static
+memory access is faster than flash memory access on those processors. On other
+microcontrollers, there was no change in performance.
+
+* AVR
+    * crc8_nibblem is 2% faster than crc8_nibble
+    * crc16ccitt_nibblem is 5% faster than crc16ccitt_nibble
+    * crc32_nibblem is 7% faster than crc32_nibble
+* ESP8266
+    * crc8_nibblem is 1.9X faster than crc8_nibble
+    * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
+    * crc32_nibblem is 2.7X faster than crc32_nibble
 
 ### v0.4
 

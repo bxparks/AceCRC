@@ -16,7 +16,7 @@
 set -eu
 
 PROGRAM_NAME='MemoryBenchmark.ino'
-NUM_FEATURES=12
+NUM_FEATURES=15
 
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceCRC.

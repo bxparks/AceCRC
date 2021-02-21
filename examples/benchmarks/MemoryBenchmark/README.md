@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceCRC v0.4.2
+**Version**: AceCRC v1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -53,18 +53,24 @@ will be invoked by the following command:
 $ make README.md
 ```
 
-## Functionality
+## Algorithms
 
 * 0 Baseline: A program that does (almost) nothing
 * 1 `crc8_bit`
 * 2 `crc8_nibble`
-* 3 `crc8_byte`
-* 4 `crc16ccitt_bit`
-* 5 `crc16ccitt_nibble`
-* 6 `crc16ccitt_byte`
-* 7 `crc32_bit`
-* 8 `crc32_nibble`
-* 9 `crc32_byte`
+* 3 `crc8_nibblem`
+* 4 `crc8_byte`
+* 5 `crc16ccitt_bit`
+* 6 `crc16ccitt_nibble`
+* 7 `crc16ccitt_nibblem`
+* 8 `crc16ccitt_byte`
+* 9 `crc32_bit`
+* 10 `crc32_nibble`
+* 11 `crc32_nibblem`
+* 12 `crc32_byte`
+* 13 - CRC32 library (https://github.com/arduino-libraries/Arduino_CRC32)
+* 14 - Arduino_CRC32 library (https://github.com/bakercp/CRC32)
+* 15 - FastCRC library (https://github.com/FrankBoesing/FastCRC)
 
 ## Library Size Changes
 
@@ -82,6 +88,12 @@ certain microcontrollers (e.g. AVR, ESP8266), For the other processors, either
 the `crc_table` is already in flash memory, or the `PROGMEM` attribute does not
 do anything.
 
+The `nibblem` variant is exactly the same as the `nibble` variant, except that
+`PROGMEM` keyword is not used for the lookup `crc_table`, so that it is placed
+in static memory instead of flash memory. This improves the speed of the
+algorithm on AVR and ESP8266 processors because accessing static memory is
+faster than flash memory on those processors.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -96,12 +108,15 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |    756/   21 |    72/    0 |
 | crc8_nibble                     |    814/   21 |   130/    0 |
+| crc8_nibblem                    |    818/   37 |   134/   16 |
 | crc8_byte                       |    976/   21 |   292/    0 |
 | crc16ccitt_bit                  |    764/   21 |    80/    0 |
 | crc16ccitt_nibble               |    818/   21 |   134/    0 |
+| crc16ccitt_nibblem              |    822/   53 |   138/   32 |
 | crc16ccitt_byte                 |   1246/   21 |   562/    0 |
 | crc32_bit                       |    868/   21 |   184/    0 |
 | crc32_nibble                    |    888/   21 |   204/    0 |
+| crc32_nibblem                   |    892/   85 |   208/   64 |
 | crc32_byte                      |   1790/   21 |  1106/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    892/   21 |   208/    0 |
@@ -125,12 +140,15 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |   3682/  161 |    72/    0 |
 | crc8_nibble                     |   3740/  161 |   130/    0 |
+| crc8_nibblem                    |   3744/  177 |   134/   16 |
 | crc8_byte                       |   3902/  161 |   292/    0 |
 | crc16ccitt_bit                  |   3690/  161 |    80/    0 |
 | crc16ccitt_nibble               |   3744/  161 |   134/    0 |
+| crc16ccitt_nibblem              |   3748/  193 |   138/   32 |
 | crc16ccitt_byte                 |   4172/  161 |   562/    0 |
 | crc32_bit                       |   3794/  161 |   184/    0 |
 | crc32_nibble                    |   3814/  161 |   204/    0 |
+| crc32_nibblem                   |   3818/  225 |   208/   64 |
 | crc32_byte                      |   4716/  161 |  1106/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |   3818/  161 |   208/    0 |
@@ -154,12 +172,15 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |  10176/    0 |    64/    0 |
 | crc8_nibble                     |  10192/    0 |    80/    0 |
+| crc8_nibblem                    |  10192/    0 |    80/    0 |
 | crc8_byte                       |  10408/    0 |   296/    0 |
 | crc16ccitt_bit                  |  10184/    0 |    72/    0 |
 | crc16ccitt_nibble               |  10216/    0 |   104/    0 |
+| crc16ccitt_nibblem              |  10216/    0 |   104/    0 |
 | crc16ccitt_byte                 |  10680/    0 |   568/    0 |
 | crc32_bit                       |  10224/    0 |   112/    0 |
 | crc32_nibble                    |  10248/    0 |   136/    0 |
+| crc32_nibblem                   |  10248/    0 |   136/    0 |
 | crc32_byte                      |  11192/    0 |  1080/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |  10280/    0 |   168/    0 |
@@ -183,12 +204,15 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |  19236/ 3788 |    60/    0 |
 | crc8_nibble                     |  19256/ 3788 |    80/    0 |
+| crc8_nibblem                    |  19256/ 3788 |    80/    0 |
 | crc8_byte                       |  19472/ 3788 |   296/    0 |
 | crc16ccitt_bit                  |  19244/ 3788 |    68/    0 |
 | crc16ccitt_nibble               |  19280/ 3788 |   104/    0 |
+| crc16ccitt_nibblem              |  19280/ 3788 |   104/    0 |
 | crc16ccitt_byte                 |  19740/ 3788 |   564/    0 |
 | crc32_bit                       |  19284/ 3788 |   108/    0 |
 | crc32_nibble                    |  19316/ 3788 |   140/    0 |
+| crc32_nibblem                   |  19316/ 3788 |   140/    0 |
 | crc32_byte                      |  20256/ 3788 |  1080/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |  19348/ 3788 |   172/    0 |
@@ -212,17 +236,20 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        | 257080/26812 |    96/    0 |
 | crc8_nibble                     | 257128/26812 |   144/    0 |
+| crc8_nibblem                    | 257112/26828 |   128/   16 |
 | crc8_byte                       | 257320/26812 |   336/    0 |
 | crc16ccitt_bit                  | 257096/26812 |   112/    0 |
-| crc16ccitt_nibble               | 257176/26812 |   192/    0 |
+| crc16ccitt_nibble               | 257160/26812 |   176/    0 |
+| crc16ccitt_nibblem              | 257128/26844 |   144/   32 |
 | crc16ccitt_byte                 | 257608/26812 |   624/    0 |
 | crc32_bit                       | 257128/26812 |   144/    0 |
 | crc32_nibble                    | 257192/26812 |   208/    0 |
-| crc32_byte                      | 258120/26812 |  1136/    0 |
+| crc32_nibblem                   | 257144/26876 |   160/   64 |
+| crc32_byte                      | 258104/26812 |  1120/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           | 257224/26812 |   240/    0 |
-| Arduino_CRC32                   | 258120/27836 |  1136/ 1024 |
-| FastCRC                         | 261704/26812 |  4720/    0 |
+| Arduino_CRC32                   | 258104/27836 |  1120/ 1024 |
+| FastCRC                         | 261688/26812 |  4704/    0 |
 +--------------------------------------------------------------+
 
 ```
@@ -241,12 +268,15 @@ do anything.
 |---------------------------------+--------------+-------------|
 | crc8_bit                        | 206809/14564 |   132/    0 |
 | crc8_nibble                     | 206829/14564 |   152/    0 |
+| crc8_nibblem                    | 206829/14564 |   152/    0 |
 | crc8_byte                       | 207033/14564 |   356/    0 |
 | crc16ccitt_bit                  | 206817/14564 |   140/    0 |
 | crc16ccitt_nibble               | 206853/14564 |   176/    0 |
+| crc16ccitt_nibblem              | 206853/14564 |   176/    0 |
 | crc16ccitt_byte                 | 207309/14564 |   632/    0 |
 | crc32_bit                       | 206845/14564 |   168/    0 |
 | crc32_nibble                    | 206877/14564 |   200/    0 |
+| crc32_nibblem                   | 206877/14564 |   200/    0 |
 | crc32_byte                      | 207817/14564 |  1140/    0 |
 |---------------------------------+--------------+-------------|
 | CRC32                           | 206949/14572 |   272/    8 |
@@ -267,21 +297,24 @@ do anything.
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |   7696/ 3048 |     0/    0 |
+| baseline                        |   7664/ 3048 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |   7764/ 3048 |    68/    0 |
-| crc8_nibble                     |   7784/ 3048 |    88/    0 |
-| crc8_byte                       |   7996/ 3048 |   300/    0 |
-| crc16ccitt_bit                  |   7772/ 3048 |    76/    0 |
-| crc16ccitt_nibble               |   7808/ 3048 |   112/    0 |
-| crc16ccitt_byte                 |   8268/ 3048 |   572/    0 |
-| crc32_bit                       |   7828/ 3048 |   132/    0 |
-| crc32_nibble                    |   7836/ 3048 |   140/    0 |
-| crc32_byte                      |   8776/ 3048 |  1080/    0 |
+| crc8_bit                        |   7732/ 3048 |    68/    0 |
+| crc8_nibble                     |   7752/ 3048 |    88/    0 |
+| crc8_nibblem                    |   7752/ 3048 |    88/    0 |
+| crc8_byte                       |   7964/ 3048 |   300/    0 |
+| crc16ccitt_bit                  |   7740/ 3048 |    76/    0 |
+| crc16ccitt_nibble               |   7776/ 3048 |   112/    0 |
+| crc16ccitt_nibblem              |   7776/ 3048 |   112/    0 |
+| crc16ccitt_byte                 |   8236/ 3048 |   572/    0 |
+| crc32_bit                       |   7796/ 3048 |   132/    0 |
+| crc32_nibble                    |   7804/ 3048 |   140/    0 |
+| crc32_nibblem                   |   7804/ 3048 |   140/    0 |
+| crc32_byte                      |   8744/ 3048 |  1080/    0 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |   7872/ 3048 |   176/    0 |
-| Arduino_CRC32                   |   8792/ 3048 |  1096/    0 |
-| FastCRC                         |   7868/ 3048 |   172/    0 |
+| CRC32                           |   7840/ 3048 |   176/    0 |
+| Arduino_CRC32                   |   8760/ 3048 |  1096/    0 |
+| FastCRC                         |   7836/ 3048 |   172/    0 |
 +--------------------------------------------------------------+
 
 ```

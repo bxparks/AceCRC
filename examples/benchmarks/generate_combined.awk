@@ -9,21 +9,24 @@
 # usage for each algorithm variant.
 
 BEGIN {
-  NUM_ACE_CRC_ALGORITHMS = 9
-  NUM_ALGORITHMS = 12
+  NUM_ACE_CRC_ALGORITHMS = 12
+  NUM_ALGORITHMS = 15
   labels[0] = "baseline"
   labels[1] = "crc8_bit";
   labels[2] = "crc8_nibble";
-  labels[3] = "crc8_byte";
-  labels[4] = "crc16ccitt_bit";
-  labels[5] = "crc16ccitt_nibble";
-  labels[6] = "crc16ccitt_byte";
-  labels[7] = "crc32_bit";
-  labels[8] = "crc32_nibble";
-  labels[9] = "crc32_byte";
-  labels[10] = "CRC32";
-  labels[11] = "Arduino_CRC32";
-  labels[12] = "FastCRC";
+  labels[3] = "crc8_nibblem";
+  labels[4] = "crc8_byte";
+  labels[5] = "crc16ccitt_bit";
+  labels[6] = "crc16ccitt_nibble";
+  labels[7] = "crc16ccitt_nibblem";
+  labels[8] = "crc16ccitt_byte";
+  labels[9] = "crc32_bit";
+  labels[10] = "crc32_nibble";
+  labels[11] = "crc32_nibblem";
+  labels[12] = "crc32_byte";
+  labels[13] = "CRC32";
+  labels[14] = "Arduino_CRC32";
+  labels[15] = "FastCRC";
 
   # CpuBenchmark/*.txt don't have baseline, so map to labels[] starting with
   # 1-index.

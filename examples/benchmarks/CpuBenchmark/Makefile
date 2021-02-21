@@ -33,7 +33,7 @@ stm32.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END stm32:ACM0
 
 esp8266.txt:
-	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END esp8266:USB0
+	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END nodemcu:USB0
 
 esp32.txt:
 	$(AUNITER_DIR)/auniter.sh upmon -o $@ --eof END esp32:USB0
