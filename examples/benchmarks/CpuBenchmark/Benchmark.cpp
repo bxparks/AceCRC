@@ -112,6 +112,10 @@ void runBenchmarks() {
     return crc8_nibble::crc_calculate(string, STRING_SIZE);
   });
 
+  runLambda("crc8_nibblem", []() -> LambdaReturnType {
+    return crc8_nibblem::crc_calculate(string, STRING_SIZE);
+  });
+
   runLambda("crc8_byte", []() -> LambdaReturnType {
     return crc8_byte::crc_calculate(string, STRING_SIZE);
   });
@@ -124,6 +128,10 @@ void runBenchmarks() {
     return crc16ccitt_nibble::crc_calculate(string, STRING_SIZE);
   });
 
+  runLambda("crc16ccitt_nibblem", []() -> LambdaReturnType {
+    return crc16ccitt_nibblem::crc_calculate(string, STRING_SIZE);
+  });
+
   runLambda("crc16ccitt_byte", []() -> LambdaReturnType {
     return crc16ccitt_byte::crc_calculate(string, STRING_SIZE);
   });
@@ -134,6 +142,10 @@ void runBenchmarks() {
 
   runLambda("crc32_nibble", []() -> LambdaReturnType {
     return crc32_nibble::crc_calculate(string, STRING_SIZE);
+  });
+
+  runLambda("crc32_nibblem", []() -> LambdaReturnType {
+    return crc32_nibblem::crc_calculate(string, STRING_SIZE);
   });
 
   runLambda("crc32_byte", []() -> LambdaReturnType {
