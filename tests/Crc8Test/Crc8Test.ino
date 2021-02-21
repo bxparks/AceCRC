@@ -61,6 +61,29 @@ test(crc8_nibble, zeros) {
 }
 
 // --------------------------------------------------------------------------
+// crc8_nibblem
+// --------------------------------------------------------------------------
+
+test(crc8_nibblem, check) {
+  uint8_t crc = crc8_nibblem::crc_calculate(CHECK_STRING, LENGTH);
+  assertEqual(EXPECTED_CRC, crc);
+}
+
+// Arrays of zeros of different lengths ALL have CRC=0 for CRC8, making it
+// unsuitable for situations where a string of zeros is likely to happen.
+test(crc8_nibblem, zeros) {
+  uint8_t crc1 = crc8_nibblem::crc_calculate(ZEROES, 1);
+  uint8_t crc2 = crc8_nibblem::crc_calculate(ZEROES, 2);
+  uint8_t crc3 = crc8_nibblem::crc_calculate(ZEROES, 3);
+  uint8_t crc4 = crc8_nibblem::crc_calculate(ZEROES, 4);
+
+  assertEqual((uint8_t) 0, crc1);
+  assertEqual((uint8_t) 0, crc2);
+  assertEqual((uint8_t) 0, crc3);
+  assertEqual((uint8_t) 0, crc4);
+}
+
+// --------------------------------------------------------------------------
 // crc8_byte
 // --------------------------------------------------------------------------
 
