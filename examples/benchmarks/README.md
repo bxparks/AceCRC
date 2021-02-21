@@ -10,7 +10,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.4.2
+**Version**: AceCRC v0.5
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -33,6 +33,13 @@ in this directory. The various `*.txt` files will be piped through the
 
 ## Changes
 
+### v0.5
+
+Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
+placed in static ram, instead of flash RAM. For AVR processors, there is small
+increase in performance, 2-7%. But for ESP8266 processors, the performance goes
+up by 1.9X to 2.7X.
+
 ### v0.4
 
 * Updated `tools/generate.py` to convert an internal loop or index variable
@@ -54,19 +61,22 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     72/    0 |        9306 |
-| crc8_nibble                     |    130/    0 |        7346 |
-| crc8_byte                       |    292/    0 |         908 |
-| crc16ccitt_bit                  |     80/    0 |       11106 |
-| crc16ccitt_nibble               |    134/    0 |        5290 |
-| crc16ccitt_byte                 |    562/    0 |        1490 |
-| crc32_bit                       |    184/    0 |       16062 |
-| crc32_nibble                    |    204/    0 |        7610 |
-| crc32_byte                      |   1106/    0 |        2262 |
+| crc8_bit                        |     72/    0 |        9312 |
+| crc8_nibble                     |    130/    0 |        7352 |
+| crc8_nibblem                    |    134/   16 |        7228 |
+| crc8_byte                       |    292/    0 |         920 |
+| crc16ccitt_bit                  |     80/    0 |       11096 |
+| crc16ccitt_nibble               |    134/    0 |        5296 |
+| crc16ccitt_nibblem              |    138/   32 |        5036 |
+| crc16ccitt_byte                 |    562/    0 |        1496 |
+| crc32_bit                       |    184/    0 |       16164 |
+| crc32_nibble                    |    204/    0 |        7624 |
+| crc32_nibblem                   |    208/   64 |        7104 |
+| crc32_byte                      |   1106/    0 |        2276 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    208/    0 |        7674 |
-| Arduino_CRC32                   |   1112/ 1024 |        2134 |
-| FastCRC                         |   4262/    0 |        2130 |
+| CRC32                           |    208/    0 |        7688 |
+| Arduino_CRC32                   |   1112/ 1024 |        2144 |
+| FastCRC                         |   4262/    0 |        2160 |
 +--------------------------------------------------------------+
 
 ```
@@ -81,19 +91,22 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     72/    0 |        9352 |
-| crc8_nibble                     |    130/    0 |        7388 |
-| crc8_byte                       |    292/    0 |         914 |
-| crc16ccitt_bit                  |     80/    0 |       11164 |
+| crc8_bit                        |     72/    0 |        9372 |
+| crc8_nibble                     |    130/    0 |        7392 |
+| crc8_nibblem                    |    134/   16 |        7272 |
+| crc8_byte                       |    292/    0 |         928 |
+| crc16ccitt_bit                  |     80/    0 |       11156 |
 | crc16ccitt_nibble               |    134/    0 |        5316 |
-| crc16ccitt_byte                 |    562/    0 |        1500 |
-| crc32_bit                       |    184/    0 |       16148 |
-| crc32_nibble                    |    204/    0 |        7648 |
-| crc32_byte                      |   1106/    0 |        2272 |
+| crc16ccitt_nibblem              |    138/   32 |        5068 |
+| crc16ccitt_byte                 |    562/    0 |        1504 |
+| crc32_bit                       |    184/    0 |       16248 |
+| crc32_nibble                    |    204/    0 |        7660 |
+| crc32_nibblem                   |    208/   64 |        7144 |
+| crc32_byte                      |   1106/    0 |        2284 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    208/    0 |        7716 |
-| Arduino_CRC32                   |   1112/ 1024 |        2148 |
-| FastCRC                         |   4262/    0 |        2130 |
+| CRC32                           |    208/    0 |        7720 |
+| Arduino_CRC32                   |   1112/ 1024 |        2160 |
+| FastCRC                         |   4262/    0 |        2180 |
 +--------------------------------------------------------------+
 
 ```
@@ -109,17 +122,20 @@ in this directory. The various `*.txt` files will be piped through the
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |     64/    0 |        2746 |
-| crc8_nibble                     |     80/    0 |         630 |
-| crc8_byte                       |    296/    0 |         286 |
+| crc8_nibble                     |     80/    0 |         625 |
+| crc8_nibblem                    |     80/    0 |         625 |
+| crc8_byte                       |    296/    0 |         295 |
 | crc16ccitt_bit                  |     72/    0 |        2831 |
-| crc16ccitt_nibble               |    104/    0 |         703 |
-| crc16ccitt_byte                 |    568/    0 |         398 |
-| crc32_bit                       |    112/    0 |        2837 |
+| crc16ccitt_nibble               |    104/    0 |         676 |
+| crc16ccitt_nibblem              |    104/    0 |         706 |
+| crc16ccitt_byte                 |    568/    0 |         399 |
+| crc32_bit                       |    112/    0 |        2838 |
 | crc32_nibble                    |    136/    0 |         652 |
+| crc32_nibblem                   |    136/    0 |         636 |
 | crc32_byte                      |   1080/    0 |         380 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    168/    0 |        1269 |
-| Arduino_CRC32                   |   1088/    0 |         381 |
+| CRC32                           |    168/    0 |        1266 |
+| Arduino_CRC32                   |   1088/    0 |         380 |
 | FastCRC                         |   4536/    0 |         347 |
 +--------------------------------------------------------------+
 
@@ -135,19 +151,22 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     60/    0 |        2276 |
-| crc8_nibble                     |     80/    0 |         502 |
-| crc8_byte                       |    296/    0 |         259 |
-| crc16ccitt_bit                  |     68/    0 |        1989 |
-| crc16ccitt_nibble               |    104/    0 |         559 |
-| crc16ccitt_byte                 |    564/    0 |         259 |
+| crc8_bit                        |     60/    0 |        1982 |
+| crc8_nibble                     |     80/    0 |         459 |
+| crc8_nibblem                    |     80/    0 |         517 |
+| crc8_byte                       |    296/    0 |         245 |
+| crc16ccitt_bit                  |     68/    0 |        2039 |
+| crc16ccitt_nibble               |    104/    0 |         573 |
+| crc16ccitt_nibblem              |    104/    0 |         559 |
+| crc16ccitt_byte                 |    564/    0 |         302 |
 | crc32_bit                       |    108/    0 |        2245 |
 | crc32_nibble                    |    140/    0 |         559 |
-| crc32_byte                      |   1080/    0 |         245 |
+| crc32_nibblem                   |    140/    0 |         574 |
+| crc32_byte                      |   1080/    0 |         244 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    172/    0 |         831 |
+| CRC32                           |    172/    0 |         931 |
 | Arduino_CRC32                   |   1096/    0 |         316 |
-| FastCRC                         |   4492/    0 |         181 |
+| FastCRC                         |   4492/    0 |         183 |
 +--------------------------------------------------------------+
 
 ```
@@ -162,18 +181,21 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     96/    0 |        1499 |
-| crc8_nibble                     |    144/    0 |         488 |
+| crc8_bit                        |     96/    0 |        1500 |
+| crc8_nibble                     |    144/    0 |         490 |
+| crc8_nibblem                    |    128/   16 |         257 |
 | crc8_byte                       |    336/    0 |         233 |
-| crc16ccitt_bit                  |    112/    0 |        1501 |
+| crc16ccitt_bit                  |    112/    0 |        1499 |
 | crc16ccitt_nibble               |    176/    0 |         681 |
-| crc16ccitt_byte                 |    624/    0 |         364 |
-| crc32_bit                       |    144/    0 |        1401 |
-| crc32_nibble                    |    208/    0 |         617 |
-| crc32_byte                      |   1120/    0 |         342 |
+| crc16ccitt_nibblem              |    144/   32 |         270 |
+| crc16ccitt_byte                 |    624/    0 |         363 |
+| crc32_bit                       |    144/    0 |        1400 |
+| crc32_nibble                    |    208/    0 |         618 |
+| crc32_nibblem                   |    160/   64 |         232 |
+| crc32_byte                      |   1120/    0 |         345 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    240/    0 |         937 |
-| Arduino_CRC32                   |   1120/ 1024 |         143 |
+| CRC32                           |    240/    0 |         950 |
+| Arduino_CRC32                   |   1120/ 1024 |         142 |
 | FastCRC                         |   4704/    0 |         486 |
 +--------------------------------------------------------------+
 
@@ -191,16 +213,19 @@ in this directory. The various `*.txt` files will be piped through the
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |    132/    0 |         498 |
 | crc8_nibble                     |    152/    0 |         118 |
-| crc8_byte                       |    356/    0 |          53 |
+| crc8_nibblem                    |    152/    0 |         117 |
+| crc8_byte                       |    356/    0 |          52 |
 | crc16ccitt_bit                  |    140/    0 |         498 |
 | crc16ccitt_nibble               |    176/    0 |         125 |
+| crc16ccitt_nibblem              |    176/    0 |         125 |
 | crc16ccitt_byte                 |    632/    0 |          75 |
 | crc32_bit                       |    168/    0 |         396 |
 | crc32_nibble                    |    200/    0 |         108 |
+| crc32_nibblem                   |    200/    0 |         108 |
 | crc32_byte                      |   1140/    0 |          71 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    272/    8 |         189 |
-| Arduino_CRC32                   |   1196/    0 |          72 |
+| Arduino_CRC32                   |   1196/    0 |          71 |
 | FastCRC                         |   4640/   16 |          40 |
 +--------------------------------------------------------------+
 
@@ -217,18 +242,21 @@ in this directory. The various `*.txt` files will be piped through the
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     68/    0 |        1134 |
-| crc8_nibble                     |     88/    0 |         194 |
+| crc8_bit                        |     68/    0 |        1133 |
+| crc8_nibble                     |     88/    0 |         193 |
+| crc8_nibblem                    |     88/    0 |         193 |
 | crc8_byte                       |    300/    0 |          92 |
 | crc16ccitt_bit                  |     76/    0 |        1176 |
 | crc16ccitt_nibble               |    112/    0 |         193 |
-| crc16ccitt_byte                 |    572/    0 |         141 |
-| crc32_bit                       |    132/    0 |        1392 |
+| crc16ccitt_nibblem              |    112/    0 |         193 |
+| crc16ccitt_byte                 |    572/    0 |         140 |
+| crc32_bit                       |    132/    0 |        1393 |
 | crc32_nibble                    |    140/    0 |         183 |
-| crc32_byte                      |   1080/    0 |         154 |
+| crc32_nibblem                   |    140/    0 |         183 |
+| crc32_byte                      |   1080/    0 |         155 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    176/    0 |         429 |
-| Arduino_CRC32                   |   1096/    0 |         156 |
+| Arduino_CRC32                   |   1096/    0 |         155 |
 | FastCRC                         |    172/    0 |          23 |
 +--------------------------------------------------------------+
 

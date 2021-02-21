@@ -49,7 +49,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v0.4.2
+**Version**: AceCRC v0.5
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -71,6 +71,13 @@ in this directory. The various `*.txt` files will be piped through the
 `generate_combined.awk` program to generate the ASCII tables below.
 
 ## Changes
+
+### v0.5
+
+Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
+placed in static ram, instead of flash RAM. For AVR processors, there is small
+increase in performance, 2-7%. But for ESP8266 processors, the performance goes
+up by 1.9X to 2.7X.
 
 ### v0.4
 
