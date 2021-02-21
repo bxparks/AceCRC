@@ -12,15 +12,21 @@ algorithms](https://pycrc.org/models.html), this library supports:
 * CRC-16-CCITT
 * CRC-32
 
-For each algorithm, 3 different implementations were generated:
+For each algorithm, 4 different implementations were generated:
 
-* bit-by-bit (bit)
+* bit: bit-by-bit
     * brute-force loops to calculate the polynomial divisions
     * smallest code size, but slowest
-* table lookup using 4-bits (nibble)
+* nibble: table lookup using 4-bits in flash memory (PROGMEM)
     * generates a lookup table of 16 elements
     * larger code size, but faster
-* table lookup using 8-bits (byte)
+* nibblem: table lookup using 4-bits in static memory
+    * same as nibble, but using static memory for lookup table
+    * the "m" stands for "static memory" as opposed to "flash memory"
+    * *2-7%* faster than `nibble` on AVR
+    * **1.9X-2.7X** faster than `nibble` on ESP8266
+    * no difference for all other processors
+* byte: table lookup using 8-bits (byte)
     * generates a lookup table of 256 elements
     * largest code size, but fastest
 
@@ -37,12 +43,15 @@ This library converts the C99 code in the following way:
   collision
     * `ace_crc::crc8_bit`
     * `ace_crc::crc8_nibble`
+    * `ace_crc::crc8_nibblem`
     * `ace_crc::crc8_byte`
     * `ace_crc::crc16ccitt_bit`
     * `ace_crc::crc16ccitt_nibble`
+    * `ace_crc::crc16ccitt_nibblem`
     * `ace_crc::crc16ccitt_byte`
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
+    * `ace_crc::crc32_nibblem`
     * `ace_crc::crc32_byte`
 * a convenience function `crc_t crc_calculate(const void *data, size_t
   data_len)` is inserted into the header file of each namespace
@@ -64,7 +73,7 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
-**Version**: 0.4.2 (2021-01-22)
+**Version**: 0.5 (2021-02-21)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -186,14 +195,14 @@ Only a single header file `AceCRC.h` is required to use this library.
 ```
 
 Then select the namespace of the algorithm that you want to use. For example,
-to use the version of `crc32` which uses a 4-bit table (16 entries), use the
-following:
+to use the version of `crc32` which uses a 4-bit table (16 entries), which
+are stored in static memory instead of flash memory, use the following:
 
 ```C++
-using namespace ace_crc::crc32_nibble;
+using namespace ace_crc::crc32_nibblem;
 ```
 
-To use the 8-bit table: use:
+To use the 8-bit table, which are stored in flash memory, use:
 
 ```C++
 using namespace ace_crc::crc32_byte;
@@ -295,12 +304,15 @@ Here are rough flash memory consumption for each algorithm:
 
 * `crc8_bit`: 64-130 bytes
 * `crc8_nibble`: 80-150 bytes
+* `crc8_nibblem`: 80-150 bytes
 * `crc8_byte`: 290-360 bytes
 * `crc16ccitt_bit`: 80-140 bytes
 * `crc16ccitt_nibble`: 100-190 bytes
+* `crc16ccitt_nibblem`: 100-190 bytes
 * `crc16ccitt_byte`: 560-630 bytes
 * `crc32_bit`: 110-180 bytes
 * `crc32_nibble`: 140-210 bytes
+* `crc32_nibblem`: 140-210 bytes
 * `crc32_byte`: 1080-1140 bytes
 
 <a name="CpuBenchmarks"></a>
@@ -313,12 +325,14 @@ microseconds per kiB (1024 bytes).
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
 * "bit": 9300-16000 micros/kiB
 * "nibble": 5300-7600 micros/kiB
+* "nibblem": 5300-7600 micros/kiB
 * "byte": 900-2200 micros/kiB
 
 For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
 of:
 * "bit": 400-2800 micros/kiB
 * "nibble": 110-700 micros/kiB
+* "nibblem": 110-700 micros/kiB
 * "byte": 50-400 micros/kiB
 
 <a name="Recommendations"></a>
@@ -356,23 +370,65 @@ variants, there is very little difference in flash size and CPU speed, even on
 advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detected
 far more errors than 16 bits.
 
+The `nibblem` variant is the same as the `nibble` variant on all processors
+except for AVR (small speed improvement) and ESP8266 (1.9X-2.7X speed
+improvement). The cost is that the 16-64 bytes of static memory is consumed to
+store the lookup table, instead of keeping them in flash memory.
+
 Putting all these together, here are my recommended algorithms in decreasing
 order of preference:
 1. `crc32_nibble` in most situtations for a balance of flash size (~200 bytes)
    and speed
+    * Except on ESP8266, where `crc32_nibblem` should be used to gain a
+      factor of **2.7X** in performance, at a cost of only 64 byes of static RAM
+      (out of a maximum size of 80kB).
 2. `crc16ccitt_nibble` to save 60 bytes of flash on 8-bit AVR processors, with
    a reasonable amount of error detection
+    * Use `crc16ccitt_nibblem` if you want a 5% performance increase on an AVR,
+      at a cost of 32 bytes of static memory. In most cases, this is probably
+      not worth it.
 3. `crc32_byte` if you need the fastest algorithm and you have 1100 bytes of
    flash to spare
+    * Except on ESP8266, where `crc32_nibblem` is even faster than `crc32_byte`,
+      while consuming 1 kB of less flash memory, and costing only 64 bytes of
+      extra static memory.
 4. `crc16ccitt_bit` if you need to implement a very tiny CRC algorithm (90 bytes
    on an 8-bit AVR processor), and you are not worried about speed
 5. `crc8_bit` if you need to implement the absolute smallest CRC algorithm (80
    bytes on an 8-bit AVR processor), and you are not worried about speed, and
    you can tolerate high chances of corruption
 
+On the ESP8266, the `crc32_nibblem` is the hands-down winner. It is faster than
+all other algorithms, while consuming only 160 bytes of flash and 64 bytes of
+static ram.
+
 You can consult the results in [examples/benchmarks](examples/benchmarks) to
 determine exactly how you want to make the space versus time tradeoff for your
-specific application.
+specific application. For example, here is the table for the ESP8266 processor:
+
+```
+ESP8266
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |     96/    0 |        1500 |
+| crc8_nibble                     |    144/    0 |         490 |
+| crc8_nibblem                    |    128/   16 |         257 |
+| crc8_byte                       |    336/    0 |         233 |
+| crc16ccitt_bit                  |    112/    0 |        1499 |
+| crc16ccitt_nibble               |    176/    0 |         681 |
+| crc16ccitt_nibblem              |    144/   32 |         270 |
+| crc16ccitt_byte                 |    624/    0 |         363 |
+| crc32_bit                       |    144/    0 |        1400 |
+| crc32_nibble                    |    208/    0 |         618 |
+| crc32_nibblem                   |    160/   64 |         232 |
+| crc32_byte                      |   1120/    0 |         345 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    240/    0 |         950 |
+| Arduino_CRC32                   |   1120/ 1024 |         142 |
+| FastCRC                         |   4704/    0 |         486 |
++--------------------------------------------------------------+
+```
 
 <a name="Motivation"></a>
 ## Background and Motiviation

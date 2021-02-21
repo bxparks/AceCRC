@@ -4,6 +4,10 @@
 #include <Arduino.h>
 #include <stdint.h>
 
+#ifndef SERIAL_PORT_MONITOR
+#define SERIAL_PORT_MONITOR Serial
+#endif
+
 // Enable benchmarking of some third-party CRC libraries for curiosity.
 #if defined(EPOXY_DUINO)
   #define ENABLE_CRC32_LIBRARY 0
@@ -20,7 +24,7 @@
 // <Arduino_CRC32.h> places its 1kB lookup table into RAM, so we can only
 // afford to allocate 1 or 2 pages (256 or 512 bytes) for the sample 'string'.
 #if defined(ARDUINO_ARCH_AVR)
-  const uint16_t STRING_SIZE_PAGE = 2;  // we can only afford a 512 string
+  const uint16_t STRING_SIZE_PAGE = 1;  // we can only afford a 256 string
   const uint16_t NUM_SAMPLES = 10;
 #elif defined(ARDUINO_ARCH_SAMD)
   const uint16_t STRING_SIZE_PAGE = 4;

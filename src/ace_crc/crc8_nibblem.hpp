@@ -2,16 +2,16 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Sat Feb 20 19:59:50 2021
+ * Generated on Sat Feb 20 19:59:49 2021
  * by pycrc v0.9.2, https://pycrc.org
  * using the configuration:
- *  - Width         = 32
- *  - Poly          = 0x04c11db7
- *  - XorIn         = 0xffffffff
- *  - ReflectIn     = True
- *  - XorOut        = 0xffffffff
- *  - ReflectOut    = True
- *  - Algorithm     = bit-by-bit-fast
+ *  - Width         = 8
+ *  - Poly          = 0x07
+ *  - XorIn         = 0x00
+ *  - ReflectIn     = False
+ *  - XorOut        = 0x00
+ *  - ReflectOut    = False
+ *  - Algorithm     = table-driven
  *
  * This file defines the functions crc_init(), crc_update() and crc_finalize().
  *
@@ -37,18 +37,18 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Sat Feb 20 19:59:50 PST 2021
+ * Auto converted to Arduino C++ on Sat Feb 20 19:59:49 PST 2021
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
-#ifndef ACE_CRC_CRC32_BIT_HPP
-#define ACE_CRC_CRC32_BIT_HPP
+#ifndef ACE_CRC_CRC8_NIBBLEM_HPP
+#define ACE_CRC_CRC8_NIBBLEM_HPP
 
 #include <stdlib.h>
 #include <stdint.h>
 
 namespace ace_crc {
-namespace crc32_bit {
+namespace crc8_nibblem {
 
 
 /**
@@ -57,25 +57,15 @@ namespace crc32_bit {
  * This is not used anywhere in the generated code, but it may be used by the
  * application code to call algorithm-specific code, if desired.
  */
-const uint8_t CRC_ALGO_BIT_BY_BIT_FAST = 1;
+const uint8_t CRC_ALGO_TABLE_DRIVEN = 1;
 
 
 /**
  * The type of the CRC values.
  *
- * This type must be big enough to contain at least 32 bits.
+ * This type must be big enough to contain at least 8 bits.
  */
-typedef uint32_t crc_t;
-
-
-/**
- * Reflect all bits of a \a data word of \a data_len bytes.
- *
- * \param[in] data     The data word to be reflected.
- * \param[in] data_len The width of \a data expressed in number of bits.
- * \return             The reflected data.
- */
-crc_t crc_reflect(crc_t data, size_t data_len);
+typedef uint8_t crc_t;
 
 
 /**
@@ -85,7 +75,7 @@ crc_t crc_reflect(crc_t data, size_t data_len);
  */
 inline crc_t crc_init(void)
 {
-    return 0xffffffff;
+    return 0x00;
 }
 
 
@@ -108,7 +98,7 @@ crc_t crc_update(crc_t crc, const void *data, size_t data_len);
  */
 inline crc_t crc_finalize(crc_t crc)
 {
-    return crc_reflect(crc, 32) ^ 0xffffffff;
+    return crc;
 }
 
 
@@ -125,7 +115,7 @@ inline crc_t crc_calculate(const void *data, size_t data_len) {
   return crc_finalize(crc);
 }
 
-} // crc32_bit
+} // crc8_nibblem
 } // ace_crc
 
-#endif      /* ACE_CRC_CRC32_BIT_HPP */
+#endif      /* ACE_CRC_CRC8_NIBBLEM_HPP */

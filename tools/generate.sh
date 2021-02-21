@@ -3,10 +3,12 @@
 # Generate CRC source code using pycrc (https://pycrc.org). Then convert the
 # C-code into Arduino-compatible C++ code using the old Unix ed(1) editor.
 #
-# The 3 supported algorithms from pycrc are:
+# The 4 supported algorithms from pycrc are:
 #
 #   * bit: --algorithm bit-by-bit-fast
 #   * nibble: --algorithm table-driven --table-idx-width 4
+#   * nibblemem: --algorithm table-driven --table-idx-width 4 (with lookup
+#     table in static memory instead of flash memory)
 #   * byte: --algorithm table-driven --table-idx-width 8
 
 set -eu
@@ -21,7 +23,8 @@ PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
-    --model {crc-8|crc-16-ccitt|crc-32} --algotag {bit|nibble|byte} \
+    --model {crc-8|crc-16-ccitt|crc-32} \
+    --algotag {bit|nibble|nibblem|byte} \
     {--header | --source}"
     exit 1
 }
@@ -125,13 +128,15 @@ function convert_c_to_cpp() {
     local loop_or_index_variable
     case $algotag in
         bit) loop_or_index_variable='i' ;;
-        nibble|byte) loop_or_index_variable='tbl_idx' ;;
+        nibble|nibblem|byte) loop_or_index_variable='tbl_idx' ;;
     esac
 
     # The bit-by-bit algorithm does not use a crc_table, so we cannot attempt to
     # convert it to PROGMEM, so needs a separate ed(1) script. Otherwise ed(1)
     # script fails with error.
-    if [[ $algotag == 'bit' || $CONVERT_TO_PROGMEM == 0 ]]; then
+    if [[ $algotag == 'bit' ||
+            $algotag == 'nibblem' ||
+            $CONVERT_TO_PROGMEM == 0 ]]; then
         ed $fileroot.c > /dev/null <<EOF
 / \*\//
 i
@@ -251,6 +256,7 @@ new_header_guard="ACE_CRC_${modelroot_upper}_${algotag_upper}_HPP"
 case $algotag in
     bit) pycrc_flags='--algorithm bit-by-bit-fast' ;;
     nibble) pycrc_flags='--algorithm table-driven --table-idx-width 4' ;;
+    nibblem) pycrc_flags='--algorithm table-driven --table-idx-width 4' ;;
     byte) pycrc_flags='--algorithm table-driven --table-idx-width 8' ;;
     *) echo "Unknown --algotag '$algotag'"; usage ;;
 esac

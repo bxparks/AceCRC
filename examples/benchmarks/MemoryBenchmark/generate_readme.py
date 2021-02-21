@@ -36,7 +36,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceCRC v0.4.2
+**Version**: AceCRC v0.5
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -77,18 +77,24 @@ will be invoked by the following command:
 $ make README.md
 ```
 
-## Functionality
+## Algorithms
 
 * 0 Baseline: A program that does (almost) nothing
 * 1 `crc8_bit`
 * 2 `crc8_nibble`
-* 3 `crc8_byte`
-* 4 `crc16ccitt_bit`
-* 5 `crc16ccitt_nibble`
-* 6 `crc16ccitt_byte`
-* 7 `crc32_bit`
-* 8 `crc32_nibble`
-* 9 `crc32_byte`
+* 3 `crc8_nibblem`
+* 4 `crc8_byte`
+* 5 `crc16ccitt_bit`
+* 6 `crc16ccitt_nibble`
+* 7 `crc16ccitt_nibblem`
+* 8 `crc16ccitt_byte`
+* 9 `crc32_bit`
+* 10 `crc32_nibble`
+* 11 `crc32_nibblem`
+* 12 `crc32_byte`
+* 13 - CRC32 library (https://github.com/arduino-libraries/Arduino_CRC32)
+* 14 - Arduino_CRC32 library (https://github.com/bakercp/CRC32)
+* 15 - FastCRC library (https://github.com/FrankBoesing/FastCRC)
 
 ## Library Size Changes
 
@@ -105,6 +111,12 @@ These are moved from static RAM to flash memory with the `PROGMEM` directive on
 certain microcontrollers (e.g. AVR, ESP8266), For the other processors, either
 the `crc_table` is already in flash memory, or the `PROGMEM` attribute does not
 do anything.
+
+The `nibblem` variant is exactly the same as the `nibble` variant, except that
+`PROGMEM` keyword is not used for the lookup `crc_table`, so that it is placed
+in static memory instead of flash memory. This improves the speed of the
+algorithm on AVR and ESP8266 processors because accessing static memory is
+faster than flash memory on those processors.
 
 ## Arduino Nano
 

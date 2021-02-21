@@ -63,6 +63,30 @@ test(crc16ccitt_nibble, check) {
 }
 
 // --------------------------------------------------------------------------
+// crc16ccitt_nibblem
+// --------------------------------------------------------------------------
+
+// Verify that arrays of zeros of different length have different CRCs
+test(crc16ccitt_nibblem, zeros) {
+  uint16_t crc1 = crc16ccitt_nibblem::crc_calculate(ZEROES, 1);
+  uint16_t crc2 = crc16ccitt_nibblem::crc_calculate(ZEROES, 2);
+  uint16_t crc3 = crc16ccitt_nibblem::crc_calculate(ZEROES, 3);
+  uint16_t crc4 = crc16ccitt_nibblem::crc_calculate(ZEROES, 4);
+
+  assertNotEqual(crc1, crc2);
+  assertNotEqual(crc1, crc3);
+  assertNotEqual(crc1, crc4);
+  assertNotEqual(crc2, crc3);
+  assertNotEqual(crc2, crc4);
+  assertNotEqual(crc3, crc4);
+}
+
+test(crc16ccitt_nibblem, check) {
+  uint16_t crc = crc16ccitt_nibblem::crc_calculate(CHECK_STRING, LENGTH);
+  assertEqual(EXPECTED_CRC, crc);
+}
+
+// --------------------------------------------------------------------------
 // crc16ccitt_byte
 // --------------------------------------------------------------------------
 
