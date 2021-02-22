@@ -338,6 +338,9 @@ of:
 <a name="Recommendations"></a>
 ### Recommendations
 
+**TL;DR**: Use `crc32_nibble` except on ESP8266 where you should use
+`crc32_nibblem`.
+
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
 convenience. For example, here is the table for the ESP8266 processor:
