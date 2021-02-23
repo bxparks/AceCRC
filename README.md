@@ -73,6 +73,9 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
+**TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
+use `crc32_nibblem`.
+
 **Version**: 1.0 (2021-02-21)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
@@ -90,7 +93,7 @@ This library converts the C99 code in the following way:
 * [Resource Consumption](#ResourceConsumption)
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
-    * [Recommendations](#Recommendations)
+* [Recommendations](#Recommendations)
 * [Background and Motivation](#Motivation)
     * [Other CRC Libraries](#OtherLibraries)
 * [Bugs and Limitations](#Bugs)
@@ -336,10 +339,10 @@ of:
 * "byte": 50-400 micros/kiB
 
 <a name="Recommendations"></a>
-### Recommendations
+## Recommendations
 
-**TL;DR**: Use `crc32_nibble` except on ESP8266 where you should use
-`crc32_nibblem`.
+**TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
+use `crc32_nibblem`.
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
