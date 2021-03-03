@@ -1,6 +1,6 @@
 # AceCRC
 
-![AUnit Tests](https://github.com/bxparks/AceCRC/workflows/AUnit%20Tests/badge.svg)
+[![AUnit Tests](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml)
 
 This library contains a number of CRC algorithms that were generated from
 `pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
