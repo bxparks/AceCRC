@@ -1,6 +1,12 @@
 # Changelog
 
 * Unreleased
+* 1.0.1 (2021-04-19)
+    * Update EpoxyDuino Makefiles for better compatibility with FreeBSD.
+    * Add recommendation to use `nibblem` on ESP8266.
+    * Upgrade to ESP32 Arduino Core v1.0.6 and update benchmark numbers (no
+      significant changes).
+    * No functional change in this release.
 * 1.0 (2021-02-21)
     * Add `nibblem` variant.
         * Same as `nibble` but the 16-element lookup table is stored in static

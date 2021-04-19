@@ -10,7 +10,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v1.0
+**Version**: AceCRC v1.0.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -205,28 +205,28 @@ up by 1.9X to 2.7X.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |    132/    0 |         498 |
-| crc8_nibble                     |    152/    0 |         118 |
+| crc8_nibble                     |    152/    0 |         117 |
 | crc8_nibblem                    |    152/    0 |         117 |
-| crc8_byte                       |    356/    0 |          52 |
+| crc8_byte                       |    356/    0 |          53 |
 | crc16ccitt_bit                  |    140/    0 |         498 |
 | crc16ccitt_nibble               |    176/    0 |         125 |
 | crc16ccitt_nibblem              |    176/    0 |         125 |
 | crc16ccitt_byte                 |    632/    0 |          75 |
-| crc32_bit                       |    168/    0 |         396 |
-| crc32_nibble                    |    200/    0 |         108 |
-| crc32_nibblem                   |    200/    0 |         108 |
-| crc32_byte                      |   1140/    0 |          71 |
+| crc32_bit                       |    168/    0 |         397 |
+| crc32_nibble                    |    196/    0 |         109 |
+| crc32_nibblem                   |    196/    0 |         108 |
+| crc32_byte                      |   1136/    0 |          71 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    272/    8 |         189 |
-| Arduino_CRC32                   |   1196/    0 |          71 |
-| FastCRC                         |   4640/   16 |          40 |
+| CRC32                           |    268/    8 |         188 |
+| Arduino_CRC32                   |   1192/    0 |          72 |
+| FastCRC                         |   4636/   16 |          40 |
 +--------------------------------------------------------------+
 
 ```

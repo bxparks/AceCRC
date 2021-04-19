@@ -1,6 +1,11 @@
 # AceCRC
 
-![AUnit Tests](https://github.com/bxparks/AceCRC/workflows/AUnit%20Tests/badge.svg)
+[![AUnit Tests](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml)
+
+**New**: [GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
+for this project is now active! Let's use that for general support questions,
+and reserve the [GitHub Issues](https://github.com/bxparks/AceCRC/issues)
+section for bugs and feature requests.
 
 This library contains a number of CRC algorithms that were generated from
 `pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
@@ -17,16 +22,16 @@ For each algorithm, 4 different implementations were generated:
 * bit: bit-by-bit
     * brute-force loops to calculate the polynomial divisions
     * smallest code size, but slowest
-* nibble: table lookup using 4-bits in flash memory (PROGMEM)
+* nibble: 4-bit lookup table in flash memory (PROGMEM)
     * generates a lookup table of 16 elements
     * larger code size, but faster
-* nibblem: table lookup using 4-bits in static memory
+* nibblem: 4-bit lookup table in static memory
     * same as nibble, but using static memory for lookup table
     * the "m" stands for "static memory" as opposed to "flash memory"
     * *2-7%* faster than `nibble` on AVR
     * **1.9X-2.7X** faster than `nibble` on ESP8266
     * no difference for all other processors
-* byte: table lookup using 8-bits (byte)
+* byte: 8-bit lookup table in flash memory
     * generates a lookup table of 256 elements
     * largest code size, but fastest
 
@@ -73,7 +78,10 @@ This library converts the C99 code in the following way:
       algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
-**Version**: 1.0 (2021-02-21)
+**TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
+use `crc32_nibblem`.
+
+**Version**: 1.0.1 (2021-04-19)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -90,7 +98,7 @@ This library converts the C99 code in the following way:
 * [Resource Consumption](#ResourceConsumption)
     * [Memory Benchmarks](#MemoryBenchmarks)
     * [CPU Benchmarks](#CpuBenchmarks)
-    * [Recommendations](#Recommendations)
+* [Recommendations](#Recommendations)
 * [Background and Motivation](#Motivation)
     * [Other CRC Libraries](#OtherLibraries)
 * [Bugs and Limitations](#Bugs)
@@ -336,7 +344,10 @@ of:
 * "byte": 50-400 micros/kiB
 
 <a name="Recommendations"></a>
-### Recommendations
+## Recommendations
+
+**TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
+use `crc32_nibblem`.
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
@@ -560,7 +571,7 @@ I will occasionally test on the following hardware as a sanity check:
 * [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
 * [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino 1.0.6](https://github.com/espressif/arduino-esp32)
 * [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
 <a name="OperatingSystem"></a>
@@ -578,19 +589,25 @@ The generator script in `./tools/generate.sh` has only been tested under Ubuntu
 
 [MIT License](https://opensource.org/licenses/MIT)
 
-<a name="Feedback"></a>
+<a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
 If you find this library useful, consider starring this project on GitHub. The
 stars will let me prioritize the more popular libraries over the less popular
 ones.
 
-If you have any questions, comments, bug reports, or feature requests, please
-file a GitHub ticket instead of emailing me unless the content is sensitive.
-(The problem with email is that I cannot reference the email conversation when
-other people ask similar questions later.) I'd love to hear about how this
-software and its documentation can be improved. I can't promise that I will
-incorporate everything, but I will give your ideas serious consideration.
+If you have any questions, comments and other support questions about how to
+use this library, please use the
+[GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
+for this project. If you have bug reports or feature requests, please file a
+ticket in [GitHub Issues](https://github.com/bxparks/AceCRC/issues).
+I'd love to hear about how this software and its documentation can be improved.
+I can't promise that I will incorporate everything, but I will give your ideas
+serious consideration.
+
+Please refrain from emailing me directly unless the content is sensitive. The
+problem with email is that I cannot reference the email conversation when other
+people ask similar questions later.
 
 <a name="Authors"></a>
 ## Authors
