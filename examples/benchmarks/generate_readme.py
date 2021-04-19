@@ -49,7 +49,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v1.0
+**Version**: AceCRC v1.0.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -144,7 +144,7 @@ up by 1.9X to 2.7X.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 {esp32_results}

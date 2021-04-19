@@ -36,7 +36,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceCRC v1.0
+**Version**: AceCRC v1.0.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -172,7 +172,7 @@ faster than flash memory on those processors.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 {esp32_results}

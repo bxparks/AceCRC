@@ -12,7 +12,7 @@ by the runtime environment of the processor. For example, it often seems like
 the ESP8266 allocates flash memory in blocks of a certain quantity, so the
 calculated flash size can jump around in unexpected ways.
 
-**Version**: AceCRC v1.0
+**Version**: AceCRC v1.0.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -258,30 +258,30 @@ faster than flash memory on those processors.
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
-* ESP32 Boards 1.0.4
+* ESP32 Boards 1.0.6
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        | 206677/14564 |     0/    0 |
+| baseline                        | 197974/13092 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        | 206809/14564 |   132/    0 |
-| crc8_nibble                     | 206829/14564 |   152/    0 |
-| crc8_nibblem                    | 206829/14564 |   152/    0 |
-| crc8_byte                       | 207033/14564 |   356/    0 |
-| crc16ccitt_bit                  | 206817/14564 |   140/    0 |
-| crc16ccitt_nibble               | 206853/14564 |   176/    0 |
-| crc16ccitt_nibblem              | 206853/14564 |   176/    0 |
-| crc16ccitt_byte                 | 207309/14564 |   632/    0 |
-| crc32_bit                       | 206845/14564 |   168/    0 |
-| crc32_nibble                    | 206877/14564 |   200/    0 |
-| crc32_nibblem                   | 206877/14564 |   200/    0 |
-| crc32_byte                      | 207817/14564 |  1140/    0 |
+| crc8_bit                        | 198106/13092 |   132/    0 |
+| crc8_nibble                     | 198126/13092 |   152/    0 |
+| crc8_nibblem                    | 198126/13092 |   152/    0 |
+| crc8_byte                       | 198330/13092 |   356/    0 |
+| crc16ccitt_bit                  | 198114/13092 |   140/    0 |
+| crc16ccitt_nibble               | 198150/13092 |   176/    0 |
+| crc16ccitt_nibblem              | 198150/13092 |   176/    0 |
+| crc16ccitt_byte                 | 198606/13092 |   632/    0 |
+| crc32_bit                       | 198142/13092 |   168/    0 |
+| crc32_nibble                    | 198170/13092 |   196/    0 |
+| crc32_nibblem                   | 198170/13092 |   196/    0 |
+| crc32_byte                      | 199110/13092 |  1136/    0 |
 |---------------------------------+--------------+-------------|
-| CRC32                           | 206949/14572 |   272/    8 |
-| Arduino_CRC32                   | 207873/14564 |  1196/    0 |
-| FastCRC                         | 211317/14580 |  4640/   16 |
+| CRC32                           | 198242/13100 |   268/    8 |
+| Arduino_CRC32                   | 199166/13092 |  1192/    0 |
+| FastCRC                         | 202610/13108 |  4636/   16 |
 +--------------------------------------------------------------+
 
 ```
