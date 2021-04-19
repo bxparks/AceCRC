@@ -81,7 +81,7 @@ This library converts the C99 code in the following way:
 **TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
 use `crc32_nibblem`.
 
-**Version**: 1.0 (2021-02-21)
+**Version**: 1.0.1 (2021-04-19)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -571,7 +571,7 @@ I will occasionally test on the following hardware as a sanity check:
 * [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
 * [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.4](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino 1.0.6](https://github.com/espressif/arduino-esp32)
 * [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
 
 <a name="OperatingSystem"></a>
