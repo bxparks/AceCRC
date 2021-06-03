@@ -72,14 +72,7 @@ in this directory. The various `*.txt` files will be piped through the
 
 ## Changes
 
-### v1.0
-
-Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
-placed in static ram, instead of flash RAM. For AVR processors, there is small
-increase in performance, 2-7%. But for ESP8266 processors, the performance goes
-up by 1.9X to 2.7X.
-
-### v0.4
+**v0.4**
 
 * Updated `tools/generate.py` to convert an internal loop or index variable
   inside `crc_update()` from an `unsigned int` to `uint8_t`.
@@ -90,7 +83,25 @@ up by 1.9X to 2.7X.
 * Added benchmarks for a handful of third-party CRC libraries
   (CRC32, Arduino_CRC32, FastCRC) out of curiosity.
 
-## Arduino Nano
+**v1.0**
+
+Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
+placed in static ram, instead of flash RAM. For AVR processors, there is small
+increase in performance, 2-7%. But for ESP8266 processors, the performance goes
+up by 1.9X to 2.7X.
+
+**v1.0.1+**
+
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+    * Flash memory increases by 2.3kB across the board.
+    * Static memory decreases by 250 bytes across the board.
+    * AceCRC code unchanged.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+    * No changes to flash or static memory.
+
+## Results
+
+### Arduino Nano
 
 * 16MHz ATmega328P
 * Arduino IDE 1.8.13
@@ -100,7 +111,7 @@ up by 1.9X to 2.7X.
 {nano_results}
 ```
 
-## Sparkfun Pro Micro
+### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -110,27 +121,27 @@ up by 1.9X to 2.7X.
 {micro_results}
 ```
 
-## SAMD21 M0 Mini
+### SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Sparkfun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 {samd_results}
 ```
 
-## STM32 Blue Pill
+### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 {stm32_results}
 ```
 
-## ESP8266
+### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
@@ -140,7 +151,7 @@ up by 1.9X to 2.7X.
 {esp8266_results}
 ```
 
-## ESP32
+### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
@@ -150,7 +161,7 @@ up by 1.9X to 2.7X.
 {esp32_results}
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13

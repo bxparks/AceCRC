@@ -98,6 +98,8 @@ $ make README.md
 
 ## Library Size Changes
 
+**v1.0**
+
 The size of the `crc_table` lookup table is:
 
 * CRC8 using 'nibble' variant: 16 * 1 = 16 bytes
@@ -118,6 +120,15 @@ in static memory instead of flash memory. This improves the speed of the
 algorithm on AVR and ESP8266 processors because accessing static memory is
 faster than flash memory on those processors.
 
+**v1.0.1+**
+
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+    * Flash memory increases by 2.3kB across the board.
+    * Static memory decreases by 250 bytes across the board.
+    * AceCRC code unchanged.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+    * No changes to flash or static memory.
+
 ## Arduino Nano
 
 * 16MHz ATmega328P
@@ -128,7 +139,7 @@ faster than flash memory on those processors.
 {nano_results}
 ```
 
-## Sparkfun Pro Micro
+## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -142,7 +153,7 @@ faster than flash memory on those processors.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Sparkfun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 {samd_results}
@@ -152,7 +163,7 @@ faster than flash memory on those processors.
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 {stm32_results}

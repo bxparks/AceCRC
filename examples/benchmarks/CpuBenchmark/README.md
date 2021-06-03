@@ -48,23 +48,24 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-### v1.0
+**v0.3.2
 
-Added CPU benchmarks for the `nibblem` variant. On AVR and ESP8266, there was
-some performance increase compared to the `nibble` variant, because static
-memory access is faster than flash memory access on those processors. On other
-microcontrollers, there was no change in performance.
+I added the performance benchmarks for a number of third-party CRC libraries
+just out of curiosity:
 
-* AVR
-    * crc8_nibblem is 2% faster than crc8_nibble
-    * crc16ccitt_nibblem is 5% faster than crc16ccitt_nibble
-    * crc32_nibblem is 7% faster than crc32_nibble
-* ESP8266
-    * crc8_nibblem is 1.9X faster than crc8_nibble
-    * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
-    * crc32_nibblem is 2.7X faster than crc32_nibble
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, but is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
 
-### v0.4
+**v0.4**
 
 I converted an internal loop variable in `crc_update()` (named `i` in the `bit`
 variant and `tbl_idx` in `nibble` and `byte` variants) from an `unsigned int` to
@@ -89,24 +90,31 @@ algorithms:
     * crc32_nibble: 18% faster
     * crc32_byte: 6% faster
 
-### v0.3.2
+**v1.0**
 
-I added the performance benchmarks for a number of third-party CRC libraries
-just out of curiosity:
+Added CPU benchmarks for the `nibblem` variant. On AVR and ESP8266, there was
+some performance increase compared to the `nibble` variant, because static
+memory access is faster than flash memory access on those processors. On other
+microcontrollers, there was no change in performance.
 
-* CRC32 (https://github.com/bakercp/CRC32)
-    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
-* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
-    * uses an 8-bit lookup table in RAM not `PROGMEM`
-    * comparable to `crc32_byte` but usually faster because accessing RAM is
-      faster than `PROGMEM` on most processors
-* FastCRC (https://github.com/FrankBoesing/FastCRC)
-    * uses a 10-bit lookup table (1024 elements)
-    * should be faster than `crc32_byte` in theory, but is actually slower than
-      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
-      data is extra slow on an ESP8266)
+* AVR
+    * crc8_nibblem is 2% faster than crc8_nibble
+    * crc16ccitt_nibblem is 5% faster than crc16ccitt_nibble
+    * crc32_nibblem is 7% faster than crc32_nibble
+* ESP8266
+    * crc8_nibblem is 1.9X faster than crc8_nibble
+    * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
+    * crc32_nibblem is 2.7X faster than crc32_nibble
 
-## Arduino Nano
+**v1.0.1+**
+
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+* No significant change in CPU times.
+
+## Results
+
+### Arduino Nano
 
 * 16MHz ATmega328P
 * Arduino IDE 1.8.13
@@ -136,7 +144,7 @@ just out of curiosity:
 
 ```
 
-## Sparkfun Pro Micro
+### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -166,41 +174,41 @@ just out of curiosity:
 
 ```
 
-## SAMD21 M0 Mini
+### SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
+* SparkFun SAMD Core 1.8.3
 
 ```
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
 | crc8_bit                        |        2746 |
-| crc8_nibble                     |         625 |
+| crc8_nibble                     |         624 |
 | crc8_nibblem                    |         625 |
 | crc8_byte                       |         295 |
-| crc16ccitt_bit                  |        2831 |
-| crc16ccitt_nibble               |         676 |
-| crc16ccitt_nibblem              |         706 |
-| crc16ccitt_byte                 |         399 |
+| crc16ccitt_bit                  |        2832 |
+| crc16ccitt_nibble               |         675 |
+| crc16ccitt_nibblem              |         705 |
+| crc16ccitt_byte                 |         398 |
 | crc32_bit                       |        2838 |
 | crc32_nibble                    |         652 |
 | crc32_nibblem                   |         636 |
 | crc32_byte                      |         380 |
 |---------------------------------+-------------|
 | CRC32                           |        1266 |
-| Arduino_CRC32                   |         380 |
+| Arduino_CRC32                   |         381 |
 | FastCRC32                       |         347 |
 +---------------------------------+-------------+
 
 ```
 
-## STM32 Blue Pill
+### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 +-----------------------------------------------+
@@ -209,24 +217,24 @@ just out of curiosity:
 | crc8_bit                        |        1982 |
 | crc8_nibble                     |         459 |
 | crc8_nibblem                    |         517 |
-| crc8_byte                       |         245 |
+| crc8_byte                       |         244 |
 | crc16ccitt_bit                  |        2039 |
 | crc16ccitt_nibble               |         573 |
 | crc16ccitt_nibblem              |         559 |
-| crc16ccitt_byte                 |         302 |
-| crc32_bit                       |        2245 |
+| crc16ccitt_byte                 |         301 |
+| crc32_bit                       |        2244 |
 | crc32_nibble                    |         559 |
-| crc32_nibblem                   |         574 |
+| crc32_nibblem                   |         573 |
 | crc32_byte                      |         244 |
 |---------------------------------+-------------|
-| CRC32                           |         931 |
+| CRC32                           |         930 |
 | Arduino_CRC32                   |         316 |
-| FastCRC32                       |         183 |
+| FastCRC32                       |         185 |
 +---------------------------------+-------------+
 
 ```
 
-## ESP8266
+### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
@@ -256,7 +264,7 @@ just out of curiosity:
 
 ```
 
-## ESP32
+### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
@@ -286,7 +294,7 @@ just out of curiosity:
 
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13

@@ -33,14 +33,7 @@ in this directory. The various `*.txt` files will be piped through the
 
 ## Changes
 
-### v1.0
-
-Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
-placed in static ram, instead of flash RAM. For AVR processors, there is small
-increase in performance, 2-7%. But for ESP8266 processors, the performance goes
-up by 1.9X to 2.7X.
-
-### v0.4
+**v0.4**
 
 * Updated `tools/generate.py` to convert an internal loop or index variable
   inside `crc_update()` from an `unsigned int` to `uint8_t`.
@@ -51,7 +44,25 @@ up by 1.9X to 2.7X.
 * Added benchmarks for a handful of third-party CRC libraries
   (CRC32, Arduino_CRC32, FastCRC) out of curiosity.
 
-## Arduino Nano
+**v1.0**
+
+Add `nibblem` variant, similar to `nibble` except that the CRC lookup table is
+placed in static ram, instead of flash RAM. For AVR processors, there is small
+increase in performance, 2-7%. But for ESP8266 processors, the performance goes
+up by 1.9X to 2.7X.
+
+**v1.0.1+**
+
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+    * Flash memory increases by 2.3kB across the board.
+    * Static memory decreases by 250 bytes across the board.
+    * AceCRC code unchanged.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+    * No changes to flash or static memory.
+
+## Results
+
+### Arduino Nano
 
 * 16MHz ATmega328P
 * Arduino IDE 1.8.13
@@ -81,7 +92,7 @@ up by 1.9X to 2.7X.
 
 ```
 
-## Sparkfun Pro Micro
+### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -111,41 +122,41 @@ up by 1.9X to 2.7X.
 
 ```
 
-## SAMD21 M0 Mini
+### SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Sparkfun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
 | crc8_bit                        |     64/    0 |        2746 |
-| crc8_nibble                     |     80/    0 |         625 |
+| crc8_nibble                     |     80/    0 |         624 |
 | crc8_nibblem                    |     80/    0 |         625 |
 | crc8_byte                       |    296/    0 |         295 |
-| crc16ccitt_bit                  |     72/    0 |        2831 |
-| crc16ccitt_nibble               |    104/    0 |         676 |
-| crc16ccitt_nibblem              |    104/    0 |         706 |
-| crc16ccitt_byte                 |    568/    0 |         399 |
+| crc16ccitt_bit                  |     72/    0 |        2832 |
+| crc16ccitt_nibble               |    104/    0 |         675 |
+| crc16ccitt_nibblem              |    104/    0 |         705 |
+| crc16ccitt_byte                 |    568/    0 |         398 |
 | crc32_bit                       |    112/    0 |        2838 |
 | crc32_nibble                    |    136/    0 |         652 |
 | crc32_nibblem                   |    136/    0 |         636 |
 | crc32_byte                      |   1080/    0 |         380 |
 |---------------------------------+--------------+-------------|
 | CRC32                           |    168/    0 |        1266 |
-| Arduino_CRC32                   |   1088/    0 |         380 |
+| Arduino_CRC32                   |   1088/    0 |         381 |
 | FastCRC                         |   4536/    0 |         347 |
 +--------------------------------------------------------------+
 
 ```
 
-## STM32 Blue Pill
+### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 +--------------------------------------------------------------+
@@ -154,24 +165,24 @@ up by 1.9X to 2.7X.
 | crc8_bit                        |     60/    0 |        1982 |
 | crc8_nibble                     |     80/    0 |         459 |
 | crc8_nibblem                    |     80/    0 |         517 |
-| crc8_byte                       |    296/    0 |         245 |
+| crc8_byte                       |    296/    0 |         244 |
 | crc16ccitt_bit                  |     68/    0 |        2039 |
 | crc16ccitt_nibble               |    104/    0 |         573 |
 | crc16ccitt_nibblem              |    104/    0 |         559 |
-| crc16ccitt_byte                 |    564/    0 |         302 |
-| crc32_bit                       |    108/    0 |        2245 |
+| crc16ccitt_byte                 |    564/    0 |         301 |
+| crc32_bit                       |    108/    0 |        2244 |
 | crc32_nibble                    |    140/    0 |         559 |
-| crc32_nibblem                   |    140/    0 |         574 |
+| crc32_nibblem                   |    140/    0 |         573 |
 | crc32_byte                      |   1080/    0 |         244 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    172/    0 |         931 |
+| CRC32                           |    172/    0 |         930 |
 | Arduino_CRC32                   |   1096/    0 |         316 |
-| FastCRC                         |   4492/    0 |         183 |
+| FastCRC                         |   4492/    0 |         185 |
 +--------------------------------------------------------------+
 
 ```
 
-## ESP8266
+### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
@@ -201,7 +212,7 @@ up by 1.9X to 2.7X.
 
 ```
 
-## ESP32
+### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
@@ -231,7 +242,7 @@ up by 1.9X to 2.7X.
 
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13

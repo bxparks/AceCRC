@@ -74,6 +74,8 @@ $ make README.md
 
 ## Library Size Changes
 
+**v1.0**
+
 The size of the `crc_table` lookup table is:
 
 * CRC8 using 'nibble' variant: 16 * 1 = 16 bytes
@@ -93,6 +95,15 @@ The `nibblem` variant is exactly the same as the `nibble` variant, except that
 in static memory instead of flash memory. This improves the speed of the
 algorithm on AVR and ESP8266 processors because accessing static memory is
 faster than flash memory on those processors.
+
+**v1.0.1+**
+
+* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+    * Flash memory increases by 2.3kB across the board.
+    * Static memory decreases by 250 bytes across the board.
+    * AceCRC code unchanged.
+* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+    * No changes to flash or static memory.
 
 ## Arduino Nano
 
@@ -126,7 +137,7 @@ faster than flash memory on those processors.
 
 ```
 
-## Sparkfun Pro Micro
+## SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -162,7 +173,7 @@ faster than flash memory on those processors.
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
-* Sparkfun SAMD Core 1.8.1
+* SparkFun SAMD Core 1.8.3
 
 ```
 +--------------------------------------------------------------+
@@ -194,30 +205,30 @@ faster than flash memory on those processors.
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* STM32duino 2.0.0
 
 ```
 +--------------------------------------------------------------+
 | functionality                   |  flash/  ram |       delta |
 |---------------------------------+--------------+-------------|
-| baseline                        |  19176/ 3788 |     0/    0 |
+| baseline                        |  21460/ 3536 |     0/    0 |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |  19236/ 3788 |    60/    0 |
-| crc8_nibble                     |  19256/ 3788 |    80/    0 |
-| crc8_nibblem                    |  19256/ 3788 |    80/    0 |
-| crc8_byte                       |  19472/ 3788 |   296/    0 |
-| crc16ccitt_bit                  |  19244/ 3788 |    68/    0 |
-| crc16ccitt_nibble               |  19280/ 3788 |   104/    0 |
-| crc16ccitt_nibblem              |  19280/ 3788 |   104/    0 |
-| crc16ccitt_byte                 |  19740/ 3788 |   564/    0 |
-| crc32_bit                       |  19284/ 3788 |   108/    0 |
-| crc32_nibble                    |  19316/ 3788 |   140/    0 |
-| crc32_nibblem                   |  19316/ 3788 |   140/    0 |
-| crc32_byte                      |  20256/ 3788 |  1080/    0 |
+| crc8_bit                        |  21520/ 3536 |    60/    0 |
+| crc8_nibble                     |  21540/ 3536 |    80/    0 |
+| crc8_nibblem                    |  21540/ 3536 |    80/    0 |
+| crc8_byte                       |  21756/ 3536 |   296/    0 |
+| crc16ccitt_bit                  |  21528/ 3536 |    68/    0 |
+| crc16ccitt_nibble               |  21564/ 3536 |   104/    0 |
+| crc16ccitt_nibblem              |  21564/ 3536 |   104/    0 |
+| crc16ccitt_byte                 |  22024/ 3536 |   564/    0 |
+| crc32_bit                       |  21568/ 3536 |   108/    0 |
+| crc32_nibble                    |  21600/ 3536 |   140/    0 |
+| crc32_nibblem                   |  21600/ 3536 |   140/    0 |
+| crc32_byte                      |  22540/ 3536 |  1080/    0 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |  19348/ 3788 |   172/    0 |
-| Arduino_CRC32                   |  20272/ 3788 |  1096/    0 |
-| FastCRC                         |  23668/ 3788 |  4492/    0 |
+| CRC32                           |  21632/ 3536 |   172/    0 |
+| Arduino_CRC32                   |  22556/ 3536 |  1096/    0 |
+| FastCRC                         |  25952/ 3536 |  4492/    0 |
 +--------------------------------------------------------------+
 
 ```

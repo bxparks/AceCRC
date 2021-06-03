@@ -1,6 +1,13 @@
 # Changelog
 
 * Unreleased
+    * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
+        * MemoryBenchmark: Flash usage increases by 2.3kB across the board, but
+          static RAM goes down by 250 bytes. Very little change to AceCommon
+          code itself.
+        * AutoBenchmark: No change.
+    * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
+        * No change observed in MemoryBenchmark or AutoBenchmark.
 * 1.0.1 (2021-04-19)
     * Update EpoxyDuino Makefiles for better compatibility with FreeBSD.
     * Add recommendation to use `nibblem` on ESP8266.
