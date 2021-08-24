@@ -2,11 +2,6 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml)
 
-**New**: [GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
-for this project is now active! Let's use that for general support questions,
-and reserve the [GitHub Issues](https://github.com/bxparks/AceCRC/issues)
-section for bugs and feature requests.
-
 This library contains a number of CRC algorithms that were generated from
 `pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
 use C++ namespaces to avoid name collisions and `PROGMEM` flash memory for
