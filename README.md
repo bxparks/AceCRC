@@ -351,10 +351,36 @@ use `crc32_nibblem`.
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
-convenience. For example, here is the table for the ESP8266 processor:
+convenience. Here are 2 samples:
+
+**Arduino Nano**
 
 ```
-ESP8266
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |     72/    0 |        9312 |
+| crc8_nibble                     |    130/    0 |        7352 |
+| crc8_nibblem                    |    134/   16 |        7228 |
+| crc8_byte                       |    292/    0 |         920 |
+| crc16ccitt_bit                  |     80/    0 |       11096 |
+| crc16ccitt_nibble               |    134/    0 |        5296 |
+| crc16ccitt_nibblem              |    138/   32 |        5036 |
+| crc16ccitt_byte                 |    562/    0 |        1496 |
+| crc32_bit                       |    184/    0 |       16164 |
+| crc32_nibble                    |    204/    0 |        7624 |
+| crc32_nibblem                   |    208/   64 |        7104 |
+| crc32_byte                      |   1106/    0 |        2276 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    208/    0 |        7688 |
+| Arduino_CRC32                   |   1112/ 1024 |        2144 |
+| FastCRC                         |   4262/    0 |        2160 |
++--------------------------------------------------------------+
+```
+
+**ESP8266**
+
+```
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
