@@ -101,6 +101,18 @@ up by 1.9X to 2.7X.
 
 ## Results
 
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, but is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
+
 ### Arduino Nano
 
 * 16MHz ATmega328P

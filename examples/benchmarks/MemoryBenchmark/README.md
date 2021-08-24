@@ -105,7 +105,21 @@ faster than flash memory on those processors.
 * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
     * No changes to flash or static memory.
 
-## Arduino Nano
+## Results
+
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, but is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
+
+### Arduino Nano
 
 * 16MHz ATmega328P
 * Arduino IDE 1.8.13
@@ -137,7 +151,7 @@ faster than flash memory on those processors.
 
 ```
 
-## SparkFun Pro Micro
+### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
 * Arduino IDE 1.8.13
@@ -169,7 +183,7 @@ faster than flash memory on those processors.
 
 ```
 
-## SAMD21 M0 Mini
+### SAMD21 M0 Mini
 
 * 48 MHz ARM Cortex-M0+
 * Arduino IDE 1.8.13
@@ -201,7 +215,7 @@ faster than flash memory on those processors.
 
 ```
 
-## STM32 Blue Pill
+### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
 * Arduino IDE 1.8.13
@@ -233,7 +247,7 @@ faster than flash memory on those processors.
 
 ```
 
-## ESP8266
+### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
 * Arduino IDE 1.8.13
@@ -265,7 +279,7 @@ faster than flash memory on those processors.
 
 ```
 
-## ESP32
+### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
 * Arduino IDE 1.8.13
@@ -297,7 +311,7 @@ faster than flash memory on those processors.
 
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
 * Arduino IDE 1.8.13

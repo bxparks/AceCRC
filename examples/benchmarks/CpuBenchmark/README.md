@@ -48,22 +48,10 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-**v0.3.2
+**v0.3.2**
 
 I added the performance benchmarks for a number of third-party CRC libraries
-just out of curiosity:
-
-* CRC32 (https://github.com/bakercp/CRC32)
-    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
-* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
-    * uses an 8-bit lookup table in RAM not `PROGMEM`
-    * comparable to `crc32_byte` but usually faster because accessing RAM is
-      faster than `PROGMEM` on most processors
-* FastCRC (https://github.com/FrankBoesing/FastCRC)
-    * uses a 10-bit lookup table (1024 elements)
-    * should be faster than `crc32_byte` in theory, but is actually slower than
-      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
-      data is extra slow on an ESP8266)
+just out of curiosity: CRC32, Arduino_CRC32, and FastCRC (see below).
 
 **v0.4**
 
@@ -113,6 +101,18 @@ microcontrollers, there was no change in performance.
 * No significant change in CPU times.
 
 ## Results
+
+* CRC32 (https://github.com/bakercp/CRC32)
+    * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
+* Arduino_CRC32 (https://github.com/arduino-libraries/Arduino_CRC32)
+    * uses an 8-bit lookup table in RAM not `PROGMEM`
+    * comparable to `crc32_byte` but usually faster because accessing RAM is
+      faster than `PROGMEM` on most processors
+* FastCRC (https://github.com/FrankBoesing/FastCRC)
+    * uses a 10-bit lookup table (1024 elements)
+    * should be faster than `crc32_byte` in theory, but is actually slower than
+      `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
+      data is extra slow on an ESP8266)
 
 ### Arduino Nano
 
