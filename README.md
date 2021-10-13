@@ -423,8 +423,8 @@ distinguish different lengths of zeros.
 Between the CRC-16-CCITT and CRC-32 algorithms, if we look at the `_nibble`
 variants, there is very little difference in flash size and CPU speed, even on
 8-bit processors. On 32-bit processors, the CRC-32 is actually faster. The
-advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detected
-far more errors than 16 bits.
+advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detect
+longer sequences of errors than 16 bits.
 
 The `nibblem` variant is the same as the `nibble` variant on all processors
 except for AVR (small speed improvement) and ESP8266 (1.9X-2.7X speed
