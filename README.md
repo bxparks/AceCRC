@@ -617,12 +617,10 @@ If you have any questions, comments, or feature requests for this library,
 please use the [GitHub
 Discussions](https://github.com/bxparks/AceCRC/discussions) for this project. If
 you have a bug report, please file a ticket in [GitHub
-Issues](https://github.com/bxparks/AceCRC/issues). (Feature requests should
-go into Discussions first because many of them have alternative solutions which
+Issues](https://github.com/bxparks/AceCRC/issues). Feature requests should
+go into Discussions first because they often have alternative solutions which
 are useful to remain visible, instead of disappearing from the default view of
-the Issue tracker after the ticket is closed.) I'd love to hear about how this
-software and its documentation can be improved. I can't promise that I will
-incorporate everything, but I will give your ideas serious consideration.
+the Issue tracker after the ticket is closed.
 
 Please refrain from emailing me directly unless the content is sensitive. The
 problem with email is that I cannot reference the email conversation when other
