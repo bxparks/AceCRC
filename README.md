@@ -102,7 +102,7 @@ use `crc32_nibblem`.
     * [Tool Chain](#ToolChain)
     * [Operating System](#OperatingSystem)
 * [License](#License)
-* [Feedback and Support](#Feedback)
+* [Feedback and Support](#FeedbackAndSupport)
 * [Authors](#Authors)
 
 
@@ -613,18 +613,16 @@ The generator script in `./tools/generate.sh` has only been tested under Ubuntu
 <a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
-If you find this library useful, consider starring this project on GitHub. The
-stars will let me prioritize the more popular libraries over the less popular
-ones.
-
-If you have any questions, comments and other support questions about how to
-use this library, please use the
-[GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
-for this project. If you have bug reports or feature requests, please file a
-ticket in [GitHub Issues](https://github.com/bxparks/AceCRC/issues).
-I'd love to hear about how this software and its documentation can be improved.
-I can't promise that I will incorporate everything, but I will give your ideas
-serious consideration.
+If you have any questions, comments, or feature requests for this library,
+please use the [GitHub
+Discussions](https://github.com/bxparks/AceCRC/discussions) for this project. If
+you have a bug report, please file a ticket in [GitHub
+Issues](https://github.com/bxparks/AceCRC/issues). (Feature requests should
+go into Discussions first because many of them have alternative solutions which
+are useful to remain visible, instead of disappearing from the default view of
+the Issue tracker after the ticket is closed.) I'd love to hear about how this
+software and its documentation can be improved. I can't promise that I will
+incorporate everything, but I will give your ideas serious consideration.
 
 Please refrain from emailing me directly unless the content is sensitive. The
 problem with email is that I cannot reference the email conversation when other
