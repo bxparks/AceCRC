@@ -14,7 +14,8 @@
         * TeensyDuino from 1.54 to 1.57
     * Remove SAMD21 boards.
         * No longer supported.
-    * Add CRC-16-MODBUS from pycrc.
+    * Add CRC-16-MODBUS from pycrc (see
+      [Issue#12](https://github.com/bxparks/AceCRC/issues/12)).
 * 1.0.1 (2021-04-19)
     * Update EpoxyDuino Makefiles for better compatibility with FreeBSD.
     * Add recommendation to use `nibblem` on ESP8266.
