@@ -318,10 +318,10 @@ Here are rough flash memory consumption for each algorithm:
 * `crc16ccitt_nibble`: 100-190 bytes
 * `crc16ccitt_nibblem`: 100-190 bytes
 * `crc16ccitt_byte`: 560-630 bytes
-* `crc16modbus_bit`: ?? bytes
-* `crc16modbus_nibble`: ?? bytes
-* `crc16modbus_nibblem`: ?? bytes
-* `crc16modbus_byte`: ?? bytes
+* `crc16modbus_bit`: 120-200 bytes
+* `crc16modbus_nibble`: 100-180 bytes
+* `crc16modbus_nibblem`: 100-180 bytes
+* `crc16modbus_byte`: 560-630 bytes
 * `crc32_bit`: 110-180 bytes
 * `crc32_nibble`: 140-210 bytes
 * `crc32_nibblem`: 140-210 bytes
