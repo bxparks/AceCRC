@@ -16,7 +16,8 @@
 set -eu
 
 PROGRAM_NAME='MemoryBenchmark.ino'
-NUM_FEATURES=15
+START_FEATURE=0
+NUM_FEATURES=19 # inclusive
 
 # Assume that https://github.com/bxparks/AUniter is installed as a
 # sibling project to AceCRC.
@@ -50,7 +51,7 @@ function collect_for_board() {
     local board=$1
     local result_file=$2
 
-    for feature in $(seq 0 $NUM_FEATURES); do
+    for feature in $(seq $START_FEATURE $NUM_FEATURES); do
         echo "Collecting flash and ram usage for FEATURE $feature"
         sed -i -e "s/#define FEATURE [0-9]*/#define FEATURE $feature/" \
             $PROGRAM_NAME
