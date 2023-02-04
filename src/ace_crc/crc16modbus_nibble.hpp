@@ -2,14 +2,14 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Fri Feb  3 16:16:47 2023
+ * Generated on Fri Feb  3 16:16:46 2023
  * by pycrc v0.10.0, https://pycrc.org
  * using the configuration:
- *  - Width         = 32
- *  - Poly          = 0x04c11db7
- *  - XorIn         = 0xffffffff
+ *  - Width         = 16
+ *  - Poly          = 0x8005
+ *  - XorIn         = 0xffff
  *  - ReflectIn     = True
- *  - XorOut        = 0xffffffff
+ *  - XorOut        = 0x0000
  *  - ReflectOut    = True
  *  - Algorithm     = table-driven
  *
@@ -37,18 +37,18 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Fri Feb  3 16:16:47 PST 2023
+ * Auto converted to Arduino C++ on Fri Feb  3 16:16:46 PST 2023
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
-#ifndef ACE_CRC_CRC32_NIBBLEM_HPP
-#define ACE_CRC_CRC32_NIBBLEM_HPP
+#ifndef ACE_CRC_CRC16MODBUS_NIBBLE_HPP
+#define ACE_CRC_CRC16MODBUS_NIBBLE_HPP
 
 #include <stdlib.h>
 #include <stdint.h>
 
 namespace ace_crc {
-namespace crc32_nibblem {
+namespace crc16modbus_nibble {
 
 
 /**
@@ -63,9 +63,9 @@ const uint8_t CRC_ALGO_TABLE_DRIVEN = 1;
 /**
  * The type of the CRC values.
  *
- * This type must be big enough to contain at least 32 bits.
+ * This type must be big enough to contain at least 16 bits.
  */
-typedef uint32_t crc_t;
+typedef uint16_t crc_t;
 
 
 /**
@@ -85,7 +85,7 @@ crc_t crc_reflect(crc_t data, size_t data_len);
  */
 inline crc_t crc_init(void)
 {
-    return 0xffffffff;
+    return 0xffff;
 }
 
 
@@ -108,7 +108,7 @@ crc_t crc_update(crc_t crc, const void *data, size_t data_len);
  */
 inline crc_t crc_finalize(crc_t crc)
 {
-    return crc ^ 0xffffffff;
+    return crc;
 }
 
 
@@ -125,7 +125,7 @@ inline crc_t crc_calculate(const void *data, size_t data_len) {
   return crc_finalize(crc);
 }
 
-} // crc32_nibblem
+} // crc16modbus_nibble
 } // ace_crc
 
-#endif      /* ACE_CRC_CRC32_NIBBLEM_HPP */
+#endif      /* ACE_CRC_CRC16MODBUS_NIBBLE_HPP */

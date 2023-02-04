@@ -23,7 +23,7 @@ PRESERVE_C_FILES=0
 
 function usage() {
     echo "Usage: generate.sh [--help|-h] \
-    --model {crc-8|crc-16-ccitt|crc-32} \
+    --model {crc-8|crc-16-ccitt|crc-16-modbus|crc-32} \
     --algotag {bit|nibble|nibblem|byte} \
     {--header | --source}"
     exit 1
@@ -243,7 +243,9 @@ if [[ "$model" == '' ]]; then
     usage
 fi
 
-# Convert "crc-16-ccitt" to "crc16ccitt"
+# Normalize names:
+#   * "crc-16-ccitt" to "crc16ccitt"
+#   * "crc-16-modbus" to "crc16modbus"
 modelroot=$(echo $model | sed -e 's/-//g')
 modelroot_upper="$(echo $modelroot | tr '[a-z]' '[A-Z]')"
 algotag_upper="$(echo $algotag | tr '[a-z]' '[A-Z]')"
@@ -265,6 +267,7 @@ esac
 case $model in
     crc-8) pgm_read_func='pgm_read_byte' ;;
     crc-16-ccitt) pgm_read_func='pgm_read_word' ;;
+    crc-16-modbus) pgm_read_func='pgm_read_word' ;;
     crc-32) pgm_read_func='pgm_read_dword' ;;
     *) echo 'Unknown --model '$model''; usage ;;
 esac

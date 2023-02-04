@@ -27,6 +27,11 @@
 #include "ace_crc/crc16ccitt_nibble.hpp"
 #include "ace_crc/crc16ccitt_nibblem.hpp"
 
+#include "ace_crc/crc16modbus_bit.hpp"
+#include "ace_crc/crc16modbus_byte.hpp"
+#include "ace_crc/crc16modbus_nibble.hpp"
+#include "ace_crc/crc16modbus_nibblem.hpp"
+
 #include "ace_crc/crc32_bit.hpp"
 #include "ace_crc/crc32_byte.hpp"
 #include "ace_crc/crc32_nibble.hpp"
