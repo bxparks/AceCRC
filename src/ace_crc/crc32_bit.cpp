@@ -2,8 +2,8 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Sat Feb 20 19:59:50 2021
- * by pycrc v0.9.2, https://pycrc.org
+ * Generated on Fri Feb  3 16:16:47 2023
+ * by pycrc v0.10.0, https://pycrc.org
  * using the configuration:
  *  - Width         = 32
  *  - Poly          = 0x04c11db7
@@ -13,7 +13,7 @@
  *  - ReflectOut    = True
  *  - Algorithm     = bit-by-bit-fast
  *
- * Auto converted to Arduino C++ on Sat Feb 20 19:59:50 PST 2021
+ * Auto converted to Arduino C++ on Fri Feb  3 16:16:47 PST 2023
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */
@@ -45,16 +45,13 @@ crc_t crc_update(crc_t crc, const void *data, size_t data_len)
 {
     const unsigned char *d = (const unsigned char *)data;
     uint8_t i;
-    bool bit;
+    crc_t bit;
     unsigned char c;
 
     while (data_len--) {
         c = *d++;
         for (i = 0x01; i & 0xff; i <<= 1) {
-            bit = crc & 0x80000000;
-            if (c & i) {
-                bit = !bit;
-            }
+            bit = (crc & 0x80000000) ^ ((c & i) ? 0x80000000 : 0);
             crc <<= 1;
             if (bit) {
                 crc ^= 0x04c11db7;

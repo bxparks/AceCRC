@@ -7,6 +7,10 @@ TARGETS := \
 	crc16ccitt_nibble.hpp crc16ccitt_nibble.cpp \
 	crc16ccitt_nibblem.hpp crc16ccitt_nibblem.cpp \
 	crc16ccitt_byte.hpp crc16ccitt_byte.cpp \
+	crc16modbus_bit.hpp crc16modbus_bit.cpp \
+	crc16modbus_nibble.hpp crc16modbus_nibble.cpp \
+	crc16modbus_nibblem.hpp crc16modbus_nibblem.cpp \
+	crc16modbus_byte.hpp crc16modbus_byte.cpp \
 	crc32_bit.hpp crc32_bit.cpp \
 	crc32_nibble.hpp crc32_nibble.cpp \
 	crc32_nibblem.hpp crc32_nibblem.cpp \
@@ -79,6 +83,38 @@ crc16ccitt_byte.hpp: $(GENERATOR)
 
 crc16ccitt_byte.cpp: $(GENERATOR)
 	$(GENERATOR) --model crc-16-ccitt --algotag byte --source
+
+#-----------------------------------------------------------------------------
+# CRC-16-MODBUS
+#-----------------------------------------------------------------------------
+
+# bit by bit
+crc16modbus_bit.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag bit --header
+
+crc16modbus_bit.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag bit --source
+
+# 4-bit table in flash memory
+crc16modbus_nibble.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag nibble --header
+
+crc16modbus_nibble.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag nibble --source
+
+# 4-bit table in static memory
+crc16modbus_nibblem.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag nibblem --header
+
+crc16modbus_nibblem.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag nibblem --source
+
+# 8-bit table
+crc16modbus_byte.hpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag byte --header
+
+crc16modbus_byte.cpp: $(GENERATOR)
+	$(GENERATOR) --model crc-16-modbus --algotag byte --source
 
 #-----------------------------------------------------------------------------
 # CRC-32

@@ -10,8 +10,6 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
-samd_results = check_output(
-    "./generate_table.awk < samd.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
 esp8266_results = check_output(
@@ -28,7 +26,7 @@ print(f"""\
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v1.0.1
+**Version**: AceCRC v1.1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -73,23 +71,12 @@ processor), normalized to 1 kiB, so has the units of `micros/kiB`.
 
 ## CPU Time Changes
 
-### v1.0
+**v0.3.2**
 
-Added CPU benchmarks for the `nibblem` variant. On AVR and ESP8266, there was
-some performance increase compared to the `nibble` variant, because static
-memory access is faster than flash memory access on those processors. On other
-microcontrollers, there was no change in performance.
+I added the performance benchmarks for a number of third-party CRC libraries
+just out of curiosity: CRC32, Arduino_CRC32, and FastCRC (see below).
 
-* AVR
-    * crc8_nibblem is 2% faster than crc8_nibble
-    * crc16ccitt_nibblem is 5% faster than crc16ccitt_nibble
-    * crc32_nibblem is 7% faster than crc32_nibble
-* ESP8266
-    * crc8_nibblem is 1.9X faster than crc8_nibble
-    * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
-    * crc32_nibblem is 2.7X faster than crc32_nibble
-
-### v0.4
+**v0.4**
 
 I converted an internal loop variable in `crc_update()` (named `i` in the `bit`
 variant and `tbl_idx` in `nibble` and `byte` variants) from an `unsigned int` to
@@ -114,10 +101,31 @@ algorithms:
     * crc32_nibble: 18% faster
     * crc32_byte: 6% faster
 
-### v0.3.2
+**v1.0**
 
-I added the performance benchmarks for a number of third-party CRC libraries
-just out of curiosity:
+Added CPU benchmarks for the `nibblem` variant. On AVR and ESP8266, there was
+some performance increase compared to the `nibble` variant, because static
+memory access is faster than flash memory access on those processors. On other
+microcontrollers, there was no change in performance.
+
+* AVR
+    * crc8_nibblem is 2% faster than crc8_nibble
+    * crc16ccitt_nibblem is 5% faster than crc16ccitt_nibble
+    * crc32_nibblem is 7% faster than crc32_nibble
+* ESP8266
+    * crc8_nibblem is 1.9X faster than crc8_nibble
+    * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
+    * crc32_nibblem is 2.7X faster than crc32_nibble
+
+**v1.1.0**
+
+* Upgrade tool chain
+    * Various xxx_bit algorithms are significantly slower 10-15% on most
+      platforms, don't know why.
+    * Other algorithms are about the same.
+* Add CRC-16-MODBUS
+
+## Results
 
 * CRC32 (https://github.com/bakercp/CRC32)
     * uses a 4-bit lookup table, should be comparable to `crc32_nibble`
@@ -131,71 +139,61 @@ just out of curiosity:
       `crc32_byte` for an ESP8266 (I think this is because access to `PROGMEM`
       data is extra slow on an ESP8266)
 
-## Arduino Nano
+### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19
+* Arduino AVR Boards 1.8.5
 
 ```
 {nano_results}
 ```
 
-## Sparkfun Pro Micro
+### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19
 * SparkFun AVR Boards 1.1.13
 
 ```
 {micro_results}
 ```
 
-## SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* Arduino SAMD Core 1.8.6
-
-```
-{samd_results}
-```
-
-## STM32 Blue Pill
+### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 1.9.0
+* Arduino IDE 1.8.19
+* STM32duino 2.4.0
 
 ```
 {stm32_results}
 ```
 
-## ESP8266
+### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19
+* ESP8266 Boards 3.0.2
 
 ```
 {esp8266_results}
 ```
 
-## ESP32
+### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19
+* ESP32 Boards 2.0.5
 
 ```
 {esp32_results}
 ```
 
-## Teensy 3.2
+### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19
+* Teensyduino 1.57
 * Compiler options: "Faster"
 
 ```

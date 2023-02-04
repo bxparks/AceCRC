@@ -132,6 +132,22 @@ void runBenchmarks() {
     return crc16ccitt_byte::crc_calculate(string, STRING_SIZE);
   });
 
+  runLambda("crc16modbus_bit", []() -> LambdaReturnType {
+    return crc16modbus_bit::crc_calculate(string, STRING_SIZE);
+  });
+
+  runLambda("crc16modbus_nibble", []() -> LambdaReturnType {
+    return crc16modbus_nibble::crc_calculate(string, STRING_SIZE);
+  });
+
+  runLambda("crc16modbus_nibblem", []() -> LambdaReturnType {
+    return crc16modbus_nibblem::crc_calculate(string, STRING_SIZE);
+  });
+
+  runLambda("crc16modbus_byte", []() -> LambdaReturnType {
+    return crc16modbus_byte::crc_calculate(string, STRING_SIZE);
+  });
+
   runLambda("crc32_bit", []() -> LambdaReturnType {
     return crc32_bit::crc_calculate(string, STRING_SIZE);
   });

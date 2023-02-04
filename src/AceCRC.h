@@ -27,13 +27,18 @@
 #include "ace_crc/crc16ccitt_nibble.hpp"
 #include "ace_crc/crc16ccitt_nibblem.hpp"
 
+#include "ace_crc/crc16modbus_bit.hpp"
+#include "ace_crc/crc16modbus_byte.hpp"
+#include "ace_crc/crc16modbus_nibble.hpp"
+#include "ace_crc/crc16modbus_nibblem.hpp"
+
 #include "ace_crc/crc32_bit.hpp"
 #include "ace_crc/crc32_byte.hpp"
 #include "ace_crc/crc32_nibble.hpp"
 #include "ace_crc/crc32_nibblem.hpp"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_CRC_VERSION 10001
-#define ACE_CRC_VERSION_STRING "1.0.1"
+#define ACE_CRC_VERSION 10100
+#define ACE_CRC_VERSION_STRING "1.1.0"
 
 #endif

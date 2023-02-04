@@ -2,11 +2,6 @@
 
 [![AUnit Tests](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml/badge.svg)](https://github.com/bxparks/AceCRC/actions/workflows/aunit_tests.yml)
 
-**New**: [GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
-for this project is now active! Let's use that for general support questions,
-and reserve the [GitHub Issues](https://github.com/bxparks/AceCRC/issues)
-section for bugs and feature requests.
-
 This library contains a number of CRC algorithms that were generated from
 `pycrc` (https://pycrc.org) and programmatically converted to Arduino format to
 use C++ namespaces to avoid name collisions and `PROGMEM` flash memory for
@@ -15,6 +10,7 @@ algorithms](https://pycrc.org/models.html), this library supports:
 
 * CRC-8
 * CRC-16-CCITT
+* CRC-16-MODBUS
 * CRC-32
 
 For each algorithm, 4 different implementations were generated:
@@ -54,6 +50,10 @@ This library converts the C99 code in the following way:
     * `ace_crc::crc16ccitt_nibble`
     * `ace_crc::crc16ccitt_nibblem`
     * `ace_crc::crc16ccitt_byte`
+    * `ace_crc::crc16modbus_bit`
+    * `ace_crc::crc16modbus_nibble`
+    * `ace_crc::crc16modbus_nibblem`
+    * `ace_crc::crc16modbus_byte`
     * `ace_crc::crc32_bit`
     * `ace_crc::crc32_nibble`
     * `ace_crc::crc32_nibblem`
@@ -69,19 +69,19 @@ This library converts the C99 code in the following way:
       become just normal memory accessors.)
 * the `static` keyword is removed from header files
     * not needed in C++
-    * prevents generation of doxygen docs for those functions
+    * it was preventing the generation of doxygen docs for those functions
 * the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
     * becomes part of its enclosing namespace, preventing name collision
 * the typedef for `crc_t` is changed from `uint_fast8_t`, `uint_fast16_t`, and
   `uint_fast32_t` to `uint8_t`, `uint16_t`, and `uint32_t` respectively
-    * affects only 32-bit processors, and only the `crc8` and `crc16ccitt_*`
-      algorithms
+    * affects only 32-bit processors, and only the `crc8`, `crc16ccitt`, and
+      `crc16modbus` algorithms
     * see section [Integer Sizes](#IntegerSizes) below for more information
 
 **TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
 use `crc32_nibblem`.
 
-**Version**: 1.0.1 (2021-04-19)
+**Version**: 1.1.0 (2023-02-03)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -107,7 +107,7 @@ use `crc32_nibblem`.
     * [Tool Chain](#ToolChain)
     * [Operating System](#OperatingSystem)
 * [License](#License)
-* [Feedback and Support](#Feedback)
+* [Feedback and Support](#FeedbackAndSupport)
 * [Authors](#Authors)
 
 
@@ -318,6 +318,10 @@ Here are rough flash memory consumption for each algorithm:
 * `crc16ccitt_nibble`: 100-190 bytes
 * `crc16ccitt_nibblem`: 100-190 bytes
 * `crc16ccitt_byte`: 560-630 bytes
+* `crc16modbus_bit`: 120-200 bytes
+* `crc16modbus_nibble`: 100-180 bytes
+* `crc16modbus_nibblem`: 100-180 bytes
+* `crc16modbus_byte`: 560-630 bytes
 * `crc32_bit`: 110-180 bytes
 * `crc32_nibble`: 140-210 bytes
 * `crc32_nibblem`: 140-210 bytes
@@ -351,29 +355,69 @@ use `crc32_nibblem`.
 
 The benchmark numbers from `CpuBenchmark` and `MemoryBenchmark` are combined
 into a single place in [examples/benchmarks](examples/benchmarks) for
-convenience. For example, here is the table for the ESP8266 processor:
+convenience. Here are 2 samples:
+
+**Arduino Nano**
 
 ```
-ESP8266
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |     96/    0 |        1500 |
-| crc8_nibble                     |    144/    0 |         490 |
-| crc8_nibblem                    |    128/   16 |         257 |
-| crc8_byte                       |    336/    0 |         233 |
-| crc16ccitt_bit                  |    112/    0 |        1499 |
-| crc16ccitt_nibble               |    176/    0 |         681 |
-| crc16ccitt_nibblem              |    144/   32 |         270 |
-| crc16ccitt_byte                 |    624/    0 |         363 |
-| crc32_bit                       |    144/    0 |        1400 |
-| crc32_nibble                    |    208/    0 |         618 |
-| crc32_nibblem                   |    160/   64 |         232 |
-| crc32_byte                      |   1120/    0 |         345 |
+| crc8_bit                        |     64/    0 |        7808 |
+| crc8_nibble                     |    130/    0 |        7356 |
+| crc8_nibblem                    |    134/   16 |        7224 |
+| crc8_byte                       |    292/    0 |         916 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    240/    0 |         950 |
-| Arduino_CRC32                   |   1120/ 1024 |         142 |
-| FastCRC                         |   4704/    0 |         486 |
+| crc16ccitt_bit                  |     84/    0 |       11888 |
+| crc16ccitt_nibble               |    134/    0 |        5296 |
+| crc16ccitt_nibblem              |    138/   32 |        5040 |
+| crc16ccitt_byte                 |    562/    0 |        1496 |
+|---------------------------------+--------------+-------------|
+| crc16modbus_bit                 |    120/    0 |       11692 |
+| crc16modbus_nibble              |    132/    0 |        5232 |
+| crc16modbus_nibblem             |    134/   32 |        4912 |
+| crc16modbus_byte                |    562/    0 |        1496 |
+|---------------------------------+--------------+-------------|
+| crc32_bit                       |    188/    0 |       18248 |
+| crc32_nibble                    |    204/    0 |        7616 |
+| crc32_nibblem                   |    208/   64 |        7104 |
+| crc32_byte                      |   1106/    0 |        2272 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    208/    0 |        7688 |
+| Arduino_CRC32                   |   1112/ 1024 |        2144 |
+| FastCRC                         |   4262/    0 |        2160 |
++--------------------------------------------------------------+
+```
+
+**ESP8266**
+
+```
++--------------------------------------------------------------+
+| CRC algorithm                   |  flash/  ram |  micros/kiB |
+|---------------------------------+--------------+-------------|
+| crc8_bit                        |    128/    0 |        1512 |
+| crc8_nibble                     |    144/    0 |         488 |
+| crc8_nibblem                    |    112/   16 |         270 |
+| crc8_byte                       |    336/    0 |         246 |
+|---------------------------------+--------------+-------------|
+| crc16ccitt_bit                  |    128/    0 |        1820 |
+| crc16ccitt_nibble               |    160/    0 |         668 |
+| crc16ccitt_nibblem              |    144/   32 |         283 |
+| crc16ccitt_byte                 |    608/    0 |         375 |
+|---------------------------------+--------------+-------------|
+| crc16modbus_bit                 |    160/    0 |        1937 |
+| crc16modbus_nibble              |    160/    0 |         642 |
+| crc16modbus_nibblem             |    128/   32 |         245 |
+| crc16modbus_byte                |    608/    0 |         375 |
+|---------------------------------+--------------+-------------|
+| crc32_bit                       |    144/    0 |        1567 |
+| crc32_nibble                    |    176/    0 |         590 |
+| crc32_nibblem                   |    160/   64 |         244 |
+| crc32_byte                      |   1104/    0 |         340 |
+|---------------------------------+--------------+-------------|
+| CRC32                           |    224/    0 |         835 |
+| Arduino_CRC32                   |   1120/ 1024 |         155 |
+| FastCRC                         |   4704/    0 |         452 |
 +--------------------------------------------------------------+
 ```
 
@@ -402,8 +446,8 @@ distinguish different lengths of zeros.
 Between the CRC-16-CCITT and CRC-32 algorithms, if we look at the `_nibble`
 variants, there is very little difference in flash size and CPU speed, even on
 8-bit processors. On 32-bit processors, the CRC-32 is actually faster. The
-advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detected
-far more errors than 16 bits.
+advantage of CRC-32 over CRC-16-CCITT is that 32 bits will be able to detect
+longer sequences of errors than 16 bits.
 
 The `nibblem` variant is the same as the `nibble` variant on all processors
 except for AVR (small speed improvement) and ESP8266 (1.9X-2.7X speed
@@ -544,7 +588,9 @@ None that I know of right now.
 <a name="Hardware"></a>
 ### Hardware
 
-The library is extensively tested on the following boards:
+**Tier 1: Fully supported**
+
+These boards are tested on each release:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * SparkFun Pro Micro clone (16 MHz ATmega32U4)
@@ -555,34 +601,63 @@ The library is extensively tested on the following boards:
 * ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
 * Teensy 3.2 (72 MHz ARM Cortex-M4)
 
-I will occasionally test on the following hardware as a sanity check:
+**Tier 2: Should work**
 
-* Teensy LC (48 MHz ARM Cortex-M0+)
+These boards should work but I don't test them as often:
+
+* ATtiny85 (8 MHz ATtiny85)
+* Arduino Pro Mini (16 MHz ATmega328P)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
+* Teensy LC (48 MHz ARM Cortex-M0+)
+
+**Tier 3: May work, but not supported**
+
+* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
+    * Arduino-branded SAMD21 boards use the ArduinoCore-API, so are explicitly
+      blacklisted. See below.
+    * Other 3rd party SAMD21 boards *may* work using the SparkFun SAMD core.
+    * However, as of SparkFun SAMD Core v1.8.6 and Arduino IDE 1.8.19, I can no
+      longer upload binaries to these 3rd party boards due to errors.
+    * Therefore, third party SAMD21 boards are now in this new Tier 3 category.
+    * The AceTime library may work on these boards, but I can no longer support
+      them.
+
+**Tier 4: Probably won't work**
+
+The following boards use a different Arduino API which breaks backwards
+compatibility with almost all of my libraries written against the previous
+Arduino API. I cannot compile for them, I cannot test them. They are explicitly
+not supported.
+
+* Any platform using the ArduinoCore-API
+  (https://github.com/arduino/ArduinoCore-api), such as:
+    * megaAVR (e.g. Nano Every)
+    * SAMD21 boards w/ `arduino:samd` version >= 1.8.10 (e.g. Nano 33 IoT,
+      MKRZero, etc)
+    * Raspberry Pi Pico RP2040
 
 <a name="ToolChain"></a>
 ### Tool Chain
 
-* [Arduino IDE 1.8.13](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.14.0](https://arduino.github.io/arduino-cli)
-* [Arduino AVR Boards 1.8.3](https://github.com/arduino/ArduinoCore-avr)
+* [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
+* [Arduino CLI 0.27.1](https://arduino.github.io/arduino-cli)
+* [Arduino AVR Boards 1.8.5](https://github.com/arduino/ArduinoCore-avr)
 * [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.1](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 1.9.0](https://github.com/stm32duino/Arduino_Core_STM32)
-* [ESP8266 Arduino 2.7.4](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 1.0.6](https://github.com/espressif/arduino-esp32)
-* [Teensydino 1.53](https://www.pjrc.com/teensy/td_download.html)
+* [SparkFun SAMD Boards 1.8.7](https://github.com/sparkfun/Arduino_Boards)
+* [STM32duino 2.4.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [ESP8266 Arduino 3.0.2](https://github.com/esp8266/Arduino)
+* [ESP32 Arduino 2.0.5](https://github.com/espressif/arduino-esp32)
+* [Teensyduino 1.57](https://www.pjrc.com/teensy/td_download.html)
 
 <a name="OperatingSystem"></a>
 ### Operating System
 
-I use Ubuntu 18.04 and 20.04 for the vast majority of my development. I expect
-that the library will work fine under MacOS and Windows, but I have not tested
-them.
+I use Ubuntu 22.04 for the vast majority of my development. I expect that the
+library will work fine under MacOS and Windows, but I have not tested them.
 
 The generator script in `./tools/generate.sh` has only been tested under Ubuntu
-20.04.
+20.04 and 22.04.
 
 <a name="License"></a>
 ## License
@@ -592,18 +667,14 @@ The generator script in `./tools/generate.sh` has only been tested under Ubuntu
 <a name="FeedbackAndSupport"></a>
 ## Feedback and Support
 
-If you find this library useful, consider starring this project on GitHub. The
-stars will let me prioritize the more popular libraries over the less popular
-ones.
-
-If you have any questions, comments and other support questions about how to
-use this library, please use the
-[GitHub Discussions](https://github.com/bxparks/AceCRC/discussions)
-for this project. If you have bug reports or feature requests, please file a
-ticket in [GitHub Issues](https://github.com/bxparks/AceCRC/issues).
-I'd love to hear about how this software and its documentation can be improved.
-I can't promise that I will incorporate everything, but I will give your ideas
-serious consideration.
+If you have any questions, comments, or feature requests for this library,
+please use the [GitHub
+Discussions](https://github.com/bxparks/AceCRC/discussions) for this project. If
+you have a bug report, please file a ticket in [GitHub
+Issues](https://github.com/bxparks/AceCRC/issues). Feature requests should
+go into Discussions first because they often have alternative solutions which
+are useful to remain visible, instead of disappearing from the default view of
+the Issue tracker after the ticket is closed.
 
 Please refrain from emailing me directly unless the content is sensitive. The
 problem with email is that I cannot reference the email conversation when other
