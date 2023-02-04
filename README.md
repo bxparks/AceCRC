@@ -305,8 +305,9 @@ I wrote a bunch of scripts in
 [examples/benchmarks/MemoryBenchmark](examples/benchmarks/MemoryBenchmark) to
 automatically gather the flash and static RAM consumption of various CRC
 algorithms on various microcontrollers. The results are summarized in the
-`README.md` in that directory. None of the algorithms consumed any static RAM,
-because all their lookup tables are located in flash using `PROGMEM`.
+`README.md` in that directory. All algorithms (except for `xxx_nibblem`
+variants) consume no static RAM, because their lookup tables are located in
+flash using `PROGMEM`.
 
 Here are rough flash memory consumption for each algorithm:
 
@@ -335,9 +336,9 @@ The CPU performance of each CRC algorithm and variant is given in
 microseconds per kiB (1024 bytes).
 
 For 8-bit processors (e.g. Nano, Micro), the numbers are roughly:
-* "bit": 9300-16000 micros/kiB
+* "bit": 7800-18000 micros/kiB
 * "nibble": 5300-7600 micros/kiB
-* "nibblem": 5300-7600 micros/kiB
+* "nibblem": 4900-7200 micros/kiB
 * "byte": 900-2200 micros/kiB
 
 For 32-bit processors (e.g. SAMD, ESP8266, ESP32), the numbers are in the range
