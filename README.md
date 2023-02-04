@@ -69,7 +69,7 @@ This library converts the C99 code in the following way:
       become just normal memory accessors.)
 * the `static` keyword is removed from header files
     * not needed in C++
-    * prevents generation of doxygen docs for those functions
+    * it was preventing the generation of doxygen docs for those functions
 * the `#define CRC_ALGO_{XXX}` macro is converted into a `const uint8_t`
     * becomes part of its enclosing namespace, preventing name collision
 * the typedef for `crc_t` is changed from `uint_fast8_t`, `uint_fast16_t`, and
