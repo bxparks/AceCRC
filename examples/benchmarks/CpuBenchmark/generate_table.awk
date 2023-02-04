@@ -6,27 +6,7 @@
 # table that can be inserted into the README.md.
 
 BEGIN {
-  NUM_ACE_CRC_ALGORITHMS = 12
-  NUM_ALGORITHMS = 15
-  labels[1] = "crc8_bit";
-  labels[2] = "crc8_nibble";
-  labels[3] = "crc8_nibblem";
-  labels[4] = "crc8_byte";
-  labels[5] = "crc16ccitt_bit";
-  labels[6] = "crc16ccitt_nibble";
-  labels[7] = "crc16ccitt_nibblem";
-  labels[8] = "crc16ccitt_byte";
-  labels[9] = "crc32_bit";
-  labels[10] = "crc32_nibble";
-  labels[11] = "crc32_nibblem";
-  labels[12] = "crc32_byte";
-  labels[13] = "CRC32";
-  labels[14] = "Arduino_CRC32";
-  labels[15] = "FastCRC32";
-
-  # Use 1-based index for better compatibility with MemoryBenchmark which has a
-  # "Baseline" record.
-  record_index = 1
+  record_index = 0
 }
 !/^END/ {
   u[record_index]["name"] = $1
@@ -34,15 +14,20 @@ BEGIN {
   record_index++
 }
 END {
+  TOTAL_BENCHMARKS = record_index
+
   printf("+-----------------------------------------------+\n")
   printf("| CRC algorithm                   |  micros/kiB |\n")
-  printf("|---------------------------------+-------------|\n")
-  for (i = 1; i <= NUM_ACE_CRC_ALGORITHMS; i++) {
-    printf("| %-31s | %11d |\n", labels[i], u[i]["micros"])
-  }
-  printf("|---------------------------------+-------------|\n")
-  for (i = NUM_ACE_CRC_ALGORITHMS + 1; i <= NUM_ALGORITHMS; i++) {
-    printf("| %-31s | %11d |\n", labels[i], u[i]["micros"])
+  for (i = 0; i < TOTAL_BENCHMARKS; i++) {
+    name = u[i]["name"]
+    if (name ~ /^crc8_bit/ \
+        || name ~ /^crc16ccitt_bit/ \
+        || name ~ /^crc16modbus_bit/ \
+        || name ~ /^crc32_bit/ \
+        || name ~ /^CRC32/) {
+      printf("|---------------------------------+-------------|\n")
+    }
+    printf("| %-31s | %11d |\n", name, u[i]["micros"])
   }
   printf("+---------------------------------+-------------+\n")
 }

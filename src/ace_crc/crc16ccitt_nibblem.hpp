@@ -2,8 +2,8 @@
  * \file
  * Functions and types for CRC checks.
  *
- * Generated on Sat Feb 20 19:59:49 2021
- * by pycrc v0.9.2, https://pycrc.org
+ * Generated on Fri Feb  3 16:16:46 2023
+ * by pycrc v0.10.0, https://pycrc.org
  * using the configuration:
  *  - Width         = 16
  *  - Poly          = 0x1021
@@ -15,7 +15,7 @@
  *
  * This file defines the functions crc_init(), crc_update() and crc_finalize().
  *
- * The crc_init() function returns the inital \c crc value and must be called
+ * The crc_init() function returns the initial \c crc value and must be called
  * before the first call to crc_update().
  * Similarly, the crc_finalize() function must be called after the last call
  * to crc_update(), before the \c crc is being used.
@@ -37,7 +37,7 @@
  * crc = crc_finalize(crc);
  * \endcode
  *
- * Auto converted to Arduino C++ on Sat Feb 20 19:59:49 PST 2021
+ * Auto converted to Arduino C++ on Fri Feb  3 16:16:46 PST 2023
  * by AceCRC (https://github.com/bxparks/AceCRC).
  * DO NOT EDIT
  */

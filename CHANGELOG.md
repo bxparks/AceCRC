@@ -1,13 +1,20 @@
 # Changelog
 
 * Unreleased
-    * Upgrade STM32duino Core from 1.9.0 to 2.0.0.
-        * MemoryBenchmark: Flash usage increases by 2.3kB across the board, but
-          static RAM goes down by 250 bytes. Very little change to AceCommon
-          code itself.
-        * AutoBenchmark: No change.
-    * Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
-        * No change observed in MemoryBenchmark or AutoBenchmark.
+* 1.1.0 (2023-02-03)
+    * Upgrade tool chain
+        * Arduino IDE from 1.8.13 to 1.8.19
+        * Arduino CLI from 0.15.2 to 0.27.1
+        * Arduino AVR Core from 1.8.3 to 1.8.5
+        * SparkFun AVR Core 1.8.13
+        * SparkFun SAMD Core from 1.8.1 to 1.8.7
+        * STM32duino Core from 1.9.0 to 2.3.0
+        * ESP8266 Core from 2.7.4 to 3.0.2
+        * ESP32 Core from 1.0.6 to 2.0.5
+        * TeensyDuino from 1.54 to 1.57
+    * Remove SAMD21 boards.
+        * No longer supported.
+    * Add CRC-16-MODBUS from pycrc.
 * 1.0.1 (2021-04-19)
     * Update EpoxyDuino Makefiles for better compatibility with FreeBSD.
     * Add recommendation to use `nibblem` on ESP8266.

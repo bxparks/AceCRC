@@ -10,8 +10,6 @@ nano_results = check_output(
     "./generate_table.awk < nano.txt", shell=True, text=True)
 micro_results = check_output(
     "./generate_table.awk < micro.txt", shell=True, text=True)
-samd_results = check_output(
-    "./generate_table.awk < samd.txt", shell=True, text=True)
 stm32_results = check_output(
     "./generate_table.awk < stm32.txt", shell=True, text=True)
 esp8266_results = check_output(
@@ -28,7 +26,7 @@ print(f"""\
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v1.0.1
+**Version**: AceCRC v1.1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -119,11 +117,13 @@ microcontrollers, there was no change in performance.
     * crc16ccitt_nibblem is 2.5X faster than crc16ccitt_nibble
     * crc32_nibblem is 2.7X faster than crc32_nibble
 
-**v1.0.1+**
+**v1.1.0**
 
-* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
-* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
-* No significant change in CPU times.
+* Upgrade tool chain
+    * Various xxx_bit algorithms are significantly slower 10-15% on most
+      platforms, don't know why.
+    * Other algorithms are about the same.
+* Add CRC-16-MODBUS
 
 ## Results
 
@@ -142,8 +142,8 @@ microcontrollers, there was no change in performance.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19
+* Arduino AVR Boards 1.8.5
 
 ```
 {nano_results}
@@ -152,28 +152,18 @@ microcontrollers, there was no change in performance.
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19
 * SparkFun AVR Boards 1.1.13
 
 ```
 {micro_results}
 ```
 
-### SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
-
-```
-{samd_results}
-```
-
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
+* Arduino IDE 1.8.19
+* STM32duino 2.4.0
 
 ```
 {stm32_results}
@@ -182,8 +172,8 @@ microcontrollers, there was no change in performance.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19
+* ESP8266 Boards 3.0.2
 
 ```
 {esp8266_results}
@@ -192,8 +182,8 @@ microcontrollers, there was no change in performance.
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19
+* ESP32 Boards 2.0.5
 
 ```
 {esp32_results}
@@ -202,8 +192,8 @@ microcontrollers, there was no change in performance.
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19
+* Teensyduino 1.57
 * Compiler options: "Faster"
 
 ```
