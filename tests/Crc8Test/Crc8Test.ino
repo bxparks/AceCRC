@@ -115,6 +115,9 @@ void setup() {
 
   SERIAL_PORT_MONITOR.begin(115200);
   while (!SERIAL_PORT_MONITOR); // needed for Leonardo/Micro
+#if defined(EPOXY_DUINO)
+  SERIAL_PORT_MONITOR.setLineModeUnix();
+#endif
 }
 
 void loop() {
