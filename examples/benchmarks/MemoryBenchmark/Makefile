@@ -8,8 +8,7 @@ include ../../../../EpoxyDuino/EpoxyDuino.mk
 
 .PHONY: benchmarks
 
-TARGETS := nano.txt micro.txt samd.txt stm32.txt esp8266.txt esp32.txt \
-teensy32.txt
+TARGETS := nano.txt micro.txt stm32.txt esp8266.txt esp32.txt teensy32.txt
 
 README.md: $(TARGETS) generate_readme.py generate_table.awk
 	./generate_readme.py > $@
@@ -21,9 +20,6 @@ nano.txt:
 
 micro.txt:
 	./collect.sh --cli micro $@
-
-samd.txt:
-	./collect.sh --cli samd $@
 
 stm32.txt:
 	./collect.sh --cli stm32 $@
@@ -37,6 +33,9 @@ esp32.txt:
 # Teensy does not support ArduinoCLI as far as I know.
 teensy32.txt:
 	./collect.sh --ide teensy32 $@
+
+epoxy:
+	./validate_using_epoxy_duino.sh
 
 more_clean:
 	echo "Use 'make clean_benchmarks' to remove *.txt files"
