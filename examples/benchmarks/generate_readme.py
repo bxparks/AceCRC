@@ -14,10 +14,6 @@ micro_results = check_output(
     "cat CpuBenchmark/micro.txt MemoryBenchmark/micro.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
-samd_results = check_output(
-    "cat CpuBenchmark/samd.txt MemoryBenchmark/samd.txt"
-    "| ./generate_combined.awk",
-    shell=True, text=True)
 stm32_results = check_output(
     "cat CpuBenchmark/stm32.txt MemoryBenchmark/stm32.txt"
     "| ./generate_combined.awk",
@@ -49,7 +45,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v1.0.1
+**Version**: AceCRC v1.1.0
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -90,14 +86,11 @@ placed in static ram, instead of flash RAM. For AVR processors, there is small
 increase in performance, 2-7%. But for ESP8266 processors, the performance goes
 up by 1.9X to 2.7X.
 
-**v1.0.1+**
+**v1.1.0**
 
-* Upgrade STM32duino Core from 1.9.0 to 2.0.0.
-    * Flash memory increases by 2.3kB across the board.
-    * Static memory decreases by 250 bytes across the board.
-    * AceCRC code unchanged.
-* Upgrade SparkFun SAMD Core from 1.8.1 to 1.8.3.
-    * No changes to flash or static memory.
+* Upgrade tool chain.
+* Remove SAMD21 board, no longer able to test.
+* Add crc16modbus.
 
 ## Results
 
@@ -116,8 +109,8 @@ up by 1.9X to 2.7X.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.13
-* Arduino AVR Boards 1.8.3
+* Arduino IDE 1.8.19
+* Arduino AVR Boards 1.8.5
 
 ```
 {nano_results}
@@ -126,28 +119,18 @@ up by 1.9X to 2.7X.
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.13
+* Arduino IDE 1.8.19
 * SparkFun AVR Boards 1.1.13
 
 ```
 {micro_results}
 ```
 
-### SAMD21 M0 Mini
-
-* 48 MHz ARM Cortex-M0+
-* Arduino IDE 1.8.13
-* SparkFun SAMD Core 1.8.3
-
-```
-{samd_results}
-```
-
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.13
-* STM32duino 2.0.0
+* Arduino IDE 1.8.19
+* STM32duino 2.4.0
 
 ```
 {stm32_results}
@@ -156,8 +139,8 @@ up by 1.9X to 2.7X.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.13
-* ESP8266 Boards 2.7.4
+* Arduino IDE 1.8.19
+* ESP8266 Boards 3.0.2
 
 ```
 {esp8266_results}
@@ -166,8 +149,8 @@ up by 1.9X to 2.7X.
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.13
-* ESP32 Boards 1.0.6
+* Arduino IDE 1.8.19
+* ESP32 Boards 2.0.5
 
 ```
 {esp32_results}
@@ -176,8 +159,8 @@ up by 1.9X to 2.7X.
 ### Teensy 3.2
 
 * 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.13
-* Teensyduino 1.53
+* Arduino IDE 1.8.19
+* Teensyduino 1.57
 * Compiler options: "Faster"
 
 ```

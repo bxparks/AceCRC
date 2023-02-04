@@ -1,6 +1,5 @@
 # Generate the dependencies to the various raw *.txt files.
-BASE_TARGETS := nano.txt micro.txt samd.txt stm32.txt esp8266.txt esp32.txt \
-	teensy32.txt
+BASE_TARGETS := nano.txt micro.txt stm32.txt esp8266.txt esp32.txt teensy32.txt
 TARGETS := $(foreach target,$(BASE_TARGETS),MemoryBenchmark/${target})
 TARGETS += $(foreach target,$(BASE_TARGETS),CpuBenchmark/${target})
 
