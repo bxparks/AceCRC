@@ -3,7 +3,7 @@
 The `CPUBenchmark.ino` determines the CPU run time of each of various CRC
 algorithms.
 
-**Version**: AceCRC v1.1.0
+**Version**: AceCRC v1.1.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -119,8 +119,8 @@ microcontrollers, there was no change in performance.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19
-* Arduino AVR Boards 1.8.5
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Arduino AVR Boards 1.8.6
 
 ```
 +-----------------------------------------------+
@@ -156,36 +156,73 @@ microcontrollers, there was no change in performance.
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
 * SparkFun AVR Boards 1.1.13
 
 ```
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        7852 |
+| crc8_bit                        |        7832 |
 | crc8_nibble                     |        7396 |
-| crc8_nibblem                    |        7264 |
-| crc8_byte                       |         920 |
+| crc8_nibblem                    |        7268 |
+| crc8_byte                       |         916 |
 |---------------------------------+-------------|
 | crc16ccitt_bit                  |       11952 |
-| crc16ccitt_nibble               |        5332 |
-| crc16ccitt_nibblem              |        5068 |
-| crc16ccitt_byte                 |        1528 |
+| crc16ccitt_nibble               |        5336 |
+| crc16ccitt_nibblem              |        5064 |
+| crc16ccitt_byte                 |        1492 |
 |---------------------------------+-------------|
-| crc16modbus_bit                 |       11752 |
-| crc16modbus_nibble              |        5268 |
-| crc16modbus_nibblem             |        4932 |
+| crc16modbus_bit                 |       11760 |
+| crc16modbus_nibble              |        5264 |
+| crc16modbus_nibblem             |        4936 |
 | crc16modbus_byte                |        1500 |
 |---------------------------------+-------------|
 | crc32_bit                       |       18344 |
-| crc32_nibble                    |        7664 |
-| crc32_nibblem                   |        7140 |
-| crc32_byte                      |        2288 |
+| crc32_nibble                    |        7660 |
+| crc32_nibblem                   |        7144 |
+| crc32_byte                      |        2292 |
 |---------------------------------+-------------|
 | CRC32                           |        7720 |
-| Arduino_CRC32                   |        2164 |
-| FastCRC32                       |        2180 |
+| Arduino_CRC32                   |        2152 |
+| FastCRC32                       |        2184 |
++---------------------------------+-------------+
+
+```
+
+## Seeed Studio XIAO (SAMD21)
+
+* SAMD21, 48 MHz ARM Cortex-M0+
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Seeeduino SAMD Boards 1.8.4
+
+```
++-----------------------------------------------+
+| CRC algorithm                   |  micros/kiB |
+|---------------------------------+-------------|
+| crc8_bit                        |        2261 |
+| crc8_nibble                     |         488 |
+| crc8_nibblem                    |         516 |
+| crc8_byte                       |         273 |
+|---------------------------------+-------------|
+| crc16ccitt_bit                  |        2275 |
+| crc16ccitt_nibble               |         488 |
+| crc16ccitt_nibblem              |         488 |
+| crc16ccitt_byte                 |         316 |
+|---------------------------------+-------------|
+| crc16modbus_bit                 |        2436 |
+| crc16modbus_nibble              |         488 |
+| crc16modbus_nibblem             |         488 |
+| crc16modbus_byte                |         330 |
+|---------------------------------+-------------|
+| crc32_bit                       |        2324 |
+| crc32_nibble                    |         488 |
+| crc32_nibblem                   |         531 |
+| crc32_byte                      |         274 |
+|---------------------------------+-------------|
+| CRC32                           |         845 |
+| Arduino_CRC32                   |         274 |
+| FastCRC32                       |         186 |
 +---------------------------------+-------------+
 
 ```
@@ -193,36 +230,73 @@ microcontrollers, there was no change in performance.
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19
-* STM32duino 2.4.0
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* STM32duino 2.6.0
 
 ```
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
 | crc8_bit                        |        2261 |
-| crc8_nibble                     |         502 |
-| crc8_nibblem                    |         531 |
-| crc8_byte                       |         259 |
+| crc8_nibble                     |         488 |
+| crc8_nibblem                    |         516 |
+| crc8_byte                       |         273 |
 |---------------------------------+-------------|
-| crc16ccitt_bit                  |        2390 |
-| crc16ccitt_nibble               |         573 |
-| crc16ccitt_nibblem              |         559 |
-| crc16ccitt_byte                 |         302 |
+| crc16ccitt_bit                  |        2275 |
+| crc16ccitt_nibble               |         488 |
+| crc16ccitt_nibblem              |         488 |
+| crc16ccitt_byte                 |         316 |
 |---------------------------------+-------------|
-| crc16modbus_bit                 |        2407 |
-| crc16modbus_nibble              |         560 |
-| crc16modbus_nibblem             |         574 |
-| crc16modbus_byte                |         244 |
+| crc16modbus_bit                 |        2436 |
+| crc16modbus_nibble              |         488 |
+| crc16modbus_nibblem             |         488 |
+| crc16modbus_byte                |         330 |
 |---------------------------------+-------------|
 | crc32_bit                       |        2324 |
-| crc32_nibble                    |         559 |
-| crc32_nibblem                   |         573 |
-| crc32_byte                      |         245 |
+| crc32_nibble                    |         488 |
+| crc32_nibblem                   |         531 |
+| crc32_byte                      |         274 |
 |---------------------------------+-------------|
-| CRC32                           |         846 |
-| Arduino_CRC32                   |         246 |
-| FastCRC32                       |         188 |
+| CRC32                           |         845 |
+| Arduino_CRC32                   |         274 |
+| FastCRC32                       |         186 |
++---------------------------------+-------------+
+
+```
+
+## Adafruit ItsyBitsy M4 (SAMD51)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Adafruit SAMD 1.7.13
+
+```
++-----------------------------------------------+
+| CRC algorithm                   |  micros/kiB |
+|---------------------------------+-------------|
+| crc8_bit                        |         949 |
+| crc8_nibble                     |         171 |
+| crc8_nibblem                    |         171 |
+| crc8_byte                       |          86 |
+|---------------------------------+-------------|
+| crc16ccitt_bit                  |        1008 |
+| crc16ccitt_nibble               |         163 |
+| crc16ccitt_nibblem              |         163 |
+| crc16ccitt_byte                 |         103 |
+|---------------------------------+-------------|
+| crc16modbus_bit                 |        1078 |
+| crc16modbus_nibble              |         163 |
+| crc16modbus_nibblem             |         162 |
+| crc16modbus_byte                |         103 |
+|---------------------------------+-------------|
+| crc32_bit                       |        1019 |
+| crc32_nibble                    |         163 |
+| crc32_nibblem                   |         163 |
+| crc32_byte                      |         103 |
+|---------------------------------+-------------|
+| CRC32                           |         361 |
+| Arduino_CRC32                   |         103 |
+| FastCRC32                       |          57 |
 +---------------------------------+-------------+
 
 ```
@@ -230,36 +304,36 @@ microcontrollers, there was no change in performance.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.19
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
 * ESP8266 Boards 3.0.2
 
 ```
 +-----------------------------------------------+
 | CRC algorithm                   |  micros/kiB |
 |---------------------------------+-------------|
-| crc8_bit                        |        1512 |
+| crc8_bit                        |        1513 |
 | crc8_nibble                     |         488 |
 | crc8_nibblem                    |         270 |
 | crc8_byte                       |         246 |
 |---------------------------------+-------------|
 | crc16ccitt_bit                  |        1820 |
-| crc16ccitt_nibble               |         668 |
+| crc16ccitt_nibble               |         669 |
 | crc16ccitt_nibblem              |         283 |
 | crc16ccitt_byte                 |         375 |
 |---------------------------------+-------------|
 | crc16modbus_bit                 |        1937 |
 | crc16modbus_nibble              |         642 |
-| crc16modbus_nibblem             |         245 |
+| crc16modbus_nibblem             |         244 |
 | crc16modbus_byte                |         375 |
 |---------------------------------+-------------|
 | crc32_bit                       |        1567 |
-| crc32_nibble                    |         590 |
+| crc32_nibble                    |         591 |
 | crc32_nibblem                   |         244 |
 | crc32_byte                      |         340 |
 |---------------------------------+-------------|
-| CRC32                           |         835 |
+| CRC32                           |         834 |
 | Arduino_CRC32                   |         155 |
-| FastCRC32                       |         452 |
+| FastCRC32                       |         458 |
 +---------------------------------+-------------+
 
 ```
@@ -267,8 +341,8 @@ microcontrollers, there was no change in performance.
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19
-* ESP32 Boards 2.0.5
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* ESP32 Boards 2.0.9
 
 ```
 +-----------------------------------------------+
@@ -280,61 +354,23 @@ microcontrollers, there was no change in performance.
 | crc8_byte                       |          52 |
 |---------------------------------+-------------|
 | crc16ccitt_bit                  |         516 |
-| crc16ccitt_nibble               |         135 |
-| crc16ccitt_nibblem              |         134 |
+| crc16ccitt_nibble               |         134 |
+| crc16ccitt_nibblem              |         133 |
 | crc16ccitt_byte                 |          83 |
 |---------------------------------+-------------|
-| crc16modbus_bit                 |         555 |
-| crc16modbus_nibble              |         120 |
-| crc16modbus_nibblem             |         120 |
+| crc16modbus_bit                 |         556 |
+| crc16modbus_nibble              |         121 |
+| crc16modbus_nibblem             |         121 |
 | crc16modbus_byte                |          75 |
 |---------------------------------+-------------|
-| crc32_bit                       |         464 |
-| crc32_nibble                    |         113 |
+| crc32_bit                       |         465 |
+| crc32_nibble                    |         112 |
 | crc32_nibblem                   |         112 |
 | crc32_byte                      |          71 |
 |---------------------------------+-------------|
-| CRC32                           |         198 |
+| CRC32                           |         197 |
 | Arduino_CRC32                   |          71 |
-| FastCRC32                       |          43 |
-+---------------------------------+-------------+
-
-```
-
-### Teensy 3.2
-
-* 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19
-* Teensyduino 1.57
-* Compiler options: "Faster"
-
-```
-+-----------------------------------------------+
-| CRC algorithm                   |  micros/kiB |
-|---------------------------------+-------------|
-| crc8_bit                        |        1262 |
-| crc8_nibble                     |         193 |
-| crc8_nibblem                    |         193 |
-| crc8_byte                       |          92 |
-|---------------------------------+-------------|
-| crc16ccitt_bit                  |        1348 |
-| crc16ccitt_nibble               |         193 |
-| crc16ccitt_nibblem              |         193 |
-| crc16ccitt_byte                 |         140 |
-|---------------------------------+-------------|
-| crc16modbus_bit                 |        1520 |
-| crc16modbus_nibble              |         182 |
-| crc16modbus_nibblem             |         183 |
-| crc16modbus_byte                |         139 |
-|---------------------------------+-------------|
-| crc32_bit                       |        1393 |
-| crc32_nibble                    |         183 |
-| crc32_nibblem                   |         183 |
-| crc32_byte                      |         154 |
-|---------------------------------+-------------|
-| CRC32                           |         429 |
-| Arduino_CRC32                   |         155 |
-| FastCRC32                       |          23 |
+| FastCRC32                       |          44 |
 +---------------------------------+-------------+
 
 ```
