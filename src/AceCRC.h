@@ -38,7 +38,7 @@
 #include "ace_crc/crc32_nibblem.hpp"
 
 // Version format: xxyyzz == "xx.yy.zz"
-#define ACE_CRC_VERSION 10100
-#define ACE_CRC_VERSION_STRING "1.1.0"
+#define ACE_CRC_VERSION 10101
+#define ACE_CRC_VERSION_STRING "1.1.1"
 
 #endif

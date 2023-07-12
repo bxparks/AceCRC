@@ -14,8 +14,16 @@ micro_results = check_output(
     "cat CpuBenchmark/micro.txt MemoryBenchmark/micro.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
+samd21_results = check_output(
+    "cat CpuBenchmark/samd21.txt MemoryBenchmark/samd21.txt"
+    "| ./generate_combined.awk",
+    shell=True, text=True)
 stm32_results = check_output(
     "cat CpuBenchmark/stm32.txt MemoryBenchmark/stm32.txt"
+    "| ./generate_combined.awk",
+    shell=True, text=True)
+samd51_results = check_output(
+    "cat CpuBenchmark/samd51.txt MemoryBenchmark/samd51.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
 esp8266_results = check_output(
@@ -26,11 +34,6 @@ esp32_results = check_output(
     "cat CpuBenchmark/esp32.txt MemoryBenchmark/esp32.txt"
     "| ./generate_combined.awk",
     shell=True, text=True)
-teensy32_results = check_output(
-    "cat CpuBenchmark/teensy32.txt MemoryBenchmark/teensy32.txt"
-    "| ./generate_combined.awk",
-    shell=True, text=True)
-#teensy32_results = 'TBD'
 
 print(f"""\
 # Benchmarks
@@ -45,7 +48,7 @@ Two benchmark programs are available here:
 The `*.txt` output of these benchmarks are combined in this README.md into a
 single table for each microcontroller type below.
 
-**Version**: AceCRC v1.1.0
+**Version**: AceCRC v1.1.1
 
 **DO NOT EDIT**: This file was auto-generated using `make README.md`.
 
@@ -109,8 +112,8 @@ up by 1.9X to 2.7X.
 ### Arduino Nano
 
 * 16MHz ATmega328P
-* Arduino IDE 1.8.19
-* Arduino AVR Boards 1.8.5
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Arduino AVR Boards 1.8.6
 
 ```
 {nano_results}
@@ -119,18 +122,37 @@ up by 1.9X to 2.7X.
 ### SparkFun Pro Micro
 
 * 16 MHz ATmega32U4
-* Arduino IDE 1.8.19
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
 * SparkFun AVR Boards 1.1.13
 
 ```
 {micro_results}
 ```
 
+## Seeed Studio XIAO (SAMD21)
+
+* SAMD21, 48 MHz ARM Cortex-M0+
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Seeeduino SAMD Boards 1.8.4
+
+```
+{samd21_results}
+
 ### STM32 Blue Pill
 
 * STM32F103C8, 72 MHz ARM Cortex-M3
-* Arduino IDE 1.8.19
-* STM32duino 2.4.0
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* STM32duino 2.6.0
+
+```
+{stm32_results}
+```
+
+## Adafruit ItsyBitsy M4 (SAMD51)
+
+* SAMD51, 120 MHz ARM Cortex-M4
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* Adafruit SAMD 1.7.13
 
 ```
 {stm32_results}
@@ -139,7 +161,7 @@ up by 1.9X to 2.7X.
 ### ESP8266
 
 * NodeMCU 1.0, 80MHz ESP8266
-* Arduino IDE 1.8.19
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
 * ESP8266 Boards 3.0.2
 
 ```
@@ -149,21 +171,10 @@ up by 1.9X to 2.7X.
 ### ESP32
 
 * ESP32-01 Dev Board, 240 MHz Tensilica LX6
-* Arduino IDE 1.8.19
-* ESP32 Boards 2.0.5
+* Arduino IDE 1.8.19, Arduino CLI 0.33.0
+* ESP32 Boards 2.0.9
 
 ```
 {esp32_results}
-```
-
-### Teensy 3.2
-
-* 96 MHz ARM Cortex-M4
-* Arduino IDE 1.8.19
-* Teensyduino 1.57
-* Compiler options: "Faster"
-
-```
-{teensy32_results}
 ```
 """)
