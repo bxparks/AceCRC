@@ -81,7 +81,7 @@ This library converts the C99 code in the following way:
 **TL;DR**: Use `crc32_nibble` in most cases, except on ESP8266 where you should
 use `crc32_nibblem`.
 
-**Version**: 1.1.0 (2023-02-03)
+**Version**: 1.1.1 (2023-07-12)
 
 **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 
@@ -396,29 +396,29 @@ convenience. Here are 2 samples:
 +--------------------------------------------------------------+
 | CRC algorithm                   |  flash/  ram |  micros/kiB |
 |---------------------------------+--------------+-------------|
-| crc8_bit                        |    128/    0 |        1512 |
+| crc8_bit                        |    128/    0 |        1513 |
 | crc8_nibble                     |    144/    0 |         488 |
 | crc8_nibblem                    |    112/   16 |         270 |
 | crc8_byte                       |    336/    0 |         246 |
 |---------------------------------+--------------+-------------|
 | crc16ccitt_bit                  |    128/    0 |        1820 |
-| crc16ccitt_nibble               |    160/    0 |         668 |
+| crc16ccitt_nibble               |    160/    0 |         669 |
 | crc16ccitt_nibblem              |    144/   32 |         283 |
 | crc16ccitt_byte                 |    608/    0 |         375 |
 |---------------------------------+--------------+-------------|
 | crc16modbus_bit                 |    160/    0 |        1937 |
 | crc16modbus_nibble              |    160/    0 |         642 |
-| crc16modbus_nibblem             |    128/   32 |         245 |
+| crc16modbus_nibblem             |    128/   32 |         244 |
 | crc16modbus_byte                |    608/    0 |         375 |
 |---------------------------------+--------------+-------------|
 | crc32_bit                       |    144/    0 |        1567 |
-| crc32_nibble                    |    176/    0 |         590 |
+| crc32_nibble                    |    176/    0 |         591 |
 | crc32_nibblem                   |    160/   64 |         244 |
 | crc32_byte                      |   1104/    0 |         340 |
 |---------------------------------+--------------+-------------|
-| CRC32                           |    224/    0 |         835 |
+| CRC32                           |    224/    0 |         834 |
 | Arduino_CRC32                   |   1120/ 1024 |         155 |
-| FastCRC                         |   4704/    0 |         452 |
+| FastCRC                         |   4656/    0 |         458 |
 +--------------------------------------------------------------+
 ```
 
@@ -595,12 +595,12 @@ These boards are tested on each release:
 
 * Arduino Nano clone (16 MHz ATmega328P)
 * SparkFun Pro Micro clone (16 MHz ATmega32U4)
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
+* Seeeduino XIAO M0 (SAMD21, 48 MHz ARM Cortex-M0+)
 * STM32 Blue Pill (STM32F103C8, 72 MHz ARM Cortex-M3)
+* Adafruit ItsyBitsy M4 (SAMD51, 120 MHz ARM Cortex-M4)
 * NodeMCU 1.0 (ESP-12E module, 80MHz ESP8266)
 * WeMos D1 Mini (ESP-12E module, 80 MHz ESP8266)
 * ESP32 dev board (ESP-WROOM-32 module, 240 MHz dual core Tensilica LX6)
-* Teensy 3.2 (72 MHz ARM Cortex-M4)
 
 **Tier 2: Should work**
 
@@ -610,46 +610,39 @@ These boards should work but I don't test them as often:
 * Arduino Pro Mini (16 MHz ATmega328P)
 * Mini Mega 2560 (Arduino Mega 2560 compatible, 16 MHz ATmega2560)
 * Teensy LC (48 MHz ARM Cortex-M0+)
+* Teensy 3.2 (72 MHz ARM Cortex-M4)
 
 **Tier 3: May work, but not supported**
 
-* SAMD21 M0 Mini (48 MHz ARM Cortex-M0+)
-    * Arduino-branded SAMD21 boards use the ArduinoCore-API, so are explicitly
-      blacklisted. See below.
-    * Other 3rd party SAMD21 boards *may* work using the SparkFun SAMD core.
-    * However, as of SparkFun SAMD Core v1.8.6 and Arduino IDE 1.8.19, I can no
-      longer upload binaries to these 3rd party boards due to errors.
-    * Therefore, third party SAMD21 boards are now in this new Tier 3 category.
-    * The AceTime library may work on these boards, but I can no longer support
-      them.
-
-**Tier 4: Probably won't work**
-
-The following boards use a different Arduino API which breaks backwards
-compatibility with almost all of my libraries written against the previous
-Arduino API. I cannot compile for them, I cannot test them. They are explicitly
-not supported.
-
 * Any platform using the ArduinoCore-API
   (https://github.com/arduino/ArduinoCore-api), such as:
-    * megaAVR (e.g. Nano Every)
-    * SAMD21 boards w/ `arduino:samd` version >= 1.8.10 (e.g. Nano 33 IoT,
-      MKRZero, etc)
+    * Arduino Nano Every
+    * Arduino MKRZero
+    * Arduino UNO R4
     * Raspberry Pi Pico RP2040
 
 <a name="ToolChain"></a>
 ### Tool Chain
 
 * [Arduino IDE 1.8.19](https://www.arduino.cc/en/Main/Software)
-* [Arduino CLI 0.27.1](https://arduino.github.io/arduino-cli)
-* [Arduino AVR Boards 1.8.5](https://github.com/arduino/ArduinoCore-avr)
-* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [Arduino CLI 0.33.0](https://arduino.github.io/arduino-cli)
+* [SpenceKonde ATTinyCore 1.5.2](https://github.com/SpenceKonde/ATTinyCore)
+* [Arduino AVR Boards 1.8.6](https://github.com/arduino/ArduinoCore-avr)
 * [SparkFun AVR Boards 1.1.13](https://github.com/sparkfun/Arduino_Boards)
-* [SparkFun SAMD Boards 1.8.7](https://github.com/sparkfun/Arduino_Boards)
-* [STM32duino 2.4.0](https://github.com/stm32duino/Arduino_Core_STM32)
+* [Arduino SAMD Boards 1.8.9](https://github.com/arduino/ArduinoCore-samd)
+* [SparkFun SAMD Boards 1.8.9](https://github.com/sparkfun/Arduino_Boards)
+* [Adafruit SAMD Boards 1.7.11](https://github.com/adafruit/ArduinoCore-samd)
+* [Seeeduino SAMD Boards 1.8.4](https://github.com/Seeed-Studio/ArduinoCore-samd)
+* [STM32duino 2.6.0](https://github.com/stm32duino/Arduino_Core_STM32)
 * [ESP8266 Arduino 3.0.2](https://github.com/esp8266/Arduino)
-* [ESP32 Arduino 2.0.5](https://github.com/espressif/arduino-esp32)
+* [ESP32 Arduino 2.0.9](https://github.com/espressif/arduino-esp32)
 * [Teensyduino 1.57](https://www.pjrc.com/teensy/td_download.html)
+
+It should work with [PlatformIO](https://platformio.org/) but I have
+not tested it.
+
+The library works on Linux or MacOS (using both g++ and clang++ compilers) using
+the [EpoxyDuino](https://github.com/bxparks/EpoxyDuino) emulation layer.
 
 <a name="OperatingSystem"></a>
 ### Operating System
